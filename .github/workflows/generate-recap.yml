@@ -17,4 +17,4 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Update daily recap"
-          file_pattern: nba_daily_recap.html
+          file_pattern: index.html
