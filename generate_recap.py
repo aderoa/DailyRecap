@@ -5,15 +5,22 @@ Fetches stats recap from Google Sheet (GID 869619953) and generates
 a light-themed, Presto-compatible HTML report.
 
 Usage: python generate_recap.py
-Output: nba_daily_recap.html (paste into Presto CMS)
+Output: index.html (paste into Presto CMS)
 """
-import csv, io, os, sys
+import csv, io, os
 from datetime import datetime
 
-SHEET_URL = (
+RECAP_URL = (
     "https://docs.google.com/spreadsheets/d/e/"
     "2PACX-1vSg6im6IYB6HXMGzQbmmBnLw9SfQLzxCSo8OfChxlJLhsB6BBCO0wPF_TMch0YgAbtFqYkwDWrsxRe7"
     "/pub?gid=869619953&single=true&output=csv"
+)
+
+# Name mapping sheet: col L = NBA NAME, col M = HH NAME
+NAME_MAP_URL = (
+    "https://docs.google.com/spreadsheets/d/e/"
+    "2PACX-1vS2iZj3avZ_-CAWKu-f_pxZkf38M0quXQwMbyTXmHsN6-c9V8vU1l_sNaxg0y8dl07dqraU3_5Z3b8D"
+    "/pub?gid=1197809522&single=true&output=csv"
 )
 
 SECTION_META = {
@@ -25,7 +32,7 @@ SECTION_META = {
     "CLUTCH RATING":              {"emoji": "🎯", "desc": "Best in clutch situations (last 5 min, ±5 pts)"},
     "BEST INTERNATIONAL PLAYERS": {"emoji": "🌍", "desc": "Top non-US players"},
     "BEST BENCH PLAYERS":         {"emoji": "💺", "desc": "Top performers off the bench"},
-    "NET RATING":                 {"emoji": "🌐", "desc": "Points scored by country"},
+    "NET RATING":                 {"emoji": "🌐", "desc": "Points scored by country", "display_name": "STATS PER COUNTRY"},
     "MILESTONES":                 {"emoji": "🏆", "desc": "Approaching or passing career milestones"},
     "SNEAKERS":                   {"emoji": "👟", "desc": "Points scored by sneaker brand"},
 }
@@ -58,24 +65,43 @@ CSS = """
 """
 
 
-def fetch_csv():
-    """Fetch CSV from Google Sheets."""
+def fetch_csv(url):
     import requests
-    print("Fetching recap data from Google Sheets...")
-    resp = requests.get(SHEET_URL, timeout=30)
+    resp = requests.get(url, timeout=30)
     resp.raise_for_status()
     return resp.text
 
 
+def build_name_map(csv_text):
+    """Build NBA NAME -> HH NAME mapping from Database sheet."""
+    nba_to_hh = {}
+    reader = csv.reader(io.StringIO(csv_text))
+    try:
+        next(reader)
+    except StopIteration:
+        return nba_to_hh
+    for row in reader:
+        if len(row) < 13:
+            continue
+        nba = row[11].strip()
+        hh = row[12].strip()
+        if nba and hh:
+            nba_to_hh[nba] = hh
+    return nba_to_hh
+
+
+def hh(name, name_map):
+    """Convert a name to HH version."""
+    return name_map.get(name, name)
+
+
 def parse_sections(csv_text):
-    """Parse CSV into named sections with rows."""
     rows_raw = list(csv.reader(io.StringIO(csv_text)))
     sections = []
     cur_name = None
     cur_rows = []
 
     for row in rows_raw:
-        # Empty row = section break
         if not row or all(not c.strip() for c in row[:3]):
             if cur_name and cur_rows:
                 sections.append((cur_name, cur_rows))
@@ -88,7 +114,6 @@ def parse_sections(csv_text):
             continue
         rat = row[1].strip() if len(row) > 1 else ""
 
-        # Detect section headers (ALL CAPS, no numeric RAT)
         if (name.isupper() and len(name) > 3
                 and (not rat or rat in ("RAT", ""))):
             if cur_name and cur_rows:
@@ -97,7 +122,6 @@ def parse_sections(csv_text):
             cur_rows = []
             continue
 
-        # Skip #N/A rows (DNP players)
         if any("#N/A" in str(c) for c in row[:11]):
             continue
 
@@ -111,28 +135,40 @@ def parse_sections(csv_text):
 
 
 def logo_td(logo_url):
-    """Generate logo <td> if URL is valid."""
     if logo_url and ("cdn.nba.com" in logo_url or "wikimedia" in logo_url):
         return f'<td class="lg"><img src="{logo_url}" alt=""></td>'
     return '<td class="lg"></td>'
 
 
-def render_standard(rows):
-    """Render a standard player table (Global Rating, Clutch, etc.)."""
-    html = '<table><tr><th class="c">#</th><th class="c"></th>'
-    html += '<th>Player</th><th class="r">RAT</th><th>Stats</th><th class="c">Score</th></tr>\n'
+def clean_score(score):
+    score = score.strip()
+    if score.endswith("-0") and not score.startswith("0"):
+        return ""
+    return score
+
+
+def clean_num(val):
+    """Remove trailing .00 from aggregate numbers."""
+    val = val.strip()
+    if val.endswith(".00"):
+        return val[:-3]
+    return val
+
+
+def render_standard(rows, name_map):
+    html = ('<table><tr><th class="c">#</th><th class="c"></th>'
+            '<th>Player</th><th class="r">RAT</th>'
+            '<th>Stats</th><th class="c">Score</th></tr>\n')
 
     for i, row in enumerate(rows):
-        name = row[0].strip()
+        name = hh(row[0].strip(), name_map)
         rat = row[1].strip()
         stats = row[2].strip() if len(row) > 2 else ""
-        score = row[10].strip() if len(row) > 10 else ""
+        score = clean_score(row[10]) if len(row) > 10 else ""
         logo = row[11].strip() if len(row) > 11 else ""
 
         rk_cls = " g" if i < 3 else ""
         rat_cls = " neg" if rat.startswith("-") else ""
-        if score.endswith("-0"):
-            score = ""
 
         html += (f'<tr><td class="rk{rk_cls}">{i+1}</td>'
                  f'{logo_td(logo)}'
@@ -146,15 +182,15 @@ def render_standard(rows):
 
 
 def render_aggregate(rows):
-    """Render aggregate table (Net Rating, Sneakers)."""
-    html = '<table><tr><th class="c">#</th><th class="c"></th>'
-    html += '<th>Name</th><th class="r">PTS</th><th class="r">REB</th><th class="r">AST</th></tr>\n'
+    html = ('<table><tr><th class="c">#</th><th class="c"></th>'
+            '<th>Name</th><th class="r">PTS</th>'
+            '<th class="r">REB</th><th class="r">AST</th></tr>\n')
 
     for i, row in enumerate(rows):
         name = row[0].strip()
-        pts = row[3].strip() if len(row) > 3 else ""
-        reb = row[4].strip() if len(row) > 4 else ""
-        ast = row[5].strip() if len(row) > 5 else ""
+        pts = clean_num(row[3]) if len(row) > 3 else ""
+        reb = clean_num(row[4]) if len(row) > 4 else ""
+        ast = clean_num(row[5]) if len(row) > 5 else ""
         logo = row[11].strip() if len(row) > 11 else ""
 
         rk_cls = " g" if i < 3 else ""
@@ -169,16 +205,15 @@ def render_aggregate(rows):
     return html
 
 
-def render_milestones(rows):
-    """Render milestones table."""
-    html = '<table><tr><th class="c">#</th><th class="c"></th>'
-    html += '<th>Player</th><th class="r">Rank</th><th>Passing</th>'
-    html += '<th>Category</th><th class="r">Behind</th></tr>\n'
+def render_milestones(rows, name_map):
+    # Columns: [0]=player, [1]=rank(skip), [2]=passing, [3]=category, [4]=behind, [11]=logo
+    html = ('<table><tr><th class="c">#</th><th class="c"></th>'
+            '<th>Player</th><th>Passing</th>'
+            '<th>Category</th><th class="r">Behind</th></tr>\n')
 
     for i, row in enumerate(rows):
-        name = row[0].strip()
-        rank = row[1].strip()
-        passing = row[2].strip()
+        name = hh(row[0].strip(), name_map)
+        passing = row[2].strip() if len(row) > 2 else ""
         cat = row[3].strip() if len(row) > 3 else ""
         behind = row[4].strip() if len(row) > 4 else ""
         logo = row[11].strip() if len(row) > 11 else ""
@@ -187,7 +222,6 @@ def render_milestones(rows):
         html += (f'<tr><td class="rk{rk_cls}">{i+1}</td>'
                  f'{logo_td(logo)}'
                  f'<td class="nm">{name}</td>'
-                 f'<td class="rt">{rank}</td>'
                  f'<td class="st">{passing}</td>'
                  f'<td class="st">{cat}</td>'
                  f'<td class="rt">{behind}</td></tr>\n')
@@ -196,8 +230,7 @@ def render_milestones(rows):
     return html
 
 
-def generate_html(sections):
-    """Generate complete Presto-compatible HTML."""
+def generate_html(sections, name_map):
     today = datetime.now().strftime("%B %d, %Y")
 
     html = '<div class="nr">\n'
@@ -206,17 +239,19 @@ def generate_html(sections):
 
     for sec_name, sec_rows in sections:
         meta = SECTION_META.get(sec_name, {"emoji": "📊", "desc": ""})
+        display_name = meta.get("display_name", sec_name)
 
         html += '<div class="sec">\n'
         html += (f'<div class="sh"><span class="se">{meta["emoji"]}</span>'
-                 f'{sec_name}<span class="sd">{meta["desc"]}</span></div>\n')
+                 f'{display_name}'
+                 f'<span class="sd">{meta["desc"]}</span></div>\n')
 
         if sec_name == "MILESTONES":
-            html += render_milestones(sec_rows)
+            html += render_milestones(sec_rows, name_map)
         elif sec_name in ("NET RATING", "SNEAKERS"):
             html += render_aggregate(sec_rows)
         else:
-            html += render_standard(sec_rows)
+            html += render_standard(sec_rows, name_map)
 
         html += '</div>\n'
 
@@ -224,7 +259,6 @@ def generate_html(sections):
              'HoopsMatic</a> · NBA Daily Stats Recap</div>\n')
     html += '</div>'
 
-    # Wrap with style tag (Presto-safe escaping)
     full = f'<style>{CSS}\n{"<" + "/style>"}\n{html}'
     return full
 
@@ -234,22 +268,33 @@ def main():
     print("  NBA DAILY RECAP — HTML Generator")
     print("=" * 50)
 
-    csv_text = fetch_csv()
+    print("  Fetching name mappings...")
+    try:
+        name_csv = fetch_csv(NAME_MAP_URL)
+        name_map = build_name_map(name_csv)
+        print(f"  Loaded {len(name_map)} name mappings")
+    except Exception as e:
+        print(f"  Warning: Could not load name map ({e}), using raw names")
+        name_map = {}
+
+    print("  Fetching recap data...")
+    csv_text = fetch_csv(RECAP_URL)
     sections = parse_sections(csv_text)
 
     print(f"  Parsed {len(sections)} sections:")
     for name, rows in sections:
-        print(f"    {name}: {len(rows)} rows")
+        display = SECTION_META.get(name, {}).get("display_name", name)
+        print(f"    {display}: {len(rows)} rows")
 
-    html = generate_html(sections)
+    html = generate_html(sections, name_map)
 
     out_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                            "nba_daily_recap.html")
+                            "index.html")
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(html)
 
     size = os.path.getsize(out_path)
-    print(f"\n  Saved: {out_path}")
+    print(f"\n  Saved: index.html")
     print(f"  Size: {size/1024:.1f} KB (Presto limit: 85 KB)")
     print(f"\n  Ready to paste into Presto CMS! ✓")
 
