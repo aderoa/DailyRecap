@@ -5,7 +5,7 @@ Fetches stats recap from Google Sheet (GID 869619953) and generates
 a light-themed, Presto-compatible HTML report.
 
 Usage: python generate_recap.py
-Output: nba_daily_recap.html (paste into Presto CMS)
+Output: index.html (paste into Presto CMS)
 """
 import csv, io, os, sys
 from datetime import datetime
@@ -244,7 +244,7 @@ def main():
     html = generate_html(sections)
 
     out_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                            "nba_daily_recap.html")
+                            "index.html")
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(html)
 
