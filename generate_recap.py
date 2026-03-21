@@ -2,12 +2,12 @@
 """
 NBA Daily Recap — Presto CMS HTML Generator
 Fetches stats recap from Google Sheet (GID 869619953) and generates
-a light-themed, Presto-compatible HTML report.
+index.html with visual preview + "Copy for Presto" button.
 
 Usage: python generate_recap.py
-Output: index.html (paste into Presto CMS)
+Output: index.html
 """
-import csv, io, os
+import csv, io, os, html as html_mod
 from datetime import datetime
 
 RECAP_URL = (
@@ -36,8 +36,7 @@ SECTION_META = {
     "SNEAKERS":                   {"emoji": "👟", "desc": "Points scored by sneaker brand"},
 }
 
-CSS = """
-.nr{font-family:Arial,Helvetica,sans-serif;max-width:720px;margin:0 auto;color:#333}
+PRESTO_CSS = """.nr{font-family:Arial,Helvetica,sans-serif;max-width:720px;margin:0 auto;color:#333}
 .nr h1{font-size:22px;font-weight:800;color:#1a1a2e;text-align:center;margin:0 0 4px;letter-spacing:1px}
 .nr .sub{font-size:11px;color:#888;text-align:center;margin-bottom:20px}
 .nr .sec{margin-bottom:24px}
@@ -59,8 +58,7 @@ CSS = """
 .nr td.lg{width:24px;text-align:center}
 .nr td.lg img{width:20px;height:20px;vertical-align:middle}
 .nr .ft{text-align:center;font-size:9px;color:#aaa;margin-top:16px;padding-top:8px;border-top:1px solid #eee}
-.nr .ft a{color:#1a5276;text-decoration:none}
-"""
+.nr .ft a{color:#1a5276;text-decoration:none}"""
 
 
 def fetch_csv(url):
@@ -134,8 +132,8 @@ def logo_td(url):
 
 
 def render_standard(rows, nm):
-    html = ('<table><tr><th class="c">#</th><th class="c"></th>'
-            '<th>Player</th><th class="r">RAT</th><th>Stats</th></tr>\n')
+    h = ('<table><tr><th class="c">#</th><th class="c"></th>'
+         '<th>Player</th><th class="r">RAT</th><th>Stats</th></tr>\n')
     for i, row in enumerate(rows):
         name = hh(row[0].strip(), nm)
         rat = row[1].strip()
@@ -143,17 +141,16 @@ def render_standard(rows, nm):
         logo = row[11].strip() if len(row) > 11 else ""
         rk = " g" if i < 3 else ""
         rc = " neg" if rat.startswith("-") else ""
-        html += (f'<tr><td class="rk{rk}">{i+1}</td>{logo_td(logo)}'
-                 f'<td class="nm">{name}</td><td class="rt{rc}">{rat}</td>'
-                 f'<td class="st">{stats}</td></tr>\n')
-    html += "</table>\n"
-    return html
+        h += (f'<tr><td class="rk{rk}">{i+1}</td>{logo_td(logo)}'
+              f'<td class="nm">{name}</td><td class="rt{rc}">{rat}</td>'
+              f'<td class="st">{stats}</td></tr>\n')
+    return h + "</table>\n"
 
 
 def render_aggregate(rows):
-    html = ('<table><tr><th class="c">#</th><th class="c"></th>'
-            '<th>Name</th><th class="r">PTS</th>'
-            '<th class="r">REB</th><th class="r">AST</th></tr>\n')
+    h = ('<table><tr><th class="c">#</th><th class="c"></th>'
+         '<th>Name</th><th class="r">PTS</th>'
+         '<th class="r">REB</th><th class="r">AST</th></tr>\n')
     for i, row in enumerate(rows):
         name = row[0].strip()
         pts = clean_num(row[3]) if len(row) > 3 else ""
@@ -161,19 +158,16 @@ def render_aggregate(rows):
         ast = clean_num(row[5]) if len(row) > 5 else ""
         logo = row[11].strip() if len(row) > 11 else ""
         rk = " g" if i < 3 else ""
-        html += (f'<tr><td class="rk{rk}">{i+1}</td>{logo_td(logo)}'
-                 f'<td class="nm">{name}</td><td class="rt">{pts}</td>'
-                 f'<td class="rt">{reb}</td><td class="rt">{ast}</td></tr>\n')
-    html += "</table>\n"
-    return html
+        h += (f'<tr><td class="rk{rk}">{i+1}</td>{logo_td(logo)}'
+              f'<td class="nm">{name}</td><td class="rt">{pts}</td>'
+              f'<td class="rt">{reb}</td><td class="rt">{ast}</td></tr>\n')
+    return h + "</table>\n"
 
 
 def render_milestones(rows, nm):
-    # CSV cols: [0]=player, [1]=orig rank, [2]=passing, [3]=category, [4]=behind(→Rank)
-    # Display order: #, logo, Player, Rank, Category, Passing
-    html = ('<table><tr><th class="c">#</th><th class="c"></th>'
-            '<th>Player</th><th class="r">Rank</th>'
-            '<th>Category</th><th>Passing</th></tr>\n')
+    h = ('<table><tr><th class="c">#</th><th class="c"></th>'
+         '<th>Player</th><th class="r">Rank</th>'
+         '<th>Category</th><th>Passing</th></tr>\n')
     for i, row in enumerate(rows):
         name = hh(row[0].strip(), nm)
         passing = row[2].strip() if len(row) > 2 else ""
@@ -181,39 +175,110 @@ def render_milestones(rows, nm):
         rank = row[4].strip() if len(row) > 4 else ""
         logo = row[11].strip() if len(row) > 11 else ""
         rk = " g" if i < 3 else ""
-        html += (f'<tr><td class="rk{rk}">{i+1}</td>{logo_td(logo)}'
-                 f'<td class="nm">{name}</td><td class="rt">{rank}</td>'
-                 f'<td class="st">{cat}</td><td class="st">{passing}</td></tr>\n')
-    html += "</table>\n"
-    return html
+        h += (f'<tr><td class="rk{rk}">{i+1}</td>{logo_td(logo)}'
+              f'<td class="nm">{name}</td><td class="rt">{rank}</td>'
+              f'<td class="st">{cat}</td><td class="st">{passing}</td></tr>\n')
+    return h + "</table>\n"
 
 
-def generate_html(sections, nm):
+def build_presto_html(sections, nm):
+    """Build the Presto-compatible HTML snippet (style + content)."""
     today = datetime.now().strftime("%B %d, %Y")
-    html = '<div class="nr">\n<h1>NBA DAILY RECAP</h1>\n'
-    html += f'<div class="sub">{today} · Powered by HoopsMatic</div>\n'
+
+    body = '<div class="nr">\n<h1>NBA DAILY RECAP</h1>\n'
+    body += f'<div class="sub">{today} · Powered by HoopsMatic</div>\n'
+
     for sec_name, sec_rows in sections:
         meta = SECTION_META.get(sec_name, {"emoji": "📊", "desc": ""})
         display = meta.get("display_name", sec_name)
-        html += '<div class="sec">\n'
-        html += (f'<div class="sh"><span class="se">{meta["emoji"]}</span>'
+        body += '<div class="sec">\n'
+        body += (f'<div class="sh"><span class="se">{meta["emoji"]}</span>'
                  f'{display}<span class="sd">{meta["desc"]}</span></div>\n')
         if sec_name == "MILESTONES":
-            html += render_milestones(sec_rows, nm)
+            body += render_milestones(sec_rows, nm)
         elif sec_name in ("NET RATING", "SNEAKERS"):
-            html += render_aggregate(sec_rows)
+            body += render_aggregate(sec_rows)
         else:
-            html += render_standard(sec_rows, nm)
-        html += '</div>\n'
-    html += ('<div class="ft">Data by <a href="https://hoopsmatic.com">'
+            body += render_standard(sec_rows, nm)
+        body += '</div>\n'
+
+    body += ('<div class="ft">Data by <a href="https://hoopsmatic.com">'
              'HoopsMatic</a> · NBA Daily Stats Recap</div>\n</div>')
-    return f'<style>{CSS}\n{"<" + "/style>"}\n{html}'
+
+    # Presto-safe style tag
+    presto = f'<style>{PRESTO_CSS}\n{"<" + "/style>"}\n{body}'
+    return presto
+
+
+def build_full_page(presto_html):
+    """Wrap Presto HTML in a full page with copy button."""
+    escaped = html_mod.escape(presto_html)
+
+    return f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NBA Daily Recap</title>
+<style>
+body {{ font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 20px; }}
+.toolbar {{ max-width: 720px; margin: 0 auto 16px; display: flex; align-items: center; gap: 12px; }}
+.copy-btn {{ padding: 10px 24px; border: none; border-radius: 6px; background: #1a1a2e; color: #fff;
+  font-size: 13px; font-weight: 700; cursor: pointer; letter-spacing: 0.5px; transition: all 0.15s; }}
+.copy-btn:hover {{ background: #2d2d5e; }}
+.copy-btn.ok {{ background: #1e8449; }}
+.copy-label {{ font-size: 11px; color: #888; }}
+.preview {{ max-width: 720px; margin: 0 auto; background: #fff; border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px; }}
+{PRESTO_CSS}
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <button class="copy-btn" id="copyBtn" onclick="copyForPresto()">📋 Copy for Presto</button>
+  <span class="copy-label" id="copyLabel">Click to copy HTML for Presto CMS</span>
+</div>
+<div class="preview" id="preview">
+{presto_html}
+</div>
+<textarea id="prestoCode" style="position:absolute;left:-9999px">{escaped}</textarea>
+<script>
+function copyForPresto() {{
+  const ta = document.getElementById("prestoCode");
+  ta.style.position = "fixed";
+  ta.style.left = "0";
+  ta.style.top = "0";
+  ta.select();
+  ta.setSelectionRange(0, ta.value.length);
+  navigator.clipboard.writeText(ta.value).then(function() {{
+    const btn = document.getElementById("copyBtn");
+    const lbl = document.getElementById("copyLabel");
+    btn.textContent = "✅ Copied!";
+    btn.classList.add("ok");
+    lbl.textContent = "Paste into Presto CMS Source/HTML mode";
+    setTimeout(function() {{
+      btn.textContent = "📋 Copy for Presto";
+      btn.classList.remove("ok");
+      lbl.textContent = "Click to copy HTML for Presto CMS";
+    }}, 3000);
+  }}).catch(function() {{
+    // Fallback
+    document.execCommand("copy");
+    document.getElementById("copyBtn").textContent = "✅ Copied!";
+  }});
+  ta.style.position = "absolute";
+  ta.style.left = "-9999px";
+}}
+</script>
+</body>
+</html>'''
 
 
 def main():
     print("=" * 50)
     print("  NBA DAILY RECAP — HTML Generator")
     print("=" * 50)
+
     print("  Fetching name mappings...")
     try:
         nm = build_name_map(fetch_csv(NAME_MAP_URL))
@@ -221,19 +286,25 @@ def main():
     except Exception as e:
         print(f"  Warning: Could not load name map ({e})")
         nm = {}
+
     print("  Fetching recap data...")
     csv_text = fetch_csv(RECAP_URL)
     sections = parse_sections(csv_text)
+
     print(f"  Parsed {len(sections)} sections:")
     for name, rows in sections:
         d = SECTION_META.get(name, {}).get("display_name", name)
         print(f"    {d}: {len(rows)} rows")
-    html = generate_html(sections, nm)
+
+    presto_html = build_presto_html(sections, nm)
+    full_page = build_full_page(presto_html)
+
     out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html")
     with open(out, "w", encoding="utf-8") as f:
-        f.write(html)
+        f.write(full_page)
+
     print(f"\n  Saved: index.html ({os.path.getsize(out)/1024:.1f} KB)")
-    print("  Ready to paste into Presto CMS! ✓")
+    print("  Open in browser → click 'Copy for Presto' → paste into CMS ✓")
 
 
 if __name__ == "__main__":
