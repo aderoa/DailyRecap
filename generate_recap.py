@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
 NBA Daily Recap — Presto CMS HTML Generator
-Fetches stats recap from Google Sheet (GID 869619953) and generates
-index.html with visual preview + "Copy for Presto" button.
+Fetches stats recap from Google Sheet and generates index.html
+with visual preview + "Copy for Presto" button.
 
 Usage: python generate_recap.py
 Output: index.html
 """
-import csv, io, os, html as html_mod
+import csv, io, os, json
 from datetime import datetime
 
 RECAP_URL = (
@@ -69,20 +69,20 @@ def fetch_csv(url):
 
 
 def build_name_map(csv_text):
-    nba_to_hh = {}
+    nm = {}
     reader = csv.reader(io.StringIO(csv_text))
     try:
         next(reader)
     except StopIteration:
-        return nba_to_hh
+        return nm
     for row in reader:
         if len(row) < 13:
             continue
         nba = row[11].strip()
         hh = row[12].strip()
         if nba and hh:
-            nba_to_hh[nba] = hh
-    return nba_to_hh
+            nm[nba] = hh
+    return nm
 
 
 def hh(name, nm):
@@ -131,88 +131,59 @@ def logo_td(url):
     return '<td class="lg"></td>'
 
 
-def render_standard(rows, nm):
-    h = ('<table><tr><th class="c">#</th><th class="c"></th>'
-         '<th>Player</th><th class="r">RAT</th><th>Stats</th></tr>\n')
-    for i, row in enumerate(rows):
-        name = hh(row[0].strip(), nm)
-        rat = row[1].strip()
-        stats = row[2].strip() if len(row) > 2 else ""
-        logo = row[11].strip() if len(row) > 11 else ""
-        rk = " g" if i < 3 else ""
-        rc = " neg" if rat.startswith("-") else ""
-        h += (f'<tr><td class="rk{rk}">{i+1}</td>{logo_td(logo)}'
-              f'<td class="nm">{name}</td><td class="rt{rc}">{rat}</td>'
-              f'<td class="st">{stats}</td></tr>\n')
-    return h + "</table>\n"
-
-
-def render_aggregate(rows):
-    h = ('<table><tr><th class="c">#</th><th class="c"></th>'
-         '<th>Name</th><th class="r">PTS</th>'
-         '<th class="r">REB</th><th class="r">AST</th></tr>\n')
-    for i, row in enumerate(rows):
-        name = row[0].strip()
-        pts = clean_num(row[3]) if len(row) > 3 else ""
-        reb = clean_num(row[4]) if len(row) > 4 else ""
-        ast = clean_num(row[5]) if len(row) > 5 else ""
-        logo = row[11].strip() if len(row) > 11 else ""
-        rk = " g" if i < 3 else ""
-        h += (f'<tr><td class="rk{rk}">{i+1}</td>{logo_td(logo)}'
-              f'<td class="nm">{name}</td><td class="rt">{pts}</td>'
-              f'<td class="rt">{reb}</td><td class="rt">{ast}</td></tr>\n')
-    return h + "</table>\n"
-
-
-def render_milestones(rows, nm):
-    h = ('<table><tr><th class="c">#</th><th class="c"></th>'
-         '<th>Player</th><th class="r">Rank</th>'
-         '<th>Category</th><th>Passing</th></tr>\n')
-    for i, row in enumerate(rows):
-        name = hh(row[0].strip(), nm)
-        passing = row[2].strip() if len(row) > 2 else ""
-        cat = row[3].strip() if len(row) > 3 else ""
-        rank = row[4].strip() if len(row) > 4 else ""
-        logo = row[11].strip() if len(row) > 11 else ""
-        rk = " g" if i < 3 else ""
-        h += (f'<tr><td class="rk{rk}">{i+1}</td>{logo_td(logo)}'
-              f'<td class="nm">{name}</td><td class="rt">{rank}</td>'
-              f'<td class="st">{cat}</td><td class="st">{passing}</td></tr>\n')
-    return h + "</table>\n"
-
-
 def build_presto_html(sections, nm):
-    """Build the Presto-compatible HTML snippet (style + content)."""
     today = datetime.now().strftime("%B %d, %Y")
-
-    body = '<div class="nr">\n<h1>NBA DAILY RECAP</h1>\n'
-    body += f'<div class="sub">{today} · Powered by HoopsMatic</div>\n'
+    body = f'<div class="nr">\n<h1>NBA DAILY RECAP</h1>\n<div class="sub">{today} · Powered by HoopsMatic</div>\n'
 
     for sec_name, sec_rows in sections:
         meta = SECTION_META.get(sec_name, {"emoji": "📊", "desc": ""})
         display = meta.get("display_name", sec_name)
-        body += '<div class="sec">\n'
-        body += (f'<div class="sh"><span class="se">{meta["emoji"]}</span>'
-                 f'{display}<span class="sd">{meta["desc"]}</span></div>\n')
+        body += f'<div class="sec">\n<div class="sh"><span class="se">{meta["emoji"]}</span>{display}<span class="sd">{meta["desc"]}</span></div>\n'
+
         if sec_name == "MILESTONES":
-            body += render_milestones(sec_rows, nm)
+            body += '<table><tr><th class="c">#</th><th class="c"></th><th>Player</th><th class="r">Rank</th><th>Category</th><th>Passing</th></tr>\n'
+            for i, row in enumerate(sec_rows):
+                name = hh(row[0].strip(), nm)
+                passing = row[2].strip() if len(row) > 2 else ""
+                cat = row[3].strip() if len(row) > 3 else ""
+                rank = row[4].strip() if len(row) > 4 else ""
+                logo = row[11].strip() if len(row) > 11 else ""
+                rk = " g" if i < 3 else ""
+                body += f'<tr><td class="rk{rk}">{i+1}</td>{logo_td(logo)}<td class="nm">{name}</td><td class="rt">{rank}</td><td class="st">{cat}</td><td class="st">{passing}</td></tr>\n'
+            body += '</table>\n'
+
         elif sec_name in ("NET RATING", "SNEAKERS"):
-            body += render_aggregate(sec_rows)
+            body += '<table><tr><th class="c">#</th><th class="c"></th><th>Name</th><th class="r">PTS</th><th class="r">REB</th><th class="r">AST</th></tr>\n'
+            for i, row in enumerate(sec_rows):
+                name = row[0].strip()
+                pts = clean_num(row[3]) if len(row) > 3 else ""
+                reb = clean_num(row[4]) if len(row) > 4 else ""
+                ast = clean_num(row[5]) if len(row) > 5 else ""
+                logo = row[11].strip() if len(row) > 11 else ""
+                rk = " g" if i < 3 else ""
+                body += f'<tr><td class="rk{rk}">{i+1}</td>{logo_td(logo)}<td class="nm">{name}</td><td class="rt">{pts}</td><td class="rt">{reb}</td><td class="rt">{ast}</td></tr>\n'
+            body += '</table>\n'
+
         else:
-            body += render_standard(sec_rows, nm)
+            body += '<table><tr><th class="c">#</th><th class="c"></th><th>Player</th><th class="r">RAT</th><th>Stats</th></tr>\n'
+            for i, row in enumerate(sec_rows):
+                name = hh(row[0].strip(), nm)
+                rat = row[1].strip()
+                stats = row[2].strip() if len(row) > 2 else ""
+                logo = row[11].strip() if len(row) > 11 else ""
+                rk = " g" if i < 3 else ""
+                rc = " neg" if rat.startswith("-") else ""
+                body += f'<tr><td class="rk{rk}">{i+1}</td>{logo_td(logo)}<td class="nm">{name}</td><td class="rt{rc}">{rat}</td><td class="st">{stats}</td></tr>\n'
+            body += '</table>\n'
+
         body += '</div>\n'
 
-    body += ('<div class="ft">Data by <a href="https://hoopsmatic.com">'
-             'HoopsMatic</a> · NBA Daily Stats Recap</div>\n</div>')
-
-    # Presto-safe style tag
-    presto = f'<style>{PRESTO_CSS}\n{"<" + "/style>"}\n{body}'
-    return presto
+    body += '<div class="ft">Data by <a href="https://hoopsmatic.com">HoopsMatic</a> · NBA Daily Stats Recap</div>\n</div>'
+    return f'<style>{PRESTO_CSS}\n{"<" + "/style>"}\n{body}'
 
 
 def build_full_page(presto_html):
-    """Wrap Presto HTML in a full page with copy button."""
-    escaped = html_mod.escape(presto_html)
+    presto_json = json.dumps(presto_html)
 
     return f'''<!DOCTYPE html>
 <html lang="en">
@@ -238,21 +209,15 @@ body {{ font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding:
   <button class="copy-btn" id="copyBtn" onclick="copyForPresto()">📋 Copy for Presto</button>
   <span class="copy-label" id="copyLabel">Click to copy HTML for Presto CMS</span>
 </div>
-<div class="preview" id="preview">
+<div class="preview">
 {presto_html}
 </div>
-<textarea id="prestoCode" style="position:absolute;left:-9999px">{escaped}</textarea>
 <script>
+var PRESTO_HTML = {presto_json};
 function copyForPresto() {{
-  const ta = document.getElementById("prestoCode");
-  ta.style.position = "fixed";
-  ta.style.left = "0";
-  ta.style.top = "0";
-  ta.select();
-  ta.setSelectionRange(0, ta.value.length);
-  navigator.clipboard.writeText(ta.value).then(function() {{
-    const btn = document.getElementById("copyBtn");
-    const lbl = document.getElementById("copyLabel");
+  navigator.clipboard.writeText(PRESTO_HTML).then(function() {{
+    var btn = document.getElementById("copyBtn");
+    var lbl = document.getElementById("copyLabel");
     btn.textContent = "✅ Copied!";
     btn.classList.add("ok");
     lbl.textContent = "Paste into Presto CMS Source/HTML mode";
@@ -261,13 +226,7 @@ function copyForPresto() {{
       btn.classList.remove("ok");
       lbl.textContent = "Click to copy HTML for Presto CMS";
     }}, 3000);
-  }}).catch(function() {{
-    // Fallback
-    document.execCommand("copy");
-    document.getElementById("copyBtn").textContent = "✅ Copied!";
   }});
-  ta.style.position = "absolute";
-  ta.style.left = "-9999px";
 }}
 </script>
 </body>
@@ -303,8 +262,10 @@ def main():
     with open(out, "w", encoding="utf-8") as f:
         f.write(full_page)
 
-    print(f"\n  Saved: index.html ({os.path.getsize(out)/1024:.1f} KB)")
-    print("  Open in browser → click 'Copy for Presto' → paste into CMS ✓")
+    sz = os.path.getsize(out)
+    print(f"\n  Saved: index.html ({sz/1024:.1f} KB)")
+    print(f"  Presto payload: {len(presto_html)/1024:.1f} KB")
+    print("  Open in browser → click Copy for Presto → paste into CMS ✓")
 
 
 if __name__ == "__main__":
