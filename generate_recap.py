@@ -59,7 +59,7 @@ OUTRO=('<p style="font-size:13px;color:#555;margin:16px 0 4px;font-family:Arial,
        '<a href="https://news.google.com/publications/CAAqBwgKMK_RpQswnMOxAw" target="_blank" style="color:#0000EE;text-decoration:underline">click here</a>.</p>')
 
 def fetch_csv(url):
-    import requests; r=requests.get(url,timeout=30); r.encoding='utf-8'; return r.text
+    import requests,time; url+=f"&_cb={int(time.time())}"; r=requests.get(url,timeout=30,headers={"Cache-Control":"no-cache"}); r.encoding='utf-8'; return r.text
 
 def build_name_map(t):
     nm={}; r=csv.reader(io.StringIO(t))
