@@ -20,6 +20,23 @@ TEAM_ID_MAP={
     "1610612765":"DET","1610612766":"CHA",
 }
 
+COUNTRY_CODE={
+    "Canada":"CA","France":"FR","Australia":"AU","Germany":"DE","Serbia":"RS",
+    "Cameroon":"CM","Turkey":"TR","Belgium":"BE","Slovenia":"SI","Lithuania":"LT",
+    "Georgia":"GE","Israel":"IL","Jamaica":"JM","Latvia":"LV","Brazil":"BR",
+    "Sweden":"SE","Montenegro":"ME","Nigeria":"NG","China":"CN","Senegal":"SN",
+    "Switzerland":"CH","Great Britain":"GB","Croatia":"HR","Spain":"ES","Greece":"GR",
+    "Dominican Republic":"DO","Bosnia":"BA","Austria":"AT","Portugal":"PT","Japan":"JP",
+    "New Zealand":"NZ","DR Congo":"CD","Philippines":"PH","South Sudan":"SS",
+    "Bahamas":"BS","Italy":"IT","Finland":"FI","Czech Republic":"CZ","Poland":"PL",
+    "Ukraine":"UA","Argentina":"AR","Mexico":"MX","Colombia":"CO","Haiti":"HT",
+    "Trinidad and Tobago":"TT","Puerto Rico":"PR","US Virgin Islands":"VI",
+    "United States":"US","Gabon":"GA","Mali":"ML","Guinea":"GN","Angola":"AO",
+    "Congo":"CG","South Africa":"ZA","Egypt":"EG","Tunisia":"TN","Morocco":"MA",
+    "Iran":"IR","Lebanon":"LB","South Korea":"KR","Denmark":"DK","Norway":"NO",
+    "Netherlands":"NL","Ireland":"IE","Russia":"RU","Taiwan":"TW","India":"IN",
+}
+
 SM={"GLOBAL RATING":{"title":"Best players of the day","note":'* (RAT) <a href="https://www.hoopshype.com/story/sports/nba/2021/10/26/what-is-hoopshypes-global-rating/82908126007/" target="_blank" style="color:#0000EE;text-decoration:underline">Global Rating</a>, which measures performance based on individual and team stats. You can check season rankings <a href="https://www.hoopshype.com/rankings/players/" target="_blank" style="color:#0000EE;text-decoration:underline">here</a>.'},"WORST GLOBAL RATING":{"title":"Worst players of the day","note":"* Minimum 15 minutes played"},"BREAKTHROUGH PLAYER":{"title":"Breakout players of the day","note":'* (DIFF) Difference between last game and 2025-26 Global Rating (minimum five games played)',"rl":"DIFF"},"DISAPPOINTMENT":{"title":"Bombs of the day","note":'* (DIFF) Difference between last game and 2025-26 Global Rating (minimum five games played)',"rl":"DIFF"},"BEST ROOKIES":{"title":"Best rookies of the day","note":'* You can check season rankings <a href="https://www.hoopshype.com/rankings/players/?rookie=true" target="_blank" style="color:#0000EE;text-decoration:underline">here</a>.'},"CLUTCH RATING":{"title":"Most clutch players","note":"* (RAT) Clutch Rating, which measures performance in the last five minutes of 4Q or OT when the score is within five points"},"BEST INTERNATIONAL PLAYERS":{"title":"Best international players","note":"* Includes players who represent national teams other than Team USA"},"BEST BENCH PLAYERS":{"title":"Best bench players","note":""},"NET RATING":{"title":"Stats per country","note":"* Includes players who represent national teams other than Team USA"},"MILESTONES":{"title":"All-Time Ranking","note":""},"SNEAKERS":{"title":"Sneakers","note":""}}
 EM={"GLOBAL RATING":"🏀","WORST GLOBAL RATING":"📉","BREAKTHROUGH PLAYER":"🚀","DISAPPOINTMENT":"😞","BEST ROOKIES":"⭐","CLUTCH RATING":"🎯","BEST INTERNATIONAL PLAYERS":"🌍","BEST BENCH PLAYERS":"💺","NET RATING":"🌐","MILESTONES":"🏆","SNEAKERS":"👟"}
 
@@ -66,6 +83,15 @@ def fix_middot(s):
     s=s.replace("\u00c2-","-").replace("\u00c2 "," ").replace("  "," ")
     return s
 
+FLAG_TO_CODE={"Canada":"CA","Serbia":"RS","Bosnia":"BA","Dominican_Republic":"DO","Turkey":"TR","Israel":"IL","Austria":"AT","France":"FR","Portugal":"PT","Jamaica":"JM","United_Kingdom":"GB","Philippines":"PH","Switzerland":"CH","Montenegro":"ME","Spain":"ES","Germany":"DE","Australia":"AU","Cameroon":"CM","Belgium":"BE","Georgia":"GE","Slovenia":"SI","Latvia":"LV","Brazil":"BR","Lithuania":"LT","Nigeria":"NG","Sweden":"SE","China":"CN","Senegal":"SN","United_States":"US","US_Virgin":"VI","Czech":"CZ","Croatia":"HR","Greece":"GR","Japan":"JP","South_Sudan":"SS","Ukraine":"UA","Italy":"IT","Mexico":"MX","New_Zealand":"NZ","Congo":"CD","Argentina":"AR","Colombia":"CO","Puerto_Rico":"PR","Bahamas":"BS","Trinidad":"TT","Tunisia":"TN","Mali":"ML","Egypt":"EG","Korea":"KR","Poland":"PL","Finland":"FI","Norway":"NO","Denmark":"DK","Ireland":"IE","Taiwan":"TW","Haiti":"HT","Cape_Verde":"CV","the_People":"CN"}
+COUNTRY_NAME_TO_CODE={"United States":"US","Canada":"CA","France":"FR","Bahamas":"BS","Australia":"AU","Cameroon":"CM","Turkey":"TR","Belgium":"BE","DR Congo":"CD","Slovenia":"SI","Germany":"DE","Lithuania":"LT","Georgia":"GE","Israel":"IL","Jamaica":"JM","Latvia":"LV","Brazil":"BR","US Virgin Islands":"VI","Sweden":"SE","Montenegro":"ME","Nigeria":"NG","China":"CN","Senegal":"SN","Switzerland":"CH","Serbia":"RS","Bosnia and Herzegovina":"BA","Dominican Republic":"DO","Austria":"AT","Portugal":"PT","Spain":"ES","Great Britain":"GB","Croatia":"HR","Greece":"GR","Japan":"JP","South Sudan":"SS","Ukraine":"UA","Italy":"IT","Mexico":"MX","New Zealand":"NZ","Philippines":"PH","Argentina":"AR","Colombia":"CO","Puerto Rico":"PR","Trinidad and Tobago":"TT","Tunisia":"TN","Mali":"ML","Egypt":"EG","Czech Republic":"CZ","Poland":"PL","Finland":"FI","Ireland":"IE","Norway":"NO","Denmark":"DK","Taiwan":"TW","Haiti":"HT","Cape Verde":"CV","South Korea":"KR"}
+
+def get_country_code(url):
+    if not url: return ""
+    for k,v in FLAG_TO_CODE.items():
+        if k in url: return v
+    return ""
+
 def parse_sections(t):
     rows=list(csv.reader(io.StringIO(t))); secs=[]; cn=None; cr=[]
     for row in rows:
@@ -92,18 +118,18 @@ def build_presto_html(secs,nm):
         o+=f'<div style="overflow-x:auto; -webkit-overflow-scrolling:touch; width:100%;"><table style="{TBL}">\n<thead>\n<tr style="background-color: #f2f2f2;">\n'
 
         if sn=="MILESTONES":
-            o+=f'<th style="{TH}"></th>\n<th style="{TH_NAME}">PLAYER</th>\n<th style="{TH}">CATEGORY</th>\n<th style="{TH}">RANK</th>\n<th style="{TH}; text-align:center">PASSED</th>\n</tr>\n</thead>\n<tbody>\n'
+            o+=f'<th style="{TH}">&nbsp;</th>\n<th style="{TH_NAME}">PLAYER</th>\n<th style="{TH}">CATEGORY</th>\n<th style="{TH}">RANK</th>\n<th style="{TH}; text-align:center">PASSED</th>\n</tr>\n</thead>\n<tbody>\n'
             for i,row in enumerate(sr):
                 n=hh(row[0].strip());ps=row[2].strip() if len(row)>2 else "";ct=row[3].strip() if len(row)>3 else "";rk=row[4].strip() if len(row)>4 else "";lg=row[11].strip() if len(row)>11 else ""
                 team=get_team_abbr(lg)
                 o+=f'<tr style="background-color:{bg(i)};">\n<td style="{TD}"><strong>{team}</strong></td>\n<td style="{TD_NAME}"><strong>{n}</strong></td>\n<td style="{TD_STAT}">{ct}</td>\n<td style="{TD_STAT}">{rk}</td>\n<td style="{TD_STAT}">{ps}</td>\n</tr>\n'
 
         elif sn=="NET RATING":
-            o+=f'<th style="{TH}"></th>\n<th style="{TH_NAME}">COUNTRY</th>\n<th style="{TH}">STATS</th>\n<th style="{TH}">PLAYERS</th>\n</tr>\n</thead>\n<tbody>\n'
+            o+=f'<th style="{TH}">&nbsp;</th>\n<th style="{TH_NAME}">COUNTRY</th>\n<th style="{TH}">STATS</th>\n<th style="{TH}">PLAYERS</th>\n</tr>\n</thead>\n<tbody>\n'
             rc=0
             for i,row in enumerate(sr):
                 n=row[0].strip();st=fix_middot(row[2].strip()) if len(row)>2 else "";pl=row[9].strip() if len(row)>9 else ""
-                if "Rest of the World" in n: rn=""
+                if "Rest of the World" in n: rn="&nbsp;"
                 else: rc+=1; rn=str(rc)
                 o+=f'<tr style="background-color:{bg(i)};">\n<td style="{TD}"><span style="font-weight:bold;">{rn}</span></td>\n<td style="{TD_NAME}"><strong>{n}</strong></td>\n<td style="{TD_STAT}">{st}</td>\n<td style="{TD_STAT}">{pl}</td>\n</tr>\n'
 
@@ -114,13 +140,14 @@ def build_presto_html(secs,nm):
                 o+=f'<tr style="background-color:{bg(i)};">\n<td style="{TD_NAME}"><strong>{n}</strong></td>\n<td style="{TD_STAT}">{st}</td>\n<td style="{TD_STAT}">{pl}</td>\n</tr>\n'
 
         elif sn=="BEST INTERNATIONAL PLAYERS":
-            o+=f'<th style="{TH}"></th>\n<th style="{TH_NAME}">PLAYER</th>\n<th style="{TH}">{rl}</th>\n<th style="{TH}">STATS</th>\n</tr>\n</thead>\n<tbody>\n'
+            o+=f'<th style="{TH}">&nbsp;</th>\n<th style="{TH}">&nbsp;</th>\n<th style="{TH_NAME}">PLAYER</th>\n<th style="{TH}">{rl}</th>\n<th style="{TH}">STATS</th>\n</tr>\n</thead>\n<tbody>\n'
             for i,row in enumerate(sr):
                 n=hh(row[0].strip());rat=row[1].strip();st=fix_middot(row[2].strip()) if len(row)>2 else ""
-                o+=f'<tr style="background-color:{bg(i)};">\n<td style="{TD}"><span style="font-weight:bold;">{i+1}</span></td>\n<td style="{TD_NAME}"><strong>{n}</strong></td>\n<td style="{TD_RAT}"><strong>{rat}</strong></td>\n<td style="{TD_STAT}">{st}</td>\n</tr>\n'
+                fg=row[11].strip() if len(row)>11 else "";cc=get_country_code(fg)
+                o+=f'<tr style="background-color:{bg(i)};">\n<td style="{TD}"><span style="font-weight:bold;">{i+1}</span></td>\n<td style="{TD};font-size:11px;color:#888;text-align:center"><strong>{cc}</strong></td>\n<td style="{TD_NAME}"><strong>{n}</strong></td>\n<td style="{TD_RAT}"><strong>{rat}</strong></td>\n<td style="{TD_STAT}">{st}</td>\n</tr>\n'
 
         else:
-            o+=f'<th style="{TH}"></th>\n<th style="{TH}"></th>\n<th style="{TH_NAME}">PLAYER</th>\n<th style="{TH}">{rl}</th>\n<th style="{TH}">STATS</th>\n</tr>\n</thead>\n<tbody>\n'
+            o+=f'<th style="{TH}">&nbsp;</th>\n<th style="{TH}">&nbsp;</th>\n<th style="{TH_NAME}">PLAYER</th>\n<th style="{TH}">{rl}</th>\n<th style="{TH}">STATS</th>\n</tr>\n</thead>\n<tbody>\n'
             for i,row in enumerate(sr):
                 n=hh(row[0].strip());rat=row[1].strip();st=fix_middot(row[2].strip()) if len(row)>2 else "";lg=row[11].strip() if len(row)>11 else ""
                 team=get_team_abbr(lg)
