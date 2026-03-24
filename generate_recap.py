@@ -42,7 +42,7 @@ OUTRO=('<p style="font-size:13px;color:#555;margin:16px 0 4px;font-family:Arial,
        '<a href="https://news.google.com/publications/CAAqBwgKMK_RpQswnMOxAw" target="_blank" style="color:#0000EE;text-decoration:underline">click here</a>.</p>')
 
 def fetch_csv(url):
-    import requests; return requests.get(url,timeout=30).text
+    import requests; r=requests.get(url,timeout=30); r.encoding='utf-8'; return r.text
 
 def build_name_map(t):
     nm={}; r=csv.reader(io.StringIO(t))
@@ -62,7 +62,9 @@ def get_team_abbr(logo_url):
     return TEAM_ID_MAP.get(m.group(1),"") if m else ""
 
 def fix_middot(s):
-    return s.replace(" · "," - ").replace("·","-")
+    s=s.replace("\u00c2\u00b7","-").replace("\u00c2\xb7","-").replace(" \u00b7 "," - ").replace("\u00b7","-")
+    s=s.replace("\u00c2-","-").replace("\u00c2 "," ").replace("  "," ")
+    return s
 
 def parse_sections(t):
     rows=list(csv.reader(io.StringIO(t))); secs=[]; cn=None; cr=[]
