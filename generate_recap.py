@@ -1,33 +1,49 @@
 #!/usr/bin/env python3
 """
 NBA Daily Recap — Presto CMS HTML Generator
-Uses exact Presto-proven td/div/img patterns.
+No logos. Team abbreviations. Dark section headers.
 Usage: python generate_recap.py → index.html
 """
-import csv,io,os,json
+import csv,io,os,json,re
 
 RECAP_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vSg6im6IYB6HXMGzQbmmBnLw9SfQLzxCSo8OfChxlJLhsB6BBCO0wPF_TMch0YgAbtFqYkwDWrsxRe7/pub?gid=869619953&single=true&output=csv"
 NAME_MAP_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vS2iZj3avZ_-CAWKu-f_pxZkf38M0quXQwMbyTXmHsN6-c9V8vU1l_sNaxg0y8dl07dqraU3_5Z3b8D/pub?gid=1197809522&single=true&output=csv"
 
-SM={"GLOBAL RATING":{"title":"Best players of the day","note":'* (RAT) <a href="https://www.hoopshype.com/story/sports/nba/2021/10/26/what-is-hoopshypes-global-rating/82908126007/" target="_blank" style="color:#0000EE;text-decoration:underline">Global Rating</a>, which measures performance based on individual and team stats.'},"WORST GLOBAL RATING":{"title":"Worst players of the day","note":"* Minimum 15 minutes played"},"BREAKTHROUGH PLAYER":{"title":"Breakout players of the day","note":'* (DIFF) Difference between last game and 2025-26 Global Rating (minimum five games played)',"rl":"DIFF"},"DISAPPOINTMENT":{"title":"Bombs of the day","note":'* (DIFF) Difference between last game and 2025-26 Global Rating (minimum five games played)',"rl":"DIFF"},"BEST ROOKIES":{"title":"Best rookies of the day","note":'* You can check season rankings <a href="https://www.hoopshype.com/rankings/players/?rookie=true" target="_blank" style="color:#0000EE;text-decoration:underline">here</a>.'},"CLUTCH RATING":{"title":"Most clutch players","note":"* (RAT) Clutch Rating: last 5 min of 4Q/OT, score within 5 pts"},"BEST INTERNATIONAL PLAYERS":{"title":"Best international players","note":"* Players representing national teams other than Team USA"},"BEST BENCH PLAYERS":{"title":"Best bench players","note":""},"NET RATING":{"title":"Stats per country","note":"* Players representing national teams other than Team USA"},"MILESTONES":{"title":"All-Time Ranking","note":""},"SNEAKERS":{"title":"Sneakers","note":""}}
+TEAM_ID_MAP={
+    "1610612737":"ATL","1610612738":"BOS","1610612739":"CLE","1610612740":"NOP",
+    "1610612741":"CHI","1610612742":"DAL","1610612743":"DEN","1610612744":"GSW",
+    "1610612745":"HOU","1610612746":"LAC","1610612747":"LAL","1610612748":"MIA",
+    "1610612749":"MIL","1610612750":"MIN","1610612751":"BKN","1610612752":"NYK",
+    "1610612753":"ORL","1610612754":"IND","1610612755":"PHI","1610612756":"PHX",
+    "1610612757":"POR","1610612758":"SAC","1610612759":"SAS","1610612760":"OKC",
+    "1610612761":"TOR","1610612762":"UTA","1610612763":"MEM","1610612764":"WAS",
+    "1610612765":"DET","1610612766":"CHA",
+}
+
+SM={"GLOBAL RATING":{"title":"Best players of the day","note":'* (RAT) <a href="https://www.hoopshype.com/story/sports/nba/2021/10/26/what-is-hoopshypes-global-rating/82908126007/" target="_blank" style="color:#0000EE;text-decoration:underline">Global Rating</a>, which measures performance based on individual and team stats. You can check season rankings <a href="https://www.hoopshype.com/rankings/players/" target="_blank" style="color:#0000EE;text-decoration:underline">here</a>.'},"WORST GLOBAL RATING":{"title":"Worst players of the day","note":"* Minimum 15 minutes played"},"BREAKTHROUGH PLAYER":{"title":"Breakout players of the day","note":'* (DIFF) Difference between last game and 2025-26 Global Rating (minimum five games played)',"rl":"DIFF"},"DISAPPOINTMENT":{"title":"Bombs of the day","note":'* (DIFF) Difference between last game and 2025-26 Global Rating (minimum five games played)',"rl":"DIFF"},"BEST ROOKIES":{"title":"Best rookies of the day","note":'* You can check season rankings <a href="https://www.hoopshype.com/rankings/players/?rookie=true" target="_blank" style="color:#0000EE;text-decoration:underline">here</a>.'},"CLUTCH RATING":{"title":"Most clutch players","note":"* (RAT) Clutch Rating, which measures performance in the last five minutes of 4Q or OT when the score is within five points"},"BEST INTERNATIONAL PLAYERS":{"title":"Best international players","note":"* Includes players who represent national teams other than Team USA"},"BEST BENCH PLAYERS":{"title":"Best bench players","note":""},"NET RATING":{"title":"Stats per country","note":"* Includes players who represent national teams other than Team USA"},"MILESTONES":{"title":"All-Time Ranking","note":""},"SNEAKERS":{"title":"Sneakers","note":""}}
 EM={"GLOBAL RATING":"🏀","WORST GLOBAL RATING":"📉","BREAKTHROUGH PLAYER":"🚀","DISAPPOINTMENT":"😞","BEST ROOKIES":"⭐","CLUTCH RATING":"🎯","BEST INTERNATIONAL PLAYERS":"🌍","BEST BENCH PLAYERS":"💺","NET RATING":"🌐","MILESTONES":"🏆","SNEAKERS":"👟"}
 
-# Exact styles from working Presto HTML
 FN="font-family:Arial,Helvetica,sans-serif"
 SH=FN+";padding:8px 12px;background:#1a1a2e;color:#fff;font-size:14px;font-weight:700;letter-spacing:0.5px;margin-top:24px;margin-bottom:0;border-radius:5px 5px 0 0"
 TBL="border-collapse: collapse; font-family: Arial, sans-serif; font-size: 14px; width: 100%;"
-TH_BG="background-color: #f2f2f2;"
 TH="border: 1px solid #ccc; padding: 6px; height:40px; padding:4px 0 4px 6px; min-width:40px; white-space:nowrap"
 TH_NAME="border: 1px solid #ccc; height:40px; text-align:left; padding:4px 0 4px 6px; min-width:40px; white-space:nowrap"
-TD_RK="height:40px; padding:4px 0 4px 6px; min-width:40px; white-space:nowrap;"
+TD="height:40px; padding:4px 0 4px 6px; min-width:40px; white-space:nowrap"
 TD_NAME="text-align: left; height: 40px; white-space: nowrap; min-width: 140px"
-TD_NAME_PAD="text-align: left; height: 40px; white-space: nowrap; padding: 4px 0 4px 6px; min-width: 140px"
 TD_STAT="height:40px; padding:4px 0; text-align: center; min-width:40px; white-space:nowrap"
 TD_RAT="height:40px; text-align: center; padding:4px 0 4px 6px; min-width:40px; white-space:nowrap"
 NOTE="padding:8px; font-size:13px; font-style:italic;"
 
+INTRO='<p style="font-size:14px;color:#333;margin:0 0 16px;font-family:Arial,sans-serif">Every day, we bring you the best and worst performers from the previous night in the NBA.</p>'
+OUTRO=('<p style="font-size:13px;color:#555;margin:16px 0 4px;font-family:Arial,sans-serif;font-style:italic">'
+       'This content may be blocked in parts of Europe due to GDPR. To use it, connect your VPN to a non-EU country and try again.</p>'
+       '<p style="font-size:13px;color:#555;margin:4px 0;font-family:Arial,sans-serif;font-style:italic">'
+       'We highly recommend you add HoopsHype as a preferred source on Google. You just have to '
+       '<a href="https://news.google.com/publications/CAAqBwgKMK_RpQswnMOxAw" target="_blank" style="color:#0000EE;text-decoration:underline">click here</a>.</p>')
+
 def fetch_csv(url):
     import requests; return requests.get(url,timeout=30).text
+
 def build_name_map(t):
     nm={}; r=csv.reader(io.StringIO(t))
     try: next(r)
@@ -37,21 +53,16 @@ def build_name_map(t):
         a,b=row[11].strip(),row[12].strip()
         if a and b: nm[a]=b
     return nm
+
 def bg(i): return "#f2f2f2" if i%2==1 else "#ffffff"
-def nba_rank_cell(rank,url):
-    return (f'<td style="{TD_RK}">'
-            f"<div style='display:flex; align-items:center; gap:6px;'>"
-            f"<span style='font-weight:bold;'>{rank}</span>"
-            f'<img src="{url}" style="width:24px; height:24px; object-fit:contain;">'
-            f"</div></td>")
-def flag_rank_cell(rank,url):
-    return (f'<td style="{TD_RK}">'
-            f"<div style='display:flex; align-items:center; gap:10px;'>"
-            f"<span style='font-weight:bold;min-width:20px'>{rank}</span>"
-            f'<img src="{url}" style="width:28px; height:20px; object-fit:cover; border-radius:2px;">'
-            f"</div></td>")
-def plain_rank_cell(rank):
-    return f'<td style="{TD_RK}"><span style="font-weight:bold;">{rank}</span></td>'
+
+def get_team_abbr(logo_url):
+    if not logo_url or "cdn.nba.com" not in logo_url: return ""
+    m=re.search(r'/(\d{10})/',logo_url)
+    return TEAM_ID_MAP.get(m.group(1),"") if m else ""
+
+def fix_middot(s):
+    return s.replace(" · "," &middot; ").replace("·","&middot;")
 
 def parse_sections(t):
     rows=list(csv.reader(io.StringIO(t))); secs=[]; cn=None; cr=[]
@@ -72,55 +83,51 @@ def parse_sections(t):
 
 def build_presto_html(secs,nm):
     hh=lambda n:nm.get(n,n)
-    o='<div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">\n'
-    o+=f'<h1 style="font-size:22px;font-weight:800;color:#1a1a2e;text-align:center;margin:0 0 2px;letter-spacing:1px;{FN}">NBA DAILY RECAP</h1>\n'
-    o+=f'<p style="font-size:10px;color:#999;text-align:center;margin:0 0 4px">Powered by HoopsMatic</p>\n'
+    o=f'<div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">\n{INTRO}\n'
     for sn,sr in secs:
         m=SM.get(sn,{"title":sn,"note":""}); rl=m.get("rl","RAT"); emoji=EM.get(sn,"📊")
         o+=f'<div style="{SH}"><span style="font-size:16px;margin-right:6px">{emoji}</span> {m["title"]}</div>\n'
-        o+=f'<div style="overflow-x:auto; -webkit-overflow-scrolling:touch; width:100%;"><table style="{TBL}">\n<thead>\n<tr style="{TH_BG}">\n'
+        o+=f'<div style="overflow-x:auto; -webkit-overflow-scrolling:touch; width:100%;"><table style="{TBL}">\n<thead>\n<tr style="background-color: #f2f2f2;">\n'
+
         if sn=="MILESTONES":
             o+=f'<th style="{TH}"></th>\n<th style="{TH_NAME}">PLAYER</th>\n<th style="{TH}">CATEGORY</th>\n<th style="{TH}">RANK</th>\n<th style="{TH}; text-align:center">PASSED</th>\n</tr>\n</thead>\n<tbody>\n'
             for i,row in enumerate(sr):
                 n=hh(row[0].strip());ps=row[2].strip() if len(row)>2 else "";ct=row[3].strip() if len(row)>3 else "";rk=row[4].strip() if len(row)>4 else "";lg=row[11].strip() if len(row)>11 else ""
-                o+=f'<tr style="background-color:{bg(i)};">\n'
-                if lg and "cdn.nba.com" in lg:
-                    o+=f'<td style="{TD_RK}"><div style=\'display:flex; align-items:center; gap:10px;\'><span style=\'font-weight:bold;min-width:20px\'></span><img src="{lg}" style="width:28px; height:20px; object-fit:cover; border-radius:2px;"></div></td>\n'
-                else: o+=f'<td style="{TD_RK}"></td>\n'
-                o+=f'<td style="{TD_NAME_PAD}"><strong>{n}</strong></td>\n<td style="{TD_STAT}">{ct}</td>\n<td style="{TD_STAT}">{rk}</td>\n<td style="{TD_STAT}">{ps}</td>\n</tr>\n'
+                team=get_team_abbr(lg)
+                o+=f'<tr style="background-color:{bg(i)};">\n<td style="{TD}"><strong>{team}</strong></td>\n<td style="{TD_NAME}"><strong>{n}</strong></td>\n<td style="{TD_STAT}">{ct}</td>\n<td style="{TD_STAT}">{rk}</td>\n<td style="{TD_STAT}">{ps}</td>\n</tr>\n'
+
         elif sn=="NET RATING":
             o+=f'<th style="{TH}"></th>\n<th style="{TH_NAME}">COUNTRY</th>\n<th style="{TH}">STATS</th>\n<th style="{TH}">PLAYERS</th>\n</tr>\n</thead>\n<tbody>\n'
             rc=0
             for i,row in enumerate(sr):
-                n=row[0].strip();st=row[2].strip() if len(row)>2 else "";pl=row[9].strip() if len(row)>9 else "";lg=row[11].strip() if len(row)>11 else ""
+                n=row[0].strip();st=fix_middot(row[2].strip()) if len(row)>2 else "";pl=row[9].strip() if len(row)>9 else ""
                 if "Rest of the World" in n: rn=""
                 else: rc+=1; rn=str(rc)
-                o+=f'<tr style="background-color:{bg(i)};">\n'
-                o+=(flag_rank_cell(rn,lg) if lg and "wikimedia" in lg else plain_rank_cell(rn))+'\n'
-                o+=f'<td style="{TD_NAME_PAD}"><strong>{n}</strong></td>\n<td style="{TD_STAT}">{st}</td>\n<td style="{TD_STAT}">{pl}</td>\n</tr>\n'
+                o+=f'<tr style="background-color:{bg(i)};">\n<td style="{TD}"><span style="font-weight:bold;">{rn}</span></td>\n<td style="{TD_NAME}"><strong>{n}</strong></td>\n<td style="{TD_STAT}">{st}</td>\n<td style="{TD_STAT}">{pl}</td>\n</tr>\n'
+
         elif sn=="SNEAKERS":
             o+=f'<th style="{TH_NAME}">BRAND</th>\n<th style="{TH}">STATS</th>\n<th style="{TH}">PLAYERS</th>\n</tr>\n</thead>\n<tbody>\n'
             for i,row in enumerate(sr):
-                n=row[0].strip();st=row[2].strip() if len(row)>2 else "";pl=row[9].strip() if len(row)>9 else ""
-                o+=f'<tr style="background-color:{bg(i)};">\n<td style="{TD_NAME_PAD}"><strong>{n}</strong></td>\n<td style="{TD_STAT}">{st}</td>\n<td style="{TD_STAT}">{pl}</td>\n</tr>\n'
+                n=row[0].strip();st=fix_middot(row[2].strip()) if len(row)>2 else "";pl=row[9].strip() if len(row)>9 else ""
+                o+=f'<tr style="background-color:{bg(i)};">\n<td style="{TD_NAME}"><strong>{n}</strong></td>\n<td style="{TD_STAT}">{st}</td>\n<td style="{TD_STAT}">{pl}</td>\n</tr>\n'
+
         elif sn=="BEST INTERNATIONAL PLAYERS":
             o+=f'<th style="{TH}"></th>\n<th style="{TH_NAME}">PLAYER</th>\n<th style="{TH}">{rl}</th>\n<th style="{TH}">STATS</th>\n</tr>\n</thead>\n<tbody>\n'
             for i,row in enumerate(sr):
-                n=hh(row[0].strip());rat=row[1].strip();st=row[2].strip() if len(row)>2 else "";lg=row[11].strip() if len(row)>11 else ""
-                o+=f'<tr style="background-color:{bg(i)};">\n'
-                o+=(flag_rank_cell(i+1,lg) if lg and "wikimedia" in lg else plain_rank_cell(i+1))+'\n'
-                o+=f'<td style="{TD_NAME_PAD}"><strong>{n}</strong></td>\n<td style="{TD_RAT}"><strong>{rat}</strong></td>\n<td style="{TD_STAT}">{st}</td>\n</tr>\n'
+                n=hh(row[0].strip());rat=row[1].strip();st=fix_middot(row[2].strip()) if len(row)>2 else ""
+                o+=f'<tr style="background-color:{bg(i)};">\n<td style="{TD}"><span style="font-weight:bold;">{i+1}</span></td>\n<td style="{TD_NAME}"><strong>{n}</strong></td>\n<td style="{TD_RAT}"><strong>{rat}</strong></td>\n<td style="{TD_STAT}">{st}</td>\n</tr>\n'
+
         else:
-            o+=f'<th style="{TH}"></th>\n<th style="{TH_NAME}">PLAYER</th>\n<th style="{TH}">{rl}</th>\n<th style="{TH}">STATS</th>\n</tr>\n</thead>\n<tbody>\n'
+            o+=f'<th style="{TH}"></th>\n<th style="{TH}"></th>\n<th style="{TH_NAME}">PLAYER</th>\n<th style="{TH}">{rl}</th>\n<th style="{TH}">STATS</th>\n</tr>\n</thead>\n<tbody>\n'
             for i,row in enumerate(sr):
-                n=hh(row[0].strip());rat=row[1].strip();st=row[2].strip() if len(row)>2 else "";lg=row[11].strip() if len(row)>11 else ""
-                o+=f'<tr style="background-color:{bg(i)};">\n'
-                o+=(nba_rank_cell(i+1,lg) if lg and "cdn.nba.com" in lg else plain_rank_cell(i+1))+'\n'
-                o+=f'<td style="{TD_NAME}"><strong>{n}</strong></td>\n<td style="{TD_RAT}"><strong>{rat}</strong></td>\n<td style="{TD_STAT}">{st}</td>\n</tr>\n'
+                n=hh(row[0].strip());rat=row[1].strip();st=fix_middot(row[2].strip()) if len(row)>2 else "";lg=row[11].strip() if len(row)>11 else ""
+                team=get_team_abbr(lg)
+                o+=f'<tr style="background-color:{bg(i)};">\n<td style="{TD}"><span style="font-weight:bold;">{i+1}</span></td>\n<td style="{TD};font-size:11px;color:#888;text-align:center"><strong>{team}</strong></td>\n<td style="{TD_NAME}"><strong>{n}</strong></td>\n<td style="{TD_RAT}"><strong>{rat}</strong></td>\n<td style="{TD_STAT}">{st}</td>\n</tr>\n'
+
         o+='</tbody></table></div>\n'
         if m.get("note"): o+=f'<div style="{NOTE}">{m["note"]}</div><br>\n'
         else: o+='<br>\n'
-    o+='</div>'
+    o+=f'{OUTRO}\n</div>'
     return o
 
 def build_page(ph):
