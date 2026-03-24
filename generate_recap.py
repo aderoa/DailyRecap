@@ -264,7 +264,7 @@ def build_presto_html(secs, nm):
                 flag = row[11].strip() if len(row) > 11 else ""
                 cc = get_country_code(flag)
                 o += f'<tr style="background-color:{bg(i)};">\n'
-                o += f'<td style="{TD}"><span style="font-weight:bold;">{i + 1}</span> <span style="font-size:11px;color:#888">{cc}</span></td>\n'
+                o += f'<td style="{TD}"><span style="font-weight:bold;">{i + 1}</span> <span style="font-size:11px;color:#888;margin-left:8px">{cc}</span></td>\n'
                 o += f'<td style="{TD_NAME}"><strong>{name}</strong></td>\n'
                 o += f'<td style="{TD_RAT}"><strong>{rat}</strong></td>\n<td style="{TD_STAT}">{stats}</td>\n</tr>\n'
 
@@ -278,7 +278,7 @@ def build_presto_html(secs, nm):
                 logo = row[11].strip() if len(row) > 11 else ""
                 team = get_team_abbr(logo)
                 o += f'<tr style="background-color:{bg(i)};">\n'
-                o += f'<td style="{TD}"><span style="font-weight:bold;">{i + 1}</span> <span style="font-size:11px;color:#888">{team}</span></td>\n'
+                o += f'<td style="{TD}"><span style="font-weight:bold;">{i + 1}</span> <span style="font-size:11px;color:#888;margin-left:8px">{team}</span></td>\n'
                 o += f'<td style="{TD_NAME}"><strong>{name}</strong></td>\n'
                 o += f'<td style="{TD_RAT}"><strong>{rat}</strong></td>\n<td style="{TD_STAT}">{stats}</td>\n</tr>\n'
 
