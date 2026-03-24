@@ -25,13 +25,13 @@ EM={"GLOBAL RATING":"🏀","WORST GLOBAL RATING":"📉","BREAKTHROUGH PLAYER":"�
 
 FN="font-family:Arial,Helvetica,sans-serif"
 SH=FN+";padding:8px 12px;background:#1a1a2e;color:#fff;font-size:14px;font-weight:700;letter-spacing:0.5px;margin-top:24px;margin-bottom:0;border-radius:5px 5px 0 0"
-TBL="border-collapse: collapse; font-family: Arial, sans-serif; font-size: 14px; width: 100%;"
-TH="padding: 6px; height:40px; padding:4px 0 4px 6px; min-width:40px; white-space:nowrap"
-TH_NAME="height:40px; text-align:left; padding:4px 0 4px 6px; min-width:40px; white-space:nowrap"
-TD="height:40px; padding:4px 0 4px 6px; min-width:40px; white-space:nowrap"
-TD_NAME="text-align: left; height: 40px; white-space: nowrap; min-width: 140px"
-TD_STAT="height:40px; padding:4px 0; text-align: center; min-width:40px; white-space:nowrap"
-TD_RAT="height:40px; text-align: center; padding:4px 0 4px 6px; min-width:40px; white-space:nowrap"
+TBL="border-collapse: collapse; font-family: Arial, sans-serif; font-size: 14px; width: 100%; border: none;"
+TH="border: none; padding: 6px; height:40px; padding:4px 0 4px 6px; min-width:40px; white-space:nowrap"
+TH_NAME="border: none; height:40px; text-align:left; padding:4px 0 4px 6px; min-width:40px; white-space:nowrap"
+TD="border: none; height:40px; padding:4px 0 4px 6px; min-width:40px; white-space:nowrap"
+TD_NAME="border: none; text-align: left; height: 40px; white-space: nowrap; min-width: 140px"
+TD_STAT="border: none; height:40px; padding:4px 0; text-align: center; min-width:40px; white-space:nowrap"
+TD_RAT="border: none; height:40px; text-align: center; padding:4px 0 4px 6px; min-width:40px; white-space:nowrap"
 NOTE="padding:8px; font-size:13px; font-style:italic;"
 
 INTRO='<p style="font-size:14px;color:#333;margin:0 0 16px;font-family:Arial,sans-serif">Every day, we bring you the best and worst performers from the previous night in the NBA.</p>'
