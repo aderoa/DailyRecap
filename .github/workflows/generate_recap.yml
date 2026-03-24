@@ -9,12 +9,19 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - run: pip install requests
       - run: python generate_recap.py
-      - uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "Update daily recap"
-          file_pattern: index.html
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "Update daily recap"
+          git pull --rebase origin main
+          git push
