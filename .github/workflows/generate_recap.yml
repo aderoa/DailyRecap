@@ -21,4 +21,5 @@ jobs:
           git add index.html
           git diff --cached --quiet && echo "No changes" && exit 0
           git commit -m "Update daily recap"
-          git push --force
+          git pull --rebase origin main || true
+          git push origin main
