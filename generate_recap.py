@@ -26,8 +26,8 @@ EM={"GLOBAL RATING":"🏀","WORST GLOBAL RATING":"📉","BREAKTHROUGH PLAYER":"�
 FN="font-family:Arial,Helvetica,sans-serif"
 SH=FN+";padding:8px 12px;background:#1a1a2e;color:#fff;font-size:14px;font-weight:700;letter-spacing:0.5px;margin-top:24px;margin-bottom:0;border-radius:5px 5px 0 0"
 TBL="border-collapse: collapse; font-family: Arial, sans-serif; font-size: 14px; width: 100%;"
-TH="border: 1px solid #ccc; padding: 6px; height:40px; padding:4px 0 4px 6px; min-width:40px; white-space:nowrap"
-TH_NAME="border: 1px solid #ccc; height:40px; text-align:left; padding:4px 0 4px 6px; min-width:40px; white-space:nowrap"
+TH="padding: 6px; height:40px; padding:4px 0 4px 6px; min-width:40px; white-space:nowrap"
+TH_NAME="height:40px; text-align:left; padding:4px 0 4px 6px; min-width:40px; white-space:nowrap"
 TD="height:40px; padding:4px 0 4px 6px; min-width:40px; white-space:nowrap"
 TD_NAME="text-align: left; height: 40px; white-space: nowrap; min-width: 140px"
 TD_STAT="height:40px; padding:4px 0; text-align: center; min-width:40px; white-space:nowrap"
@@ -62,7 +62,7 @@ def get_team_abbr(logo_url):
     return TEAM_ID_MAP.get(m.group(1),"") if m else ""
 
 def fix_middot(s):
-    return s.replace(" · "," &middot; ").replace("·","&middot;")
+    return s.replace(" · "," - ").replace("·","-")
 
 def parse_sections(t):
     rows=list(csv.reader(io.StringIO(t))); secs=[]; cn=None; cr=[]
