@@ -118,18 +118,18 @@ def build_presto_html(secs,nm):
         o+=f'<div style="overflow-x:auto; -webkit-overflow-scrolling:touch; width:100%;"><table style="{TBL}">\n<thead>\n<tr style="background-color: #f2f2f2;">\n'
 
         if sn=="MILESTONES":
-            o+=f'<th style="{TH}">&nbsp;</th>\n<th style="{TH_NAME}">PLAYER</th>\n<th style="{TH}">CATEGORY</th>\n<th style="{TH}">RANK</th>\n<th style="{TH}; text-align:center">PASSED</th>\n</tr>\n</thead>\n<tbody>\n'
+            o+=f'<th style="{TH}">&#8203;</th>\n<th style="{TH_NAME}">PLAYER</th>\n<th style="{TH}">CATEGORY</th>\n<th style="{TH}">RANK</th>\n<th style="{TH}; text-align:center">PASSED</th>\n</tr>\n</thead>\n<tbody>\n'
             for i,row in enumerate(sr):
                 n=hh(row[0].strip());ps=row[2].strip() if len(row)>2 else "";ct=row[3].strip() if len(row)>3 else "";rk=row[4].strip() if len(row)>4 else "";lg=row[11].strip() if len(row)>11 else ""
                 team=get_team_abbr(lg)
                 o+=f'<tr style="background-color:{bg(i)};">\n<td style="{TD}"><strong>{team}</strong></td>\n<td style="{TD_NAME}"><strong>{n}</strong></td>\n<td style="{TD_STAT}">{ct}</td>\n<td style="{TD_STAT}">{rk}</td>\n<td style="{TD_STAT}">{ps}</td>\n</tr>\n'
 
         elif sn=="NET RATING":
-            o+=f'<th style="{TH}">&nbsp;</th>\n<th style="{TH_NAME}">COUNTRY</th>\n<th style="{TH}">STATS</th>\n<th style="{TH}">PLAYERS</th>\n</tr>\n</thead>\n<tbody>\n'
+            o+=f'<th style="{TH}">&#8203;</th>\n<th style="{TH_NAME}">COUNTRY</th>\n<th style="{TH}">STATS</th>\n<th style="{TH}">PLAYERS</th>\n</tr>\n</thead>\n<tbody>\n'
             rc=0
             for i,row in enumerate(sr):
                 n=row[0].strip();st=fix_middot(row[2].strip()) if len(row)>2 else "";pl=row[9].strip() if len(row)>9 else ""
-                if "Rest of the World" in n: rn="&nbsp;"
+                if "Rest of the World" in n: rn="&#8203;"
                 else: rc+=1; rn=str(rc)
                 o+=f'<tr style="background-color:{bg(i)};">\n<td style="{TD}"><span style="font-weight:bold;">{rn}</span></td>\n<td style="{TD_NAME}"><strong>{n}</strong></td>\n<td style="{TD_STAT}">{st}</td>\n<td style="{TD_STAT}">{pl}</td>\n</tr>\n'
 
@@ -140,14 +140,14 @@ def build_presto_html(secs,nm):
                 o+=f'<tr style="background-color:{bg(i)};">\n<td style="{TD_NAME}"><strong>{n}</strong></td>\n<td style="{TD_STAT}">{st}</td>\n<td style="{TD_STAT}">{pl}</td>\n</tr>\n'
 
         elif sn=="BEST INTERNATIONAL PLAYERS":
-            o+=f'<th style="{TH}">&nbsp;</th>\n<th style="{TH}">&nbsp;</th>\n<th style="{TH_NAME}">PLAYER</th>\n<th style="{TH}">{rl}</th>\n<th style="{TH}">STATS</th>\n</tr>\n</thead>\n<tbody>\n'
+            o+=f'<th style="{TH}">&#8203;</th>\n<th style="{TH}">&#8203;</th>\n<th style="{TH_NAME}">PLAYER</th>\n<th style="{TH}">{rl}</th>\n<th style="{TH}">STATS</th>\n</tr>\n</thead>\n<tbody>\n'
             for i,row in enumerate(sr):
                 n=hh(row[0].strip());rat=row[1].strip();st=fix_middot(row[2].strip()) if len(row)>2 else ""
                 fg=row[11].strip() if len(row)>11 else "";cc=get_country_code(fg)
                 o+=f'<tr style="background-color:{bg(i)};">\n<td style="{TD}"><span style="font-weight:bold;">{i+1}</span></td>\n<td style="{TD};font-size:11px;color:#888;text-align:center"><strong>{cc}</strong></td>\n<td style="{TD_NAME}"><strong>{n}</strong></td>\n<td style="{TD_RAT}"><strong>{rat}</strong></td>\n<td style="{TD_STAT}">{st}</td>\n</tr>\n'
 
         else:
-            o+=f'<th style="{TH}">&nbsp;</th>\n<th style="{TH}">&nbsp;</th>\n<th style="{TH_NAME}">PLAYER</th>\n<th style="{TH}">{rl}</th>\n<th style="{TH}">STATS</th>\n</tr>\n</thead>\n<tbody>\n'
+            o+=f'<th style="{TH}">&#8203;</th>\n<th style="{TH}">&#8203;</th>\n<th style="{TH_NAME}">PLAYER</th>\n<th style="{TH}">{rl}</th>\n<th style="{TH}">STATS</th>\n</tr>\n</thead>\n<tbody>\n'
             for i,row in enumerate(sr):
                 n=hh(row[0].strip());rat=row[1].strip();st=fix_middot(row[2].strip()) if len(row)>2 else "";lg=row[11].strip() if len(row)>11 else ""
                 team=get_team_abbr(lg)
