@@ -7,9 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      workflows: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -22,5 +24,4 @@ jobs:
           git add index.html
           git diff --cached --quiet && echo "No changes" && exit 0
           git commit -m "Update daily recap"
-          git pull --rebase origin main || true
-          git push origin main
+          git push
