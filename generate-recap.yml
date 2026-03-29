@@ -1,8 +1,9 @@
 name: Generate NBA Daily Recap
 on:
-  workflow_dispatch:  # Manual trigger
+  workflow_dispatch:
   schedule:
-    - cron: '30 6 * * *'  # 6:30 AM UTC = 1:30 AM ET
+    - cron: '30 6 * * *'   # 6:30 AM UTC = 1:30 AM ET — milestones + recap
+    - cron: '0 16 * * *'   # 4:00 PM UTC = 11:00 AM ET — silent refresh
 
 jobs:
   generate:
@@ -19,21 +20,38 @@ jobs:
           python-version: '3.12'
       - run: pip install requests
 
-      # Step 1: Detect milestones via ESPN box scores
       - name: Detect milestones
-        run: python milestones.py || echo "Milestone detection failed, continuing"
+        run: |
+          HOUR=$(TZ=America/New_York date +%H)
+          if [ "$HOUR" -ge 9 ] && [ "$HOUR" -le 14 ]; then
+            echo "Refresh mode — catching missed games"
+            python milestones.py --refresh
+          else
+            echo "Detect mode — finding milestones"
+            python milestones.py || echo "Milestone detection failed, continuing"
+          fi
 
-      # Step 2: Generate recap HTML
       - name: Generate recap
-        run: python generate_recap.py
+        run: |
+          HOUR=$(TZ=America/New_York date +%H)
+          if [ "$HOUR" -ge 9 ] && [ "$HOUR" -le 14 ]; then
+            echo "Refresh run — skipping recap"
+          else
+            python generate_recap.py
+          fi
 
-      # Step 3: Commit
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html snapshot.csv milestones_today.csv 2>/dev/null || true
+          git add index.html snapshot.csv milestones_today.csv processed_games.txt 2>/dev/null || true
           git diff --cached --quiet && echo "No changes" && exit 0
           DATE=$(TZ=America/New_York date +%Y-%m-%d)
-          git commit -m "Daily recap + milestones $DATE"
+          HOUR=$(TZ=America/New_York date +%H)
+          if [ "$HOUR" -ge 9 ] && [ "$HOUR" -le 14 ]; then
+            MSG="Refresh snapshot $DATE"
+          else
+            MSG="Daily recap + milestones $DATE"
+          fi
+          git commit -m "$MSG"
           git push

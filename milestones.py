@@ -329,6 +329,24 @@ def detect_milestones(old_rankings, new_rankings, name_map=None):
     return milestones
 
 
+def combine_milestones(milestones):
+    """Combine milestones where same player passed multiple people in same category.
+    E.g. Kawhi Leonard / Steals / 69 / Muggsy Bogues + Ben Wallace → one row.
+    """
+    combined = {}
+    for m in milestones:
+        key = (m["player"], m["stat"])
+        if key in combined:
+            # Append passed name
+            combined[key]["passed"] += ", " + m["passed"]
+        else:
+            combined[key] = dict(m)
+
+    result = list(combined.values())
+    result.sort(key=lambda m: (m["new_rank"], STATS.index(m["stat"])))
+    return result
+
+
 # ── OUTPUT ────────────────────────────────────────────────────
 def save_milestones_csv(milestones, path):
     with open(path, "w", newline="", encoding="utf-8") as f:
@@ -358,7 +376,9 @@ def print_milestones(milestones):
 def main():
     import argparse
     parser = argparse.ArgumentParser(description="NBA All-Time Milestone Detector v3")
-    parser.add_argument("--date", help="Game date YYYY-MM-DD (default: yesterday ET)")
+    parser.add_argument("--date", help="Game date YYYY-MM-DD (default: auto-detect)")
+    parser.add_argument("--refresh", action="store_true",
+                        help="Silent refresh: re-apply last 2 days of box scores to snapshot (no milestones)")
     args = parser.parse_args()
 
     et = timezone(timedelta(hours=-5))
@@ -380,11 +400,133 @@ def main():
     total = sum(len(v) for v in old_rankings.values())
     print(f"  Loaded snapshot: {total} entries")
 
-    game_date = args.date or (now - timedelta(days=1)).strftime("%Y-%m-%d")
+PROCESSED_GAMES_FILE = "processed_games.txt"
+
+
+def load_processed_games():
+    """Load set of already-processed ESPN game IDs."""
+    if not os.path.exists(PROCESSED_GAMES_FILE):
+        return set()
+    with open(PROCESSED_GAMES_FILE, "r") as f:
+        return {line.strip() for line in f if line.strip()}
+
+
+def save_processed_games(game_ids_set):
+    """Save processed game IDs."""
+    with open(PROCESSED_GAMES_FILE, "w") as f:
+        for gid in sorted(game_ids_set):
+            f.write(gid + "\n")
+
+
+# ── MAIN ─────────────────────────────────────────────────────
+def main():
+    import argparse
+    parser = argparse.ArgumentParser(description="NBA All-Time Milestone Detector v3")
+    parser.add_argument("--date", help="Game date YYYY-MM-DD (default: auto-detect)")
+    parser.add_argument("--refresh", action="store_true",
+                        help="Silent refresh: catch missed games from last 2 days")
+    args = parser.parse_args()
+
+    et = timezone(timedelta(hours=-5))
+    now = datetime.now(et)
+    print("=" * 55)
+    print("  NBA ALL-TIME MILESTONE DETECTOR v3 (ESPN)")
+    print(f"  {now.strftime('%Y-%m-%d %H:%M')} ET")
+    print("=" * 55)
+
+    print("\n  Loading name mappings...")
+    name_map = build_name_map()
+    print(f"  Loaded {len(name_map)} translations")
+
+    old_rankings = load_snapshot(SNAPSHOT_FILE)
+    if not old_rankings:
+        print(f"\n  ERROR: {SNAPSHOT_FILE} not found! Commit it to the repo.")
+        sys.exit(1)
+
+    total = sum(len(v) for v in old_rankings.values())
+    print(f"  Loaded snapshot: {total} entries")
+
+    processed = load_processed_games()
+    print(f"  Processed games on file: {len(processed)}")
+
+    # First run with tracking: seed recent game IDs already in snapshot
+    # to prevent double-counting on refresh. Only seed PAST days, not today.
+    if not processed and not args.refresh:
+        print("  First run — seeding processed games from recent days...")
+        for days_ago in [4, 3, 2, 1]:
+            d = (now - timedelta(days=days_ago)).strftime("%Y-%m-%d")
+            try:
+                gids = fetch_game_ids_espn(d)
+                for e, s, n in gids:
+                    if s == "STATUS_FINAL":
+                        processed.add(e)
+            except Exception:
+                pass
+        save_processed_games(processed)
+        print(f"  Seeded {len(processed)} game IDs (will not re-process these)")
+
+    # ── REFRESH MODE: catch any missed games from last 2 days
+    if args.refresh:
+        print("\n  REFRESH MODE: checking last 2 days for missed games...")
+        new_games = 0
+        for days_ago in [2, 1]:
+            d = (now - timedelta(days=days_ago)).strftime("%Y-%m-%d")
+            print(f"\n  Checking {d}...")
+            try:
+                gids = fetch_game_ids_espn(d)
+                final = [(e, s, n) for e, s, n in gids if s == "STATUS_FINAL"]
+                # Only process games not already in processed set
+                new_final = [(e, s, n) for e, s, n in final if e not in processed]
+                if not new_final:
+                    print(f"    All {len(final)} games already processed.")
+                    continue
+                print(f"    {len(new_final)} new games (of {len(final)} total)")
+                box = fetch_box_scores_espn(new_final)
+                old_rankings = update_rankings(old_rankings, box, name_map)
+                for e, s, n in new_final:
+                    processed.add(e)
+                new_games += len(new_final)
+            except Exception as e:
+                print(f"    Failed: {e}")
+        if new_games > 0:
+            save_snapshot(old_rankings, SNAPSHOT_FILE)
+            save_processed_games(processed)
+            print(f"\n  ✓ Refresh done: {new_games} new games added to snapshot")
+        else:
+            print("\n  ✓ Refresh done: no new games found")
+        return
+
+    # ── DETECT MODE: find milestones
+    if args.date:
+        game_date = args.date
+    else:
+        # Auto-detect: try today first (for manual/evening runs),
+        # fall back to yesterday (for cron at 1:30 AM ET)
+        today = now.strftime("%Y-%m-%d")
+        yesterday = (now - timedelta(days=1)).strftime("%Y-%m-%d")
+        print(f"\n  Checking today ({today}) for completed games...")
+        try:
+            today_ids = fetch_game_ids_espn(today)
+            today_final = [g for g in today_ids if g[1] == "STATUS_FINAL"]
+            if today_final:
+                game_date = today
+                print(f"    Found {len(today_final)} completed games today — using {today}")
+            else:
+                game_date = yesterday
+                print(f"    No completed games today — falling back to {yesterday}")
+        except Exception:
+            game_date = yesterday
+            print(f"    Could not check today — falling back to {yesterday}")
 
     print(f"\n  Fetching ESPN box scores for {game_date}...")
     game_ids = fetch_game_ids_espn(game_date)
     final = [(e, s, n) for e, s, n in game_ids if s == "STATUS_FINAL"]
+
+    # Filter out games already processed (prevents double-counting on re-runs)
+    new_final = [(e, s, n) for e, s, n in final if e not in processed]
+    if len(new_final) < len(final):
+        print(f"  Skipping {len(final) - len(new_final)} already-processed games")
+    final = new_final
 
     if not final:
         print(f"  No completed games on {game_date}.")
@@ -400,10 +542,17 @@ def main():
 
     print("  Detecting milestones...")
     milestones = detect_milestones(old_rankings, new_rankings, name_map)
+    milestones = combine_milestones(milestones)
     print_milestones(milestones)
 
     save_milestones_csv(milestones, OUTPUT_FILE)
     save_snapshot(new_rankings, SNAPSHOT_FILE)
+
+    # Track processed game IDs
+    for e, s, n in final:
+        processed.add(e)
+    save_processed_games(processed)
+
     print(f"\n  ✓ Done: {len(final)} games, {len(milestones)} milestones")
 
 
