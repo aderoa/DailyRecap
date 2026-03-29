@@ -483,41 +483,57 @@ def main():
             print("\n  ✓ Refresh done: no new games found")
         return
 
-    # ── DETECT MODE: find milestones
+    # ── DETECT MODE: process all unprocessed games from recent days
+    # Check last 4 days to catch any gaps (e.g. snapshot is March 26, today is March 28)
     if args.date:
-        game_date = args.date
+        dates_to_check = [args.date]
     else:
-        # Auto-detect: try today first (for manual/evening runs),
-        # fall back to yesterday (for cron at 1:30 AM ET)
-        today = now.strftime("%Y-%m-%d")
-        yesterday = (now - timedelta(days=1)).strftime("%Y-%m-%d")
-        print(f"\n  Checking today ({today}) for completed games...")
+        dates_to_check = []
+        for days_ago in range(4, -1, -1):  # 4 days ago → today, in order
+            d = (now - timedelta(days=days_ago)).strftime("%Y-%m-%d")
+            dates_to_check.append(d)
+
+    # Phase 1: Silently catch up on older unprocessed games (update snapshot, no milestones)
+    print(f"\n  Checking {len(dates_to_check)} days for unprocessed games...")
+    catchup_dates = dates_to_check[:-1]  # all except the latest
+    latest_date = dates_to_check[-1]      # milestones only for this one
+
+    for d in catchup_dates:
         try:
-            today_ids = fetch_game_ids_espn(today)
-            today_final = [g for g in today_ids if g[1] == "STATUS_FINAL"]
-            if today_final:
-                game_date = today
-                print(f"    Found {len(today_final)} completed games today — using {today}")
-            else:
-                game_date = yesterday
-                print(f"    No completed games today — falling back to {yesterday}")
-        except Exception:
-            game_date = yesterday
-            print(f"    Could not check today — falling back to {yesterday}")
+            gids = fetch_game_ids_espn(d)
+            final = [(e, s, n) for e, s, n in gids if s == "STATUS_FINAL" and e not in processed]
+            if not final:
+                continue
+            print(f"  Catching up {d}: {len(final)} new games...")
+            box = fetch_box_scores_espn(final)
+            old_rankings = update_rankings(old_rankings, box, name_map)
+            for e, s, n in final:
+                processed.add(e)
+        except Exception as e:
+            print(f"  {d} failed: {e}")
 
-    print(f"\n  Fetching ESPN box scores for {game_date}...")
-    game_ids = fetch_game_ids_espn(game_date)
+    # Phase 2: Process latest date and detect milestones
+    print(f"\n  Processing {latest_date} for milestones...")
+    try:
+        game_ids = fetch_game_ids_espn(latest_date)
+    except Exception as e:
+        print(f"  Failed to fetch {latest_date}: {e}")
+        save_milestones_csv([], OUTPUT_FILE)
+        save_snapshot(old_rankings, SNAPSHOT_FILE)
+        save_processed_games(processed)
+        return
+
     final = [(e, s, n) for e, s, n in game_ids if s == "STATUS_FINAL"]
-
-    # Filter out games already processed (prevents double-counting on re-runs)
     new_final = [(e, s, n) for e, s, n in final if e not in processed]
     if len(new_final) < len(final):
         print(f"  Skipping {len(final) - len(new_final)} already-processed games")
     final = new_final
 
     if not final:
-        print(f"  No completed games on {game_date}.")
+        print(f"  No new games on {latest_date}.")
         save_milestones_csv([], OUTPUT_FILE)
+        save_snapshot(old_rankings, SNAPSHOT_FILE)
+        save_processed_games(processed)
         return
 
     box_stats = fetch_box_scores_espn(final)
@@ -535,7 +551,6 @@ def main():
     save_milestones_csv(milestones, OUTPUT_FILE)
     save_snapshot(new_rankings, SNAPSHOT_FILE)
 
-    # Track processed game IDs
     for e, s, n in final:
         processed.add(e)
     save_processed_games(processed)
