@@ -452,22 +452,6 @@ def main():
     processed = load_processed_games()
     print(f"  Processed games on file: {len(processed)}")
 
-    # First run with tracking: seed recent game IDs already in snapshot
-    # to prevent double-counting on refresh. Only seed PAST days, not today.
-    if not processed and not args.refresh:
-        print("  First run — seeding processed games from recent days...")
-        for days_ago in [4, 3, 2, 1]:
-            d = (now - timedelta(days=days_ago)).strftime("%Y-%m-%d")
-            try:
-                gids = fetch_game_ids_espn(d)
-                for e, s, n in gids:
-                    if s == "STATUS_FINAL":
-                        processed.add(e)
-            except Exception:
-                pass
-        save_processed_games(processed)
-        print(f"  Seeded {len(processed)} game IDs (will not re-process these)")
-
     # ── REFRESH MODE: catch any missed games from last 2 days
     if args.refresh:
         print("\n  REFRESH MODE: checking last 2 days for missed games...")
