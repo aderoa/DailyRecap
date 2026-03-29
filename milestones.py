@@ -24,6 +24,7 @@ OUTPUT_FILE = "milestones_today.csv"
 STATS = ["PTS", "REB", "AST", "STL", "BLK"]
 STAT_LABELS = {"PTS": "Scoring", "REB": "Rebounds", "AST": "Assists",
                "STL": "Steals", "BLK": "Blocks"}
+MAX_RANK = 250  # Only report milestones within top 250
 
 ESPN_SCOREBOARD = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard"
 ESPN_SUMMARY = "https://site.web.api.espn.com/apis/site/v2/sports/basketball/nba/summary"
@@ -308,6 +309,8 @@ def detect_milestones(old_rankings, new_rankings, name_map=None):
                 continue
             old_rank = old_entry["rank"]
             if new_rank >= old_rank or gained <= 0:
+                continue
+            if new_rank > MAX_RANK:
                 continue
 
             for passed_rank in range(new_rank, old_rank):

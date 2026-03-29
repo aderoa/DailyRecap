@@ -353,15 +353,15 @@ def main():
     auto_ms = load_auto_milestones()
     if auto_ms:
         print(f"  Loaded {len(auto_ms)} auto-detected milestones from {MILESTONES_CSV}")
-        # Replace the MILESTONES section if present, or add it
-        found = False
+        # Remove existing MILESTONES section if present
+        secs = [(name, rows) for name, rows in secs if name != "MILESTONES"]
+        # Insert after BEST BENCH PLAYERS
+        insert_idx = len(secs)  # default: end
         for i, (name, rows) in enumerate(secs):
-            if name == "MILESTONES":
-                secs[i] = ("MILESTONES", auto_ms)
-                found = True
+            if name == "BEST BENCH PLAYERS":
+                insert_idx = i + 1
                 break
-        if not found:
-            secs.append(("MILESTONES", auto_ms))
+        secs.insert(insert_idx, ("MILESTONES", auto_ms))
     else:
         print(f"  No {MILESTONES_CSV} found — using Sheet milestones")
 
