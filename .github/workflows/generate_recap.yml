@@ -1,8 +1,8 @@
 name: Generate NBA Daily Recap
 on:
-  workflow_dispatch:  # Manual trigger
+  workflow_dispatch:
   schedule:
-    - cron: '30 6 * * *'  # 6:30 AM UTC = 1:30 AM ET (after West Coast games)
+    - cron: '30 6 * * *'
 
 jobs:
   generate:
@@ -17,29 +17,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install requests nba_api
-
-      # Step 1: Detect milestones (compares today vs snapshot)
+      - run: pip install requests
       - name: Detect milestones
-        run: |
-          if [ ! -f snapshot.csv ]; then
-            echo "No snapshot — creating baseline (no milestones on first run)"
-            python milestones.py --init
-          else
-            echo "Snapshot found — detecting milestones..."
-            python milestones.py --use-local --output milestones_today.csv || echo "Milestone detection failed, continuing without"
-          fi
-
-      # Step 2: Generate recap HTML (reads milestones_today.csv if present)
+        run: python milestones.py || echo "Milestone detection failed, continuing"
       - name: Generate recap
         run: python generate_recap.py
-
-      # Step 3: Commit everything
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html snapshot.csv snapshot_new.csv milestones_today.csv 2>/dev/null || true
+          git add index.html snapshot.csv milestones_today.csv 2>/dev/null || true
           git diff --cached --quiet && echo "No changes" && exit 0
           DATE=$(TZ=America/New_York date +%Y-%m-%d)
           git commit -m "Daily recap + milestones $DATE"
