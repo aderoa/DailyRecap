@@ -483,8 +483,7 @@ def main():
             print("\n  ✓ Refresh done: no new games found")
         return
 
-    # ── DETECT MODE: process all unprocessed games from recent days
-    # Check last 4 days to catch any gaps (e.g. snapshot is March 26, today is March 28)
+    # ── DETECT MODE: catch up older days silently, milestones for last game day
     if args.date:
         dates_to_check = [args.date]
     else:
@@ -493,50 +492,45 @@ def main():
             d = (now - timedelta(days=days_ago)).strftime("%Y-%m-%d")
             dates_to_check.append(d)
 
-    # Phase 1: Silently catch up on older unprocessed games (update snapshot, no milestones)
+    # Group unprocessed games by date
     print(f"\n  Checking {len(dates_to_check)} days for unprocessed games...")
-    catchup_dates = dates_to_check[:-1]  # all except the latest
-    latest_date = dates_to_check[-1]      # milestones only for this one
-
-    for d in catchup_dates:
+    games_by_date = {}  # date → [(eid, status, short), ...]
+    for d in dates_to_check:
         try:
             gids = fetch_game_ids_espn(d)
             final = [(e, s, n) for e, s, n in gids if s == "STATUS_FINAL" and e not in processed]
-            if not final:
-                continue
-            print(f"  Catching up {d}: {len(final)} new games...")
-            box = fetch_box_scores_espn(final)
-            old_rankings = update_rankings(old_rankings, box, name_map)
-            for e, s, n in final:
-                processed.add(e)
+            if final:
+                games_by_date[d] = final
+                print(f"    {d}: {len(final)} new games")
+            else:
+                print(f"    {d}: no new games")
         except Exception as e:
-            print(f"  {d} failed: {e}")
+            print(f"    {d}: failed ({e})")
 
-    # Phase 2: Process latest date and detect milestones
-    print(f"\n  Processing {latest_date} for milestones...")
-    try:
-        game_ids = fetch_game_ids_espn(latest_date)
-    except Exception as e:
-        print(f"  Failed to fetch {latest_date}: {e}")
+    dates_with_games = sorted(games_by_date.keys())
+
+    if not dates_with_games:
+        print(f"\n  No unprocessed games found.")
         save_milestones_csv([], OUTPUT_FILE)
-        save_snapshot(old_rankings, SNAPSHOT_FILE)
-        save_processed_games(processed)
         return
 
-    final = [(e, s, n) for e, s, n in game_ids if s == "STATUS_FINAL"]
-    new_final = [(e, s, n) for e, s, n in final if e not in processed]
-    if len(new_final) < len(final):
-        print(f"  Skipping {len(final) - len(new_final)} already-processed games")
-    final = new_final
+    # Split: catchup days (silent) vs milestone day (last day with games)
+    milestone_date = dates_with_games[-1]
+    catchup_dates = dates_with_games[:-1]
 
-    if not final:
-        print(f"  No new games on {latest_date}.")
-        save_milestones_csv([], OUTPUT_FILE)
-        save_snapshot(old_rankings, SNAPSHOT_FILE)
-        save_processed_games(processed)
-        return
+    # Phase 1: silently apply catchup days to snapshot
+    for d in catchup_dates:
+        print(f"\n  Catching up {d} ({len(games_by_date[d])} games)...")
+        box = fetch_box_scores_espn(games_by_date[d])
+        old_rankings = update_rankings(old_rankings, box, name_map)
+        for e, s, n in games_by_date[d]:
+            processed.add(e)
 
-    box_stats = fetch_box_scores_espn(final)
+    # Phase 2: process milestone day — compare before vs after
+    milestone_games = games_by_date[milestone_date]
+    print(f"\n  Milestone day: {milestone_date} ({len(milestone_games)} games)")
+
+    box_stats = fetch_box_scores_espn(milestone_games)
     active = sum(1 for v in box_stats.values() if any(v.get(s, 0) > 0 for s in STATS))
     print(f"\n  Box scores: {len(box_stats)} players, {active} with counted stats")
 
@@ -551,11 +545,11 @@ def main():
     save_milestones_csv(milestones, OUTPUT_FILE)
     save_snapshot(new_rankings, SNAPSHOT_FILE)
 
-    for e, s, n in final:
+    for e, s, n in milestone_games:
         processed.add(e)
     save_processed_games(processed)
 
-    print(f"\n  ✓ Done: {len(final)} games, {len(milestones)} milestones")
+    print(f"\n  ✓ Done: {milestone_date} — {len(milestone_games)} games, {len(milestones)} milestones")
 
 
 if __name__ == "__main__":
