@@ -17,18 +17,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install requests nba_api
+      - run: pip install requests
 
-      # Step 1: Milestones — baseline or daily update
+      # Step 1: Detect milestones via ESPN box scores
       - name: Detect milestones
-        run: |
-          if [ ! -f snapshot.csv ]; then
-            echo "No snapshot — creating baseline"
-            python milestones.py --init --timeout 120 --retries 5
-          else
-            echo "Updating via box scores..."
-            python milestones.py --timeout 90 || echo "Milestone detection failed, continuing"
-          fi
+        run: python milestones.py || echo "Milestone detection failed, continuing"
 
       # Step 2: Generate recap HTML
       - name: Generate recap
