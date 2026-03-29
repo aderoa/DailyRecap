@@ -1,0 +1,46 @@
+name: Generate NBA Daily Recap
+on:
+  workflow_dispatch:  # Manual trigger
+  schedule:
+    - cron: '30 6 * * *'  # 6:30 AM UTC = 1:30 AM ET
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests nba_api
+
+      # Step 1: Milestones — baseline or daily update
+      - name: Detect milestones
+        run: |
+          if [ ! -f snapshot.csv ]; then
+            echo "No snapshot — creating baseline"
+            python milestones.py --init --timeout 120 --retries 5
+          else
+            echo "Updating via box scores..."
+            python milestones.py --timeout 90 || echo "Milestone detection failed, continuing"
+          fi
+
+      # Step 2: Generate recap HTML
+      - name: Generate recap
+        run: python generate_recap.py
+
+      # Step 3: Commit
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html snapshot.csv milestones_today.csv 2>/dev/null || true
+          git diff --cached --quiet && echo "No changes" && exit 0
+          DATE=$(TZ=America/New_York date +%Y-%m-%d)
+          git commit -m "Daily recap + milestones $DATE"
+          git push
