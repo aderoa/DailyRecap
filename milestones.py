@@ -186,10 +186,19 @@ def fetch_box_scores(game_list):
             count = 0
             for team_data in players_list:
                 abbr = fix_abbr(team_data.get("team", {}).get("abbreviation", ""))
-                for sg in team_data.get("statistics", []):
+                stat_groups = team_data.get("statistics", [])
+                if count == 0:
+                    print(f"DEBUG {abbr}: {len(stat_groups)} stat groups", end=" ")
+                for sg in stat_groups:
                     keys = sg.get("keys", [])
+                    athletes = sg.get("athletes", [])
                     if count == 0:
-                        print(f"DEBUG keys={keys[:8]}...", end=" ")
+                        print(f"keys={len(keys)} athletes={len(athletes)}", end=" ")
+                        if athletes:
+                            a0 = athletes[0]
+                            print(f"a0_keys={list(a0.keys())[:6]}", end=" ")
+                            info0 = a0.get("athlete", {})
+                            print(f"name={info0.get('displayName','')} reason={a0.get('reason','')}", end=" ")
                     ki = {}
                     for i, k in enumerate(keys):
                         if k == "points": ki[i] = "PTS"
