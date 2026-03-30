@@ -22,18 +22,28 @@ jobs:
 
       - name: Run milestones
         run: |
-          python milestones.py --date 2026-03-27 || true
-          python milestones.py --date 2026-03-28 || true
-          python milestones.py --date 2026-03-29 || echo "Failed"
+          HOUR=$(TZ=America/New_York date +%H)
+          if [ "$HOUR" -ge 8 ] && [ "$HOUR" -le 14 ]; then
+            echo "Morning — rotating baseline"
+            python milestones.py --rotate
+          else
+            python milestones.py || echo "Milestone detection failed"
+          fi
 
       - name: Generate recap
-        run: python generate_recap.py
+        run: |
+          HOUR=$(TZ=America/New_York date +%H)
+          if [ "$HOUR" -ge 8 ] && [ "$HOUR" -le 14 ]; then
+            echo "Morning — skipping recap"
+          else
+            python generate_recap.py
+          fi
 
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add --force index.html snapshot_live.csv milestones_today.csv processed_games.txt
+          git add --force index.html snapshot_live.csv milestones_today.csv processed_games.txt snapshot.csv
           git status
           git commit -m "Daily recap + milestones $(TZ=America/New_York date +%Y-%m-%d)" || echo "Nothing to commit"
           git push || echo "Nothing to push"
