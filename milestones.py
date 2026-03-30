@@ -211,7 +211,7 @@ def fetch_box_scores(game_list):
                     for ath in sg.get("athletes", []):
                         info = ath.get("athlete", {})
                         name = info.get("displayName", "").strip()
-                        if not name or ath.get("reason"):
+                        if not name or ath.get("didNotPlay", False):
                             continue
                         vals = ath.get("stats", [])
                         entry = {"PTS": 0, "REB": 0, "AST": 0, "STL": 0, "BLK": 0,
