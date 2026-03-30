@@ -50,4 +50,4 @@ jobs:
           git add --force index.html snapshot_live.csv milestones_today.csv processed_games.txt 2>/dev/null || true
           git status
           git commit -m "Daily recap + milestones $(TZ=America/New_York date +%Y-%m-%d)" || echo "Nothing to commit"
-          git push || echo "Nothing to push"This
+          git push || echo "Nothing to push"
