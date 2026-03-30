@@ -32,20 +32,23 @@ jobs:
           fi
 
       - name: Generate recap
+        run: python generate_recap.py
+
+      - name: Debug files
         run: |
-          HOUR=$(TZ=America/New_York date +%H)
-          if [ "$HOUR" -ge 8 ] && [ "$HOUR" -le 14 ]; then
-            echo "Morning — skipping recap"
-          else
-            python generate_recap.py
-          fi
+          echo "=== Files in directory ==="
+          ls -la *.csv *.html 2>/dev/null
+          echo "=== milestones_today.csv ==="
+          head -5 milestones_today.csv 2>/dev/null || echo "NOT FOUND"
+          echo "=== snapshot_live.csv lines ==="
+          wc -l snapshot_live.csv 2>/dev/null || echo "NOT FOUND"
 
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git diff --cached --quiet && echo "No changes" && exit 0
-          DATE=$(TZ=America/New_York date +%Y-%m-%d)
-          git commit -m "Daily recap + milestones $DATE"
-          git push
+          git status
+          git diff --cached --stat
+          git commit -m "Daily recap + milestones $(TZ=America/New_York date +%Y-%m-%d)" || echo "Nothing to commit"
+          git push || echo "Nothing to push"
