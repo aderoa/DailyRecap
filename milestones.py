@@ -170,11 +170,26 @@ def fetch_box_scores(game_list):
             r = requests.get(f"{ESPN_SUMMARY}?event={eid}", timeout=30)
             data = r.json()
             time.sleep(0.3)
+
+            # Debug: show response structure
+            boxscore = data.get("boxscore", {})
+            players_list = boxscore.get("players", [])
+            if not players_list:
+                print(f"DEBUG: boxscore keys={list(boxscore.keys())}, top keys={list(data.keys())[:10]}")
+                # Try alternate path: maybe ESPN changed structure
+                # Check if data is nested differently
+                if "header" in data:
+                    print(f"  DEBUG header keys: {list(data['header'].keys())[:5]}")
+                print("0 players")
+                continue
+
             count = 0
-            for team_data in data.get("boxscore", {}).get("players", []):
+            for team_data in players_list:
                 abbr = fix_abbr(team_data.get("team", {}).get("abbreviation", ""))
                 for sg in team_data.get("statistics", []):
                     keys = sg.get("keys", [])
+                    if count == 0:
+                        print(f"DEBUG keys={keys[:8]}...", end=" ")
                     ki = {}
                     for i, k in enumerate(keys):
                         if k == "points": ki[i] = "PTS"
