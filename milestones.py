@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
 """
-NBA All-Time Milestone Detector v3 (ESPN Box Scores)
+NBA All-Time Milestone Detector v4
 
-Baseline: snapshot.csv built from NBA.com AllTimeLeadersGrids (through Mar 26 2026)
-Daily:    ESPN API box scores → update career totals → detect rank changes
+Two snapshots:
+  snapshot.csv      = frozen baseline (rotated each morning)
+  snapshot_live.csv = baseline + accumulated box scores
 
-ESPN API (no auth, works from GitHub Actions):
-  Scoreboard: site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=YYYYMMDD
-  Summary:    site.web.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event={id}
-
-Usage:
-  python milestones.py                    # Yesterday's box scores
-  python milestones.py --date 2026-03-27  # Specific date
+Modes:
+  python milestones.py                 # Night: add today's games, detect milestones
+  python milestones.py --date YYYY-MM-DD  # Add specific date's games
+  python milestones.py --rotate        # Morning: copy live → baseline
 """
 import csv, io, os, sys, time, json, unicodedata, re
 from datetime import datetime, timezone, timedelta
@@ -20,11 +18,14 @@ import requests
 
 # ── CONFIG ────────────────────────────────────────────────────
 SNAPSHOT_FILE = "snapshot.csv"
+SNAPSHOT_LIVE = "snapshot_live.csv"
 OUTPUT_FILE = "milestones_today.csv"
+PROCESSED_FILE = "processed_games.txt"
+
 STATS = ["PTS", "REB", "AST", "STL", "BLK"]
 STAT_LABELS = {"PTS": "Scoring", "REB": "Rebounds", "AST": "Assists",
                "STL": "Steals", "BLK": "Blocks"}
-MAX_RANK = 250  # Only report milestones within top 250
+MAX_RANK = 250
 
 ESPN_SCOREBOARD = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard"
 ESPN_SUMMARY = "https://site.web.api.espn.com/apis/site/v2/sports/basketball/nba/summary"
@@ -50,22 +51,14 @@ ESPN_TEAM_TO_ID = {
     "CHA": "1610612766", "CHO": "1610612766",
 }
 
-# Manual name fixes: ESPN name → NBA.com name
-ESPN_NAME_FIXES = {
-    "Luka Doncic": "Luka Doncic",       # ESPN sometimes drops diacritics
-    "Nikola Jokic": "Nikola Jokic",
-    "Nikola Vucevic": "Nikola Vucevic",
-    "Jonas Valanciunas": "Jonas Valanciunas",
-    "Bogdan Bogdanovic": "Bogdan Bogdanovic",
-    "Bojan Bogdanovic": "Bojan Bogdanovic",
-    "Dario Saric": "Dario Saric",
-    "Jusuf Nurkic": "Jusuf Nurkic",
-    "Dennis Schroder": "Dennis Schroder",
-    "Kristaps Porzingis": "Kristaps Porzingis",
-    "Goran Dragic": "Goran Dragic",
-    "Nikola Mirotic": "Nikola Mirotic",
-    "Timothe Luwawu-Cabarrot": "Timothe Luwawu-Cabarrot",
+ESPN_ABBR_FIX = {
+    "GS": "GSW", "NO": "NOP", "SA": "SAS", "BK": "BKN",
+    "NY": "NYK", "WSH": "WAS", "UTAH": "UTA", "CHO": "CHA",
 }
+
+
+def fix_abbr(a):
+    return ESPN_ABBR_FIX.get(a, a)
 
 
 def make_logo_url(team_abbr):
@@ -74,13 +67,9 @@ def make_logo_url(team_abbr):
 
 
 def normalize_name(name):
-    """Strip diacritics and normalize for matching."""
     s = unicodedata.normalize("NFD", name)
     s = "".join(c for c in s if unicodedata.category(c) != "Mn")
-    s = s.strip()
-    # Remove suffixes like Jr., III, II, IV
-    s = re.sub(r'\s+(Jr\.?|Sr\.?|III|II|IV)$', '', s)
-    return s
+    return s.strip()
 
 
 # ── HELPERS ───────────────────────────────────────────────────
@@ -98,11 +87,10 @@ def build_name_map():
         reader = csv.reader(io.StringIO(text))
         next(reader, None)
         for row in reader:
-            if len(row) < 13:
-                continue
-            nba, hh = row[11].strip(), row[12].strip()
-            if nba and hh:
-                nm[nba] = hh
+            if len(row) >= 13:
+                nba, hh = row[11].strip(), row[12].strip()
+                if nba and hh:
+                    nm[nba] = hh
     except Exception as e:
         print(f"  Warning: name map failed: {e}")
     return nm
@@ -117,7 +105,7 @@ def save_snapshot(rankings, path):
             for e in rankings.get(stat, []):
                 w.writerow([stat, e["rank"], e.get("player_id", ""), e["name"],
                             e["total"], "TRUE" if e.get("active") else "FALSE"])
-    print(f"  Snapshot saved: {path} ({os.path.getsize(path) / 1024:.1f} KB)")
+    print(f"  Saved: {path} ({os.path.getsize(path) / 1024:.1f} KB)")
 
 
 def load_snapshot(path):
@@ -125,125 +113,108 @@ def load_snapshot(path):
         return None
     rankings = {s: [] for s in STATS}
     with open(path, "r", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
+        for row in csv.DictReader(f):
             stat = row.get("STAT", "").strip()
-            if stat not in rankings:
-                continue
-            rankings[stat].append({
-                "player_id": row.get("PLAYER_ID", ""),
-                "name": row.get("PLAYER_NAME", "").strip(),
-                "total": int(row.get("TOTAL", 0)),
-                "rank": int(row.get("RANK", 0)),
-                "active": row.get("ACTIVE", "").strip().upper() in ("TRUE", "1"),
-            })
+            if stat in rankings:
+                rankings[stat].append({
+                    "player_id": row.get("PLAYER_ID", ""),
+                    "name": row.get("PLAYER_NAME", "").strip(),
+                    "total": int(row.get("TOTAL", 0)),
+                    "rank": int(row.get("RANK", 0)),
+                    "active": row.get("ACTIVE", "").strip().upper() in ("TRUE", "1"),
+                })
     total = sum(len(v) for v in rankings.values())
     return rankings if total > 0 else None
 
 
-# ── ESPN: FETCH GAME IDS ─────────────────────────────────────
-def fetch_game_ids_espn(game_date):
+# ── PROCESSED GAMES TRACKING ─────────────────────────────────
+def load_processed():
+    if not os.path.exists(PROCESSED_FILE):
+        return set()
+    with open(PROCESSED_FILE, "r") as f:
+        return {line.strip() for line in f if line.strip()}
+
+
+def save_processed(ids):
+    with open(PROCESSED_FILE, "w") as f:
+        for gid in sorted(ids):
+            f.write(gid + "\n")
+
+
+# ── ESPN FETCH ────────────────────────────────────────────────
+def fetch_game_ids(game_date):
     date_str = game_date.replace("-", "")
     url = f"{ESPN_SCOREBOARD}?dates={date_str}"
-    print(f"  Fetching ESPN scoreboard for {game_date}...")
+    print(f"  Scoreboard {game_date}...", end=" ")
     r = requests.get(url, timeout=30)
     data = r.json()
-    events = data.get("events", [])
-    game_ids = []
-    for ev in events:
+    games = []
+    for ev in data.get("events", []):
         eid = ev.get("id", "")
         status = ev.get("status", {}).get("type", {}).get("name", "")
         short = ev.get("shortName", "")
-        game_ids.append((eid, status, short))
-    completed = sum(1 for _, s, _ in game_ids if s == "STATUS_FINAL")
-    print(f"    Found {len(game_ids)} games ({completed} final)")
-    return game_ids
+        games.append((eid, status, short))
+    final = sum(1 for _, s, _ in games if s == "STATUS_FINAL")
+    print(f"{len(games)} games ({final} final)")
+    return games
 
 
-# ── ESPN: FETCH BOX SCORES ───────────────────────────────────
-def fetch_box_scores_espn(game_ids):
-    """Returns: {player_name: {PTS, REB, AST, STL, BLK, team_abbr, espn_id}}"""
-    player_stats = {}
-
-    for eid, status, short in game_ids:
+def fetch_box_scores(game_list):
+    """Returns {player_name: {PTS, REB, AST, STL, BLK, team_abbr, espn_id}}"""
+    stats = {}
+    for eid, status, short in game_list:
         if status != "STATUS_FINAL":
             continue
         try:
-            print(f"    {short} ({eid})...", end=" ")
-            url = f"{ESPN_SUMMARY}?event={eid}"
-            r = requests.get(url, timeout=30)
+            print(f"    {short}...", end=" ")
+            r = requests.get(f"{ESPN_SUMMARY}?event={eid}", timeout=30)
             data = r.json()
             time.sleep(0.3)
-
-            boxscore = data.get("boxscore", {})
             count = 0
-            for team_data in boxscore.get("players", []):
-                team_abbr = team_data.get("team", {}).get("abbreviation", "")
-
-                for stat_group in team_data.get("statistics", []):
-                    keys = stat_group.get("keys", [])
-                    # Map ESPN stat keys to our stat names
-                    key_idx = {}
+            for team_data in data.get("boxscore", {}).get("players", []):
+                abbr = fix_abbr(team_data.get("team", {}).get("abbreviation", ""))
+                for sg in team_data.get("statistics", []):
+                    keys = sg.get("keys", [])
+                    ki = {}
                     for i, k in enumerate(keys):
-                        if k == "points": key_idx[i] = "PTS"
-                        elif k == "rebounds": key_idx[i] = "REB"
-                        elif k == "assists": key_idx[i] = "AST"
-                        elif k == "steals": key_idx[i] = "STL"
-                        elif k == "blocks": key_idx[i] = "BLK"
-
-                    if not key_idx:
+                        if k == "points": ki[i] = "PTS"
+                        elif k == "rebounds": ki[i] = "REB"
+                        elif k == "assists": ki[i] = "AST"
+                        elif k == "steals": ki[i] = "STL"
+                        elif k == "blocks": ki[i] = "BLK"
+                    if not ki:
                         continue
-
-                    for athlete in stat_group.get("athletes", []):
-                        info = athlete.get("athlete", {})
+                    for ath in sg.get("athletes", []):
+                        info = ath.get("athlete", {})
                         name = info.get("displayName", "").strip()
-                        if not name:
+                        if not name or ath.get("reason"):
                             continue
-                        espn_id = str(info.get("id", ""))
-
-                        vals = athlete.get("stats", [])
+                        vals = ath.get("stats", [])
                         entry = {"PTS": 0, "REB": 0, "AST": 0, "STL": 0, "BLK": 0,
-                                 "team_abbr": team_abbr, "espn_id": espn_id}
-
-                        for idx, our_key in key_idx.items():
+                                 "team_abbr": abbr, "espn_id": str(info.get("id", ""))}
+                        for idx, our_key in ki.items():
                             if idx < len(vals):
                                 try:
                                     v = vals[idx]
                                     entry[our_key] = int(v) if v not in ("--", "", None) else 0
                                 except (ValueError, TypeError):
                                     pass
-
-                        # Only keep first entry per player (avoid dups from multiple stat groups)
-                        if name not in player_stats:
-                            player_stats[name] = entry
+                        if name not in stats:
+                            stats[name] = entry
                             count += 1
-
             print(f"{count} players")
         except Exception as e:
             print(f"FAILED: {e}")
             time.sleep(1)
-
-    return player_stats
+    return stats
 
 
 # ── UPDATE RANKINGS ───────────────────────────────────────────
 def update_rankings(old_rankings, box_stats, name_map):
-    """Add box score stats to snapshot career totals."""
     nm_reverse = {v: k for k, v in name_map.items()}
-
-    # Build normalized name lookup for snapshot players per stat
-    # normalized_name → original_name
-    norm_lookup = {}
-    for stat in STATS:
-        for e in old_rankings.get(stat, []):
-            nn = normalize_name(e["name"])
-            norm_lookup[nn] = e["name"]
-
-    # Build normalized ESPN name → box entry
     espn_norm = {}
     for espn_name, box in box_stats.items():
-        fixed = ESPN_NAME_FIXES.get(espn_name, espn_name)
-        nn = normalize_name(fixed)
+        nn = normalize_name(espn_name)
         espn_norm[nn] = (espn_name, box)
 
     new_rankings = {}
@@ -254,21 +225,15 @@ def update_rankings(old_rankings, box_stats, name_map):
             new_entry = dict(e)
             name = e["name"]
             nn = normalize_name(name)
-
-            # Try matching: normalized name, then name map reverse, then ESPN fixes
             box = None
             if nn in espn_norm:
                 box = espn_norm[nn][1]
             if not box:
                 alt = nm_reverse.get(name)
-                if alt:
-                    alt_nn = normalize_name(alt)
-                    if alt_nn in espn_norm:
-                        box = espn_norm[alt_nn][1]
-            # Also try exact ESPN name
+                if alt and normalize_name(alt) in espn_norm:
+                    box = espn_norm[normalize_name(alt)][1]
             if not box:
                 box = box_stats.get(name)
-
             if box and box.get(stat, 0) > 0:
                 new_entry["total"] = e["total"] + box[stat]
                 new_entry["gained"] = box[stat]
@@ -276,19 +241,16 @@ def update_rankings(old_rankings, box_stats, name_map):
                     new_entry["team_abbr"] = box["team_abbr"]
                 if stat == "PTS":
                     matched += 1
-
             entries.append(new_entry)
-
         entries.sort(key=lambda x: x["total"], reverse=True)
         for i, e in enumerate(entries):
             e["rank"] = i + 1
         new_rankings[stat] = entries
-
-    print(f"  Matched {matched} snapshot players with box score PTS")
+    print(f"  Matched {matched} players (PTS)")
     return new_rankings
 
 
-# ── MILESTONE DETECTION ──────────────────────────────────────
+# ── MILESTONES ────────────────────────────────────────────────
 def detect_milestones(old_rankings, new_rankings, name_map=None):
     nm = name_map or {}
     milestones = []
@@ -299,7 +261,6 @@ def detect_milestones(old_rankings, new_rankings, name_map=None):
             continue
         old_by_name = {e["name"]: e for e in old_list}
         old_by_rank = {e["rank"]: e for e in old_list}
-
         for entry in new_list:
             name = entry["name"]
             new_rank = entry["rank"]
@@ -308,50 +269,40 @@ def detect_milestones(old_rankings, new_rankings, name_map=None):
             if not old_entry:
                 continue
             old_rank = old_entry["rank"]
-            if new_rank >= old_rank or gained <= 0:
+            if new_rank >= old_rank or gained <= 0 or new_rank > MAX_RANK:
                 continue
-            if new_rank > MAX_RANK:
-                continue
-
-            for passed_rank in range(new_rank, old_rank):
-                passed_entry = old_by_rank.get(passed_rank)
-                if not passed_entry or passed_entry["name"] == name:
+            for pr in range(new_rank, old_rank):
+                pe = old_by_rank.get(pr)
+                if not pe or pe["name"] == name:
                     continue
                 display_name = nm.get(name, name)
-                passed_name = nm.get(passed_entry["name"], passed_entry["name"])
+                passed_name = nm.get(pe["name"], pe["name"])
                 milestones.append({
                     "player": display_name, "player_raw": name,
                     "team_abbr": entry.get("team_abbr", ""),
                     "stat": stat, "label": STAT_LABELS[stat],
                     "new_rank": new_rank, "new_total": entry["total"],
-                    "passed": passed_name, "passed_raw": passed_entry["name"],
-                    "passed_total": passed_entry["total"],
+                    "passed": passed_name, "passed_raw": pe["name"],
+                    "passed_total": pe["total"],
                 })
-
     milestones.sort(key=lambda m: (m["new_rank"], STATS.index(m["stat"])))
     return milestones
 
 
 def combine_milestones(milestones):
-    """Combine milestones where same player passed multiple people in same category.
-    E.g. Kawhi Leonard / Steals / 69 / Muggsy Bogues + Ben Wallace → one row.
-    """
     combined = {}
     for m in milestones:
         key = (m["player"], m["stat"])
         if key in combined:
-            # Append passed name
             combined[key]["passed"] += ", " + m["passed"]
         else:
             combined[key] = dict(m)
-
     result = list(combined.values())
     result.sort(key=lambda m: (m["new_rank"], STATS.index(m["stat"])))
     return result
 
 
-# ── OUTPUT ────────────────────────────────────────────────────
-def save_milestones_csv(milestones, path):
+def save_milestones(milestones, path):
     with open(path, "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(["PLAYER", "RAT", "PASSED", "CATEGORY", "RANK",
@@ -360,14 +311,14 @@ def save_milestones_csv(milestones, path):
             logo = make_logo_url(m.get("team_abbr", ""))
             w.writerow([m["player"], "", m["passed"], m["label"], m["new_rank"],
                          m["new_total"], m["passed_total"], m["stat"], logo])
-    print(f"  Milestones saved: {path} ({len(milestones)} entries)")
+    print(f"  Milestones: {path} ({len(milestones)} entries)")
 
 
 def print_milestones(milestones):
     if not milestones:
-        print("\n  No milestones detected today.")
+        print("\n  No milestones detected.")
         return
-    print(f"\n  ┌─ {len(milestones)} MILESTONE(S) DETECTED ──────────────────")
+    print(f"\n  ┌─ {len(milestones)} MILESTONE(S) ──────────────────────────")
     for m in milestones:
         t = m.get("team_abbr", "???")
         print(f"  │ {t:>3} #{m['new_rank']:>3}  {m['player']:<28} {m['label']:<10} "
@@ -378,178 +329,97 @@ def print_milestones(milestones):
 # ── MAIN ─────────────────────────────────────────────────────
 def main():
     import argparse
-    parser = argparse.ArgumentParser(description="NBA All-Time Milestone Detector v3")
-    parser.add_argument("--date", help="Game date YYYY-MM-DD (default: auto-detect)")
-    parser.add_argument("--refresh", action="store_true",
-                        help="Silent refresh: re-apply last 2 days of box scores to snapshot (no milestones)")
+    parser = argparse.ArgumentParser(description="NBA All-Time Milestone Detector v4")
+    parser.add_argument("--date", help="Game date YYYY-MM-DD")
+    parser.add_argument("--rotate", action="store_true",
+                        help="Morning: copy snapshot_live → snapshot")
     args = parser.parse_args()
 
     et = timezone(timedelta(hours=-5))
     now = datetime.now(et)
     print("=" * 55)
-    print("  NBA ALL-TIME MILESTONE DETECTOR v3 (ESPN)")
+    print("  NBA ALL-TIME MILESTONE DETECTOR v4")
     print(f"  {now.strftime('%Y-%m-%d %H:%M')} ET")
     print("=" * 55)
 
-    print("\n  Loading name mappings...")
-    name_map = build_name_map()
-    print(f"  Loaded {len(name_map)} translations")
-
-    old_rankings = load_snapshot(SNAPSHOT_FILE)
-    if not old_rankings:
-        print(f"\n  ERROR: {SNAPSHOT_FILE} not found! Commit it to the repo.")
-        sys.exit(1)
-
-    total = sum(len(v) for v in old_rankings.values())
-    print(f"  Loaded snapshot: {total} entries")
-
-PROCESSED_GAMES_FILE = "processed_games.txt"
-
-
-def load_processed_games():
-    """Load set of already-processed ESPN game IDs."""
-    if not os.path.exists(PROCESSED_GAMES_FILE):
-        return set()
-    with open(PROCESSED_GAMES_FILE, "r") as f:
-        return {line.strip() for line in f if line.strip()}
-
-
-def save_processed_games(game_ids_set):
-    """Save processed game IDs."""
-    with open(PROCESSED_GAMES_FILE, "w") as f:
-        for gid in sorted(game_ids_set):
-            f.write(gid + "\n")
-
-
-# ── MAIN ─────────────────────────────────────────────────────
-def main():
-    import argparse
-    parser = argparse.ArgumentParser(description="NBA All-Time Milestone Detector v3")
-    parser.add_argument("--date", help="Game date YYYY-MM-DD (default: auto-detect)")
-    parser.add_argument("--refresh", action="store_true",
-                        help="Silent refresh: catch missed games from last 2 days")
-    args = parser.parse_args()
-
-    et = timezone(timedelta(hours=-5))
-    now = datetime.now(et)
-    print("=" * 55)
-    print("  NBA ALL-TIME MILESTONE DETECTOR v3 (ESPN)")
-    print(f"  {now.strftime('%Y-%m-%d %H:%M')} ET")
-    print("=" * 55)
-
-    print("\n  Loading name mappings...")
-    name_map = build_name_map()
-    print(f"  Loaded {len(name_map)} translations")
-
-    old_rankings = load_snapshot(SNAPSHOT_FILE)
-    if not old_rankings:
-        print(f"\n  ERROR: {SNAPSHOT_FILE} not found! Commit it to the repo.")
-        sys.exit(1)
-
-    total = sum(len(v) for v in old_rankings.values())
-    print(f"  Loaded snapshot: {total} entries")
-
-    processed = load_processed_games()
-    print(f"  Processed games on file: {len(processed)}")
-
-    # ── REFRESH MODE: catch any missed games from last 2 days
-    if args.refresh:
-        print("\n  REFRESH MODE: checking last 2 days for missed games...")
-        new_games = 0
-        for days_ago in [2, 1]:
-            d = (now - timedelta(days=days_ago)).strftime("%Y-%m-%d")
-            print(f"\n  Checking {d}...")
-            try:
-                gids = fetch_game_ids_espn(d)
-                final = [(e, s, n) for e, s, n in gids if s == "STATUS_FINAL"]
-                # Only process games not already in processed set
-                new_final = [(e, s, n) for e, s, n in final if e not in processed]
-                if not new_final:
-                    print(f"    All {len(final)} games already processed.")
-                    continue
-                print(f"    {len(new_final)} new games (of {len(final)} total)")
-                box = fetch_box_scores_espn(new_final)
-                old_rankings = update_rankings(old_rankings, box, name_map)
-                for e, s, n in new_final:
-                    processed.add(e)
-                new_games += len(new_final)
-            except Exception as e:
-                print(f"    Failed: {e}")
-        if new_games > 0:
-            save_snapshot(old_rankings, SNAPSHOT_FILE)
-            save_processed_games(processed)
-            print(f"\n  ✓ Refresh done: {new_games} new games added to snapshot")
+    # ── ROTATE MODE
+    if args.rotate:
+        if os.path.exists(SNAPSHOT_LIVE):
+            import shutil
+            shutil.copy2(SNAPSHOT_LIVE, SNAPSHOT_FILE)
+            print(f"\n  ✓ Rotated: {SNAPSHOT_LIVE} → {SNAPSHOT_FILE}")
         else:
-            print("\n  ✓ Refresh done: no new games found")
+            print(f"\n  No {SNAPSHOT_LIVE} to rotate.")
         return
 
-    # ── DETECT MODE: catch up older days silently, milestones for last game day
+    # ── DETECT MODE
+    print("\n  Loading name mappings...")
+    name_map = build_name_map()
+    print(f"  Loaded {len(name_map)} translations")
+
+    # Load live snapshot (or fall back to baseline)
+    live = load_snapshot(SNAPSHOT_LIVE)
+    if not live:
+        print(f"  No {SNAPSHOT_LIVE} — copying from {SNAPSHOT_FILE}...")
+        base = load_snapshot(SNAPSHOT_FILE)
+        if not base:
+            print(f"  ERROR: {SNAPSHOT_FILE} not found!")
+            sys.exit(1)
+        live = base
+
+    total = sum(len(v) for v in live.values())
+    print(f"  Loaded live snapshot: {total} entries")
+
+    processed = load_processed()
+    print(f"  Processed games: {len(processed)}")
+
+    # Determine which date(s) to fetch
     if args.date:
-        dates_to_check = [args.date]
+        dates = [args.date]
     else:
-        dates_to_check = []
-        for days_ago in range(4, -1, -1):  # 4 days ago → today, in order
-            d = (now - timedelta(days=days_ago)).strftime("%Y-%m-%d")
-            dates_to_check.append(d)
+        yesterday = (now - timedelta(days=1)).strftime("%Y-%m-%d")
+        today = now.strftime("%Y-%m-%d")
+        dates = [yesterday, today]
 
-    # Group unprocessed games by date
-    print(f"\n  Checking {len(dates_to_check)} days for unprocessed games...")
-    games_by_date = {}  # date → [(eid, status, short), ...]
-    for d in dates_to_check:
+    # Fetch new games
+    all_new = []
+    for d in dates:
         try:
-            gids = fetch_game_ids_espn(d)
-            final = [(e, s, n) for e, s, n in gids if s == "STATUS_FINAL" and e not in processed]
-            if final:
-                games_by_date[d] = final
-                print(f"    {d}: {len(final)} new games")
-            else:
-                print(f"    {d}: no new games")
-        except Exception as e:
-            print(f"    {d}: failed ({e})")
+            gids = fetch_game_ids(d)
+            new = [(e, s, n) for e, s, n in gids if s == "STATUS_FINAL" and e not in processed]
+            if new:
+                all_new.extend(new)
+        except Exception as ex:
+            print(f"  {d} failed: {ex}")
 
-    dates_with_games = sorted(games_by_date.keys())
-
-    if not dates_with_games:
-        print(f"\n  No unprocessed games found.")
-        save_milestones_csv([], OUTPUT_FILE)
+    if not all_new:
+        print("\n  No new games to process.")
+        save_milestones([], OUTPUT_FILE)
         return
 
-    # Split: catchup days (silent) vs milestone day (last day with games)
-    milestone_date = dates_with_games[-1]
-    catchup_dates = dates_with_games[:-1]
-
-    # Phase 1: silently apply catchup days to snapshot
-    for d in catchup_dates:
-        print(f"\n  Catching up {d} ({len(games_by_date[d])} games)...")
-        box = fetch_box_scores_espn(games_by_date[d])
-        old_rankings = update_rankings(old_rankings, box, name_map)
-        for e, s, n in games_by_date[d]:
-            processed.add(e)
-
-    # Phase 2: process milestone day — compare before vs after
-    milestone_games = games_by_date[milestone_date]
-    print(f"\n  Milestone day: {milestone_date} ({len(milestone_games)} games)")
-
-    box_stats = fetch_box_scores_espn(milestone_games)
+    print(f"\n  {len(all_new)} new games to process")
+    box_stats = fetch_box_scores(all_new)
     active = sum(1 for v in box_stats.values() if any(v.get(s, 0) > 0 for s in STATS))
-    print(f"\n  Box scores: {len(box_stats)} players, {active} with counted stats")
+    print(f"\n  Box scores: {len(box_stats)} players, {active} with stats")
 
+    # Compare: live (before) → updated (after)
     print("  Updating career totals...")
-    new_rankings = update_rankings(old_rankings, box_stats, name_map)
+    updated = update_rankings(live, box_stats, name_map)
 
     print("  Detecting milestones...")
-    milestones = detect_milestones(old_rankings, new_rankings, name_map)
+    milestones = detect_milestones(live, updated, name_map)
     milestones = combine_milestones(milestones)
     print_milestones(milestones)
 
-    save_milestones_csv(milestones, OUTPUT_FILE)
-    save_snapshot(new_rankings, SNAPSHOT_FILE)
+    # Save everything
+    save_milestones(milestones, OUTPUT_FILE)
+    save_snapshot(updated, SNAPSHOT_LIVE)
 
-    for e, s, n in milestone_games:
+    for e, s, n in all_new:
         processed.add(e)
-    save_processed_games(processed)
+    save_processed(processed)
 
-    print(f"\n  ✓ Done: {milestone_date} — {len(milestone_games)} games, {len(milestones)} milestones")
+    print(f"\n  ✓ Done: {len(all_new)} games, {len(milestones)} milestones")
 
 
 if __name__ == "__main__":
