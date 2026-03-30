@@ -34,21 +34,20 @@ jobs:
       - name: Generate recap
         run: python generate_recap.py
 
-      - name: Debug files
+      - name: Debug
         run: |
-          echo "=== Files in directory ==="
-          ls -la *.csv *.html 2>/dev/null
-          echo "=== milestones_today.csv ==="
-          head -5 milestones_today.csv 2>/dev/null || echo "NOT FOUND"
-          echo "=== snapshot_live.csv lines ==="
-          wc -l snapshot_live.csv 2>/dev/null || echo "NOT FOUND"
+          echo "=== Files ==="
+          ls -la *.csv *.html *.txt 2>/dev/null
+          echo "=== .gitignore ==="
+          cat .gitignore 2>/dev/null || echo "No .gitignore"
+          echo "=== git status ==="
+          git status
 
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
+          git add --force index.html snapshot_live.csv milestones_today.csv processed_games.txt 2>/dev/null || true
           git status
-          git diff --cached --stat
           git commit -m "Daily recap + milestones $(TZ=America/New_York date +%Y-%m-%d)" || echo "Nothing to commit"
           git push || echo "Nothing to push"
