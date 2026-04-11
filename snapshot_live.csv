@@ -1,13 +1,13 @@
 STAT,RANK,PLAYER_ID,PLAYER_NAME,TOTAL,ACTIVE
-PTS,1,,LeBron James,43420,FALSE
+PTS,1,,LeBron James,43448,FALSE
 PTS,2,,Kareem Abdul-Jabbar,38387,FALSE
 PTS,3,,Karl Malone,36928,FALSE
 PTS,4,,Kobe Bryant,33643,FALSE
-PTS,5,,Kevin Durant,32593,FALSE
+PTS,5,,Kevin Durant,32626,FALSE
 PTS,6,,Michael Jordan,32292,FALSE
 PTS,7,,Dirk Nowitzki,31560,FALSE
 PTS,8,,Wilt Chamberlain,31419,FALSE
-PTS,9,,James Harden,29319,FALSE
+PTS,9,,James Harden,29339,FALSE
 PTS,10,,Shaquille O'Neal,28596,FALSE
 PTS,11,,Carmelo Anthony,28289,FALSE
 PTS,12,,Moses Malone,27409,FALSE
@@ -17,8 +17,8 @@ PTS,15,,Hakeem Olajuwon,26946,FALSE
 PTS,16,,DeMar DeRozan,26711,FALSE
 PTS,17,,Oscar Robertson,26710,FALSE
 PTS,18,,Dominique Wilkins,26668,FALSE
-PTS,19,,Tim Duncan,26496,FALSE
-PTS,20,,Stephen Curry,26493,FALSE
+PTS,19,,Stephen Curry,26504,FALSE
+PTS,20,,Tim Duncan,26496,FALSE
 PTS,21,,Paul Pierce,26397,FALSE
 PTS,22,,John Havlicek,26395,FALSE
 PTS,23,,Kevin Garnett,26071,FALSE
@@ -60,7 +60,7 @@ PTS,58,,Tony Parker,19473,FALSE
 PTS,59,,Terry Cummings,19460,FALSE
 PTS,60,,Jamal Crawford,19419,FALSE
 PTS,61,,Anthony Davis,19385,FALSE
-PTS,62,,Paul George,19313,FALSE
+PTS,62,,Paul George,19334,FALSE
 PTS,63,,Bob Lanier,19248,FALSE
 PTS,64,,Eddie Johnson,19202,FALSE
 PTS,65,,Gail Goodrich,19181,FALSE
@@ -80,7 +80,7 @@ PTS,78,,Tracy McGrady,18381,FALSE
 PTS,79,,Julius Erving,18364,FALSE
 PTS,80,,Glen Rice,18336,FALSE
 PTS,81,,Dave Bing,18327,FALSE
-PTS,82,,Brook Lopez,18123,FALSE
+PTS,82,,Brook Lopez,18144,FALSE
 PTS,83,,Devin Booker,18120,FALSE
 PTS,84,,Nikola Jokić,17986,FALSE
 PTS,85,,World Free,17955,FALSE
@@ -91,7 +91,7 @@ PTS,89,,Lenny Wilkens,17772,FALSE
 PTS,90,,Bailey Howell,17770,FALSE
 PTS,91,,Magic Johnson,17707,FALSE
 PTS,92,,Shawn Marion,17700,FALSE
-PTS,93,,Nikola Vučević,17680,FALSE
+PTS,93,,Nikola Vučević,17694,FALSE
 PTS,94,,Rudy Gay,17642,FALSE
 PTS,95,,Rolando Blackman,17623,FALSE
 PTS,96,,Otis Thorpe,17599,FALSE
@@ -103,25 +103,25 @@ PTS,101,,Klay Thompson,17334,FALSE
 PTS,102,,Bradley Beal,17306,FALSE
 PTS,103,,Michael Finley,17306,FALSE
 PTS,104,,Jack Sikma,17287,FALSE
-PTS,105,,Jrue Holiday,17255,FALSE
+PTS,105,,Jrue Holiday,17264,FALSE
 PTS,106,,Kevin Willis,17253,FALSE
 PTS,107,,Jeff Malone,17231,FALSE
 PTS,108,,Chris Bosh,17189,FALSE
 PTS,109,,Chris Webber,17182,FALSE
 PTS,110,,Grant Hill,17137,FALSE
 PTS,111,,Bob Cousy,16960,FALSE
-PTS,112,,Elton Brand,16827,FALSE
-PTS,113,,CJ McCollum,16809,FALSE
+PTS,112,,CJ McCollum,16838,FALSE
+PTS,113,,Elton Brand,16827,FALSE
 PTS,114,,Buck Williams,16784,FALSE
-PTS,115,,Latrell Sprewell,16712,FALSE
-PTS,116,,Mike Conley,16706,FALSE
+PTS,115,,Mike Conley,16715,FALSE
+PTS,116,,Latrell Sprewell,16712,FALSE
 PTS,117,,Jimmy Butler III,16658,FALSE
-PTS,118,,Kawhi Leonard,16522,FALSE
+PTS,118,,Kawhi Leonard,16546,FALSE
 PTS,119,,Nate Archibald,16481,FALSE
-PTS,120,,Jerry Stackhouse,16409,FALSE
-PTS,121,,Tobias Harris,16408,FALSE
+PTS,120,,Tobias Harris,16416,FALSE
+PTS,121,,Jerry Stackhouse,16409,FALSE
 PTS,122,,Joe Dumars,16402,FALSE
-PTS,123,,Karl-Anthony Towns,16378,FALSE
+PTS,123,,Karl-Anthony Towns,16400,FALSE
 PTS,124,,Kyle Lowry,16373,FALSE
 PTS,125,,James Worthy,16320,FALSE
 PTS,126,,Stephon Marbury,16297,FALSE
@@ -157,11 +157,11 @@ PTS,155,,Shawn Kemp,15347,FALSE
 PTS,156,,Sam Perkins,15324,FALSE
 PTS,157,,John Drew,15291,FALSE
 PTS,158,,Donovan Mitchell,15272,FALSE
-PTS,159,,Andrew Wiggins,15199,FALSE
+PTS,159,,Andrew Wiggins,15210,FALSE
 PTS,160,,Julius Randle,15184,FALSE
 PTS,161,,Byron Scott,15097,FALSE
 PTS,162,,Dick Van Arsdale,15079,FALSE
-PTS,163,,Al Horford,15062,FALSE
+PTS,163,,Al Horford,15072,FALSE
 PTS,164,,Shareef Abdur-Rahim,15028,FALSE
 PTS,165,,Luka Dončić,15021,FALSE
 PTS,166,,Mike Mitchell,15016,FALSE
@@ -175,8 +175,8 @@ PTS,173,,Jason Richardson,14644,FALSE
 PTS,174,,Jamaal Wilkes,14644,FALSE
 PTS,175,,Purvis Short,14607,FALSE
 PTS,176,,Spencer Haywood,14592,FALSE
-PTS,177,,Allan Houston,14551,FALSE
-PTS,178,,Harrison Barnes,14545,FALSE
+PTS,177,,Harrison Barnes,14560,FALSE
+PTS,178,,Allan Houston,14551,FALSE
 PTS,179,,Paul Millsap,14536,FALSE
 PTS,180,,Bill Russell,14522,FALSE
 PTS,181,,Blake Griffin,14513,FALSE
@@ -216,9 +216,9 @@ PTS,214,,Billy Cunningham,13626,FALSE
 PTS,215,,Orlando Woolridge,13623,FALSE
 PTS,216,,Xavier McDaniel,13606,FALSE
 PTS,217,,Joel Embiid,13544,FALSE
-PTS,218,,Khris Middleton,13519,FALSE
+PTS,218,,Khris Middleton,13533,FALSE
 PTS,219,,Dave Cowens,13516,FALSE
-PTS,220,,Jaylen Brown,13451,FALSE
+PTS,220,,Jaylen Brown,13474,FALSE
 PTS,221,,Baron Davis,13447,FALSE
 PTS,222,,Cliff Hagan,13447,FALSE
 PTS,223,,Steven Smith,13430,FALSE
@@ -241,33 +241,33 @@ PTS,239,,Kendall Gill,12914,FALSE
 PTS,240,,Derrick Coleman,12884,FALSE
 PTS,241,,Wayman Tisdale,12878,FALSE
 PTS,242,,Rik Smits,12871,FALSE
-PTS,243,,Mychal Thompson,12810,FALSE
-PTS,244,,Pascal Siakam,12810,FALSE
-PTS,245,,Paul Westphal,12809,FALSE
-PTS,246,,Jonas Valančiūnas,12807,FALSE
+PTS,243,,Jonas Valančiūnas,12830,FALSE
+PTS,244,,Mychal Thompson,12810,FALSE
+PTS,245,,Pascal Siakam,12810,FALSE
+PTS,246,,Paul Westphal,12809,FALSE
 PTS,247,,Sidney Wicks,12803,FALSE
 PTS,248,,DeMarcus Cousins,12802,FALSE
 PTS,249,,Lamar Odom,12781,FALSE
 PTS,250,,Mickey Johnson,12748,FALSE
 PTS,251,,Johnny Newman,12740,FALSE
 PTS,252,,Bill Cartwright,12713,FALSE
-PTS,253,,Armen Gilliam,12700,FALSE
-PTS,254,,De'Aaron Fox,12693,FALSE
+PTS,253,,De'Aaron Fox,12711,FALSE
+PTS,254,,Armen Gilliam,12700,FALSE
 PTS,255,,Jim Jackson,12690,FALSE
 PTS,256,,Gordon Hayward,12687,FALSE
 PTS,257,,Dell Curry,12670,FALSE
 PTS,258,,Bill Sharman,12665,FALSE
 PTS,259,,Nick Van Exel,12658,FALSE
-PTS,260,,Jordan Clarkson,12647,FALSE
+PTS,260,,Jordan Clarkson,12657,FALSE
 PTS,261,,Derrick Rose,12573,FALSE
 PTS,262,,Goran Dragic,12568,FALSE
 PTS,263,,Otis Birdsong,12544,FALSE
 PTS,264,,Jack Marin,12541,FALSE
 PTS,265,,Marc Gasol,12514,FALSE
 PTS,266,,Mike Newlin,12507,FALSE
-PTS,267,,Mark Jackson,12489,FALSE
-PTS,268,,Trae Young,12489,FALSE
-PTS,269,,Dennis Schröder,12487,FALSE
+PTS,267,,Dennis Schröder,12494,FALSE
+PTS,268,,Mark Jackson,12489,FALSE
+PTS,269,,Trae Young,12489,FALSE
 PTS,270,,Johnny Kerr,12480,FALSE
 PTS,271,,Joe Barry Carroll,12455,FALSE
 PTS,272,,Caron Butler,12430,FALSE
@@ -280,8 +280,8 @@ PTS,278,,Maurice Lucas,12339,FALSE
 PTS,279,,A.C. Green,12331,FALSE
 PTS,280,,Johnny Green,12281,FALSE
 PTS,281,,Sleepy Floyd,12260,FALSE
-PTS,282,,Antonio McDyess,12227,FALSE
-PTS,283,,Tim Hardaway Jr.,12217,FALSE
+PTS,282,,Tim Hardaway Jr.,12230,FALSE
+PTS,283,,Antonio McDyess,12227,FALSE
 PTS,284,,Maurice Cheeks,12195,FALSE
 PTS,285,,Tom Heinsohn,12194,FALSE
 PTS,286,,Willis Reed,12183,FALSE
@@ -312,7 +312,7 @@ PTS,310,,Damon Stoudamire,11763,FALSE
 PTS,311,,Dick Snyder,11755,FALSE
 PTS,312,,Gerald Wilkins,11736,FALSE
 PTS,313,,Dikembe Mutombo,11729,FALSE
-PTS,314,,Andre Drummond,11679,FALSE
+PTS,314,,Andre Drummond,11689,FALSE
 PTS,315,,Jimmy Walker,11655,FALSE
 PTS,316,,Jamal Mashburn,11644,FALSE
 PTS,317,,Danilo Gallinari,11607,FALSE
@@ -330,8 +330,8 @@ PTS,328,,Gilbert Arenas,11402,FALSE
 PTS,329,,Dan Roundfield,11318,FALSE
 PTS,330,,Willie Naulls,11305,FALSE
 PTS,331,,Rudy Gobert,11287,FALSE
-PTS,332,,Tayshaun Prince,11272,FALSE
-PTS,333,,Brandon Ingram,11270,FALSE
+PTS,332,,Brandon Ingram,11286,FALSE
+PTS,333,,Tayshaun Prince,11272,FALSE
 PTS,334,,David Thompson,11264,FALSE
 PTS,335,,Ed Macauley,11234,FALSE
 PTS,336,,David Lee,11232,FALSE
@@ -362,15 +362,15 @@ PTS,360,,Ricky Sobers,10902,FALSE
 PTS,361,,Don Nelson,10898,FALSE
 PTS,362,,Alvin Robertson,10882,FALSE
 PTS,363,,Bingo Smith,10882,FALSE
-PTS,364,,Raymond Felton,10853,FALSE
-PTS,365,,Reggie Jackson,10845,FALSE
-PTS,366,,Anthony Edwards,10832,FALSE
+PTS,364,,Anthony Edwards,10854,FALSE
+PTS,365,,Raymond Felton,10853,FALSE
+PTS,366,,Reggie Jackson,10845,FALSE
 PTS,367,,John Starks,10829,FALSE
 PTS,368,,Cliff T. Robinson,10823,FALSE
 PTS,369,,Elden Campbell,10805,FALSE
 PTS,370,,Kenny Anderson,10789,FALSE
-PTS,371,,Mo Williams,10759,FALSE
-PTS,372,,Jalen Brunson,10744,FALSE
+PTS,371,,Jalen Brunson,10773,FALSE
+PTS,372,,Mo Williams,10759,FALSE
 PTS,373,,Donyell Marshall,10716,FALSE
 PTS,374,,Derek Fisher,10713,FALSE
 PTS,375,,Domantas Sabonis,10702,FALSE
@@ -393,9 +393,9 @@ PTS,391,,Lafayette Lever,10433,FALSE
 PTS,392,,Guy Rodgers,10415,FALSE
 PTS,393,,Brad Daugherty,10389,FALSE
 PTS,394,,Wayne Embry,10380,FALSE
-PTS,395,,Kristaps Porziņģis,10349,FALSE
-PTS,396,,Eric Bledsoe,10348,FALSE
-PTS,397,,Bam Adebayo,10346,FALSE
+PTS,395,,Bam Adebayo,10366,FALSE
+PTS,396,,Kristaps Porziņģis,10360,FALSE
+PTS,397,,Eric Bledsoe,10348,FALSE
 PTS,398,,Aaron Gordon,10339,FALSE
 PTS,399,,Sam Lacey,10303,FALSE
 PTS,400,,Calvin Natt,10291,FALSE
@@ -407,7 +407,7 @@ PTS,405,,Eddie Johnson,10163,FALSE
 PTS,406,,Ray Williams,10158,FALSE
 PTS,407,,George Mikan,10156,FALSE
 PTS,408,,Vern Fleming,10125,FALSE
-PTS,409,,Kyle Kuzma,10098,FALSE
+PTS,409,,Kyle Kuzma,10106,FALSE
 PTS,410,,Gene Shue,10068,FALSE
 PTS,411,,Vern Mikkelsen,10063,FALSE
 PTS,412,,Jeff Teague,10061,FALSE
@@ -427,8 +427,8 @@ PTS,425,,Phil Smith,9924,FALSE
 PTS,426,,Ricky Davis,9912,FALSE
 PTS,427,,Tom Meschery,9904,FALSE
 PTS,428,,Tom Gugliotta,9895,FALSE
-PTS,429,,P.J. Brown,9870,FALSE
-PTS,430,,Myles Turner,9864,FALSE
+PTS,429,,Myles Turner,9877,FALSE
+PTS,430,,P.J. Brown,9870,FALSE
 PTS,431,,Danny Granger,9855,FALSE
 PTS,432,,Toni Kukoc,9810,FALSE
 PTS,433,,Hot Rod Williams,9784,FALSE
@@ -450,11 +450,11 @@ PTS,448,,Rodney Rogers,9468,FALSE
 PTS,449,,Tim Thomas,9454,FALSE
 PTS,450,,Andrei Kirilenko,9431,FALSE
 PTS,451,,Lucius Allen,9407,FALSE
-PTS,452,,Isaiah Rider,9405,FALSE
-PTS,453,,Kenny Smith,9397,FALSE
-PTS,454,,Norman Powell,9393,FALSE
-PTS,455,,Kelly Oubre Jr.,9391,FALSE
-PTS,456,,Mikal Bridges,9382,FALSE
+PTS,452,,Kelly Oubre Jr.,9406,FALSE
+PTS,453,,Isaiah Rider,9405,FALSE
+PTS,454,,Kenny Smith,9397,FALSE
+PTS,455,,Mikal Bridges,9395,FALSE
+PTS,456,,Norman Powell,9393,FALSE
 PTS,457,,Doc Rivers,9377,FALSE
 PTS,458,,Jarrett Jack,9349,FALSE
 PTS,459,,Tyreke Evans,9347,FALSE
@@ -521,11 +521,11 @@ REB,19,,Charles Barkley,12546,FALSE
 REB,20,,Dikembe Mutombo,12359,FALSE
 REB,21,,Paul Silas,12357,FALSE
 REB,22,,Charles Oakley,12205,FALSE
-REB,23,,LeBron James,12093,FALSE
+REB,23,,LeBron James,12099,FALSE
 REB,24,,Dennis Rodman,11954,FALSE
 REB,25,,Kevin Willis,11901,FALSE
 REB,26,,Patrick Ewing,11607,FALSE
-REB,27,,Andre Drummond,11500,FALSE
+REB,27,,Andre Drummond,11516,FALSE
 REB,28,,Dirk Nowitzki,11489,FALSE
 REB,29,,Elgin Baylor,11463,FALSE
 REB,30,,Pau Gasol,11305,FALSE
@@ -533,7 +533,7 @@ REB,31,,Dolph Schayes,11256,FALSE
 REB,32,,Bill Bridges,11054,FALSE
 REB,33,,DeAndre Jordan,10861,FALSE
 REB,34,,Jack Sikma,10816,FALSE
-REB,35,,Nikola Vučević,10708,FALSE
+REB,35,,Nikola Vučević,10712,FALSE
 REB,36,,Rudy Gobert,10572,FALSE
 REB,37,,David Robinson,10497,FALSE
 REB,38,,Ben Wallace,10482,FALSE
@@ -556,9 +556,9 @@ REB,54,,Vlade Divac,9326,FALSE
 REB,55,,Artis Gilmore,9161,FALSE
 REB,56,,Al Horford,9159,FALSE
 REB,57,,Johnny Green,9083,FALSE
-REB,58,,Elton Brand,9040,FALSE
-REB,59,,Russell Westbrook,9025,FALSE
-REB,60,,Jonas Valančiūnas,9024,FALSE
+REB,58,,Jonas Valančiūnas,9041,FALSE
+REB,59,,Elton Brand,9040,FALSE
+REB,60,,Russell Westbrook,9025,FALSE
 REB,61,,Larry Bird,8974,FALSE
 REB,62,,Nikola Jokić,8969,FALSE
 REB,63,,Giannis Antetokounmpo,8882,FALSE
@@ -572,7 +572,7 @@ REB,70,,Terry Cummings,8630,FALSE
 REB,71,,Dale Davis,8605,FALSE
 REB,72,,Willis Reed,8414,FALSE
 REB,73,,P.J. Brown,8409,FALSE
-REB,74,,Kevin Durant,8254,FALSE
+REB,74,,Kevin Durant,8261,FALSE
 REB,75,,Carlos Boozer,8192,FALSE
 REB,76,,Antawn Jamison,8157,FALSE
 REB,77,,Larry Smith,8125,FALSE
@@ -580,7 +580,7 @@ REB,78,,Chris Webber,8124,FALSE
 REB,79,,Lamar Odom,8059,FALSE
 REB,80,,Bob McAdoo,8048,FALSE
 REB,81,,Larry Foust,8041,FALSE
-REB,82,,Karl-Anthony Towns,8027,FALSE
+REB,82,,Karl-Anthony Towns,8037,FALSE
 REB,83,,Happy Hairston,8019,FALSE
 REB,84,,John Havlicek,8007,FALSE
 REB,85,,Carmelo Anthony,7808,FALSE
@@ -603,7 +603,7 @@ REB,101,,Gus Johnson,7379,FALSE
 REB,102,,Larry Nance,7352,FALSE
 REB,103,,Kurt Thomas,7328,FALSE
 REB,104,,David Lee,7320,FALSE
-REB,105,,Clint Capela,7318,FALSE
+REB,105,,Clint Capela,7319,FALSE
 REB,106,,Chet Walker,7314,FALSE
 REB,107,,Anthony Mason,7279,FALSE
 REB,108,,Truck Robinson,7267,FALSE
@@ -622,7 +622,7 @@ REB,120,,Spencer Haywood,7038,FALSE
 REB,121,,Julius Randle,7024,FALSE
 REB,122,,Detlef Schrempf,7023,FALSE
 REB,123,,Erick Dampier,7005,FALSE
-REB,124,,Brook Lopez,6996,FALSE
+REB,124,,Brook Lopez,7002,FALSE
 REB,125,,Rick Mahorn,6957,FALSE
 REB,126,,Clifford Ray,6953,FALSE
 REB,127,,Mychal Thompson,6951,FALSE
@@ -661,8 +661,8 @@ REB,159,,Serge Ibaka,6513,FALSE
 REB,160,,Herb Williams,6509,FALSE
 REB,161,,Willie Naulls,6508,FALSE
 REB,162,,Mike Gminski,6480,FALSE
-REB,163,,Mickey Johnson,6465,FALSE
-REB,164,,Draymond Green,6463,FALSE
+REB,163,,Draymond Green,6467,FALSE
+REB,164,,Mickey Johnson,6465,FALSE
 REB,165,,Tristan Thompson,6428,FALSE
 REB,166,,Rony Seikaly,6424,FALSE
 REB,167,,Marcin Gortat,6407,FALSE
@@ -672,8 +672,8 @@ REB,170,,Donyell Marshall,6376,FALSE
 REB,171,,Jerome Kersey,6339,FALSE
 REB,172,,Zaza Pachulia,6315,FALSE
 REB,173,,Clifford Robinson,6306,FALSE
-REB,174,,Rudy Gay,6283,FALSE
-REB,175,,Tobias Harris,6282,FALSE
+REB,174,,Tobias Harris,6288,FALSE
+REB,175,,Rudy Gay,6283,FALSE
 REB,176,,Shareef Abdur-Rahim,6239,FALSE
 REB,177,,Walter Dukes,6223,FALSE
 REB,178,,Brad Miller,6199,FALSE
@@ -701,8 +701,8 @@ REB,199,,Elmore Smith,5962,FALSE
 REB,200,,Zelmo Beaty,5949,FALSE
 REB,201,,Vern Mikkelsen,5940,FALSE
 REB,202,,George Johnson,5887,FALSE
-REB,203,,Garfield Heard,5876,FALSE
-REB,204,,Paul George,5874,FALSE
+REB,203,,Paul George,5879,FALSE
+REB,204,,Garfield Heard,5876,FALSE
 REB,205,,Vin Baker,5867,FALSE
 REB,206,,Neil Johnston,5856,FALSE
 REB,207,,Nene,5828,FALSE
@@ -714,8 +714,8 @@ REB,212,,Udonis Haslem,5791,FALSE
 REB,213,,Reggie Evans,5765,FALSE
 REB,214,,Taj Gibson,5750,FALSE
 REB,215,,Tom Heinsohn,5749,FALSE
-REB,216,,Tom Boerwinkle,5745,FALSE
-REB,217,,Bam Adebayo,5735,FALSE
+REB,216,,Bam Adebayo,5746,FALSE
+REB,217,,Tom Boerwinkle,5745,FALSE
 REB,218,,Bob Dandridge,5715,FALSE
 REB,219,,Jarrett Allen,5715,FALSE
 REB,220,,Troy Murphy,5708,FALSE
@@ -723,7 +723,7 @@ REB,221,,Dan Issel,5707,FALSE
 REB,222,,Rich Kelley,5678,FALSE
 REB,223,,Dan Schayes,5671,FALSE
 REB,224,,Hal Greer,5665,FALSE
-REB,225,,Nicolas Batum,5653,FALSE
+REB,225,,Nicolas Batum,5654,FALSE
 REB,226,,Ray Felix,5652,FALSE
 REB,227,,Jusuf Nurkić,5644,FALSE
 REB,228,,Brian Grant,5622,FALSE
@@ -780,7 +780,7 @@ REB,278,,Cliff Hagan,5116,FALSE
 REB,279,,Bobby Portis,5113,FALSE
 REB,280,,John Drew,5088,FALSE
 REB,281,,Rodney McCray,5087,FALSE
-REB,282,,Kawhi Leonard,5067,FALSE
+REB,282,,Kawhi Leonard,5075,FALSE
 REB,283,,Bernard King,5060,FALSE
 REB,284,,Joe Johnson,5059,FALSE
 REB,285,,Tyrone Corbin,5046,FALSE
@@ -789,10 +789,10 @@ REB,287,,Arnie Risen,5011,FALSE
 REB,288,,Kenny Carr,4999,FALSE
 REB,289,,Charlie Share,4986,FALSE
 REB,290,,Kyle Lowry,4970,FALSE
-REB,291,,Stephen Curry,4964,FALSE
+REB,291,,Stephen Curry,4967,FALSE
 REB,292,,Mark Jackson,4963,FALSE
 REB,293,,Kurt Rambis,4961,FALSE
-REB,294,,Harrison Barnes,4952,FALSE
+REB,294,,Harrison Barnes,4954,FALSE
 REB,295,,Lorenzen Wright,4943,FALSE
 REB,296,,Luis Scola,4941,FALSE
 REB,297,,Dwyane Wade,4933,FALSE
@@ -814,8 +814,8 @@ REB,312,,P.J. Tucker,4778,FALSE
 REB,313,,Chuck Person,4763,FALSE
 REB,314,,Connie Dierking,4757,FALSE
 REB,315,,Mel Counts,4756,FALSE
-REB,316,,Deandre Ayton,4732,FALSE
-REB,317,,Myles Turner,4722,FALSE
+REB,316,,Deandre Ayton,4737,FALSE
+REB,317,,Myles Turner,4727,FALSE
 REB,318,,Richard Jefferson,4720,FALSE
 REB,319,,Thurl Bailey,4718,FALSE
 REB,320,,James Worthy,4708,FALSE
@@ -835,8 +835,8 @@ REB,333,,Tom Hawkins,4607,FALSE
 REB,334,,Theo Ratliff,4596,FALSE
 REB,335,,Pascal Siakam,4594,FALSE
 REB,336,,Mark Aguirre,4578,FALSE
-REB,337,,JaVale McGee,4577,FALSE
-REB,338,,Jrue Holiday,4575,FALSE
+REB,337,,Jrue Holiday,4578,FALSE
+REB,338,,JaVale McGee,4577,FALSE
 REB,339,,Don Kojis,4555,FALSE
 REB,340,,Kendrick Perkins,4532,FALSE
 REB,341,,Anderson Varejao,4531,FALSE
@@ -845,8 +845,8 @@ REB,343,,Mike Bantom,4517,FALSE
 REB,344,,Dwight Jones,4513,FALSE
 REB,345,,Mark Olberding,4503,FALSE
 REB,346,,Yao Ming,4494,FALSE
-REB,347,,Nat Clifton,4469,FALSE
-REB,348,,Jakob Poeltl,4468,FALSE
+REB,347,,Jakob Poeltl,4471,FALSE
+REB,348,,Nat Clifton,4469,FALSE
 REB,349,,Jayson Tatum,4466,FALSE
 REB,350,,Jim Brewer,4458,FALSE
 REB,351,,Metta World Peace,4448,FALSE
@@ -890,14 +890,14 @@ REB,388,,George Yardley,4220,FALSE
 REB,389,,Mike Dunleavy,4211,FALSE
 REB,390,,Dale Ellis,4201,FALSE
 REB,391,,Kelly Olynyk,4200,FALSE
-REB,392,,Glenn Robinson,4189,FALSE
-REB,393,,Josh Hart,4189,FALSE
+REB,392,,Josh Hart,4193,FALSE
+REB,393,,Glenn Robinson,4189,FALSE
 REB,394,,Mel Hutchins,4186,FALSE
 REB,395,,Reggie Miller,4182,FALSE
 REB,396,,Roy Hibbert,4173,FALSE
 REB,397,,Robert Reid,4168,FALSE
 REB,398,,George Mikan,4167,FALSE
-REB,399,,John Collins,4161,FALSE
+REB,399,,John Collins,4163,FALSE
 REB,400,,Steve Mix,4159,FALSE
 REB,401,,Jim Jackson,4152,FALSE
 REB,402,,Greg Ostertag,4145,FALSE
@@ -913,8 +913,8 @@ REB,411,,Zaid Abdul-Aziz,4065,FALSE
 REB,412,,Nick Anderson,4064,FALSE
 REB,413,,James Posey,4061,FALSE
 REB,414,,John Stockton,4051,FALSE
-REB,415,,Marvin Webster,4044,FALSE
-REB,416,,Kristaps Porziņģis,4040,FALSE
+REB,415,,Kristaps Porziņģis,4047,FALSE
+REB,416,,Marvin Webster,4044,FALSE
 REB,417,,Chris Mullin,4034,FALSE
 REB,418,,LaPhonso Ellis,4032,FALSE
 REB,419,,Kevin Kunnert,4031,FALSE
@@ -933,7 +933,7 @@ REB,431,,Ken Norman,3949,FALSE
 REB,432,,Kevin Duckworth,3945,FALSE
 REB,433,,Tom Van Arsdale,3942,FALSE
 REB,434,,Larry Kenon,3942,FALSE
-REB,435,,Khris Middleton,3927,FALSE
+REB,435,,Khris Middleton,3930,FALSE
 REB,436,,Lou Hudson,3926,FALSE
 REB,437,,Will Perdue,3918,FALSE
 REB,438,,Keith Van Horn,3909,FALSE
@@ -957,17 +957,17 @@ REB,455,,Mitch Richmond,3801,FALSE
 REB,456,,Guy Rodgers,3791,FALSE
 REB,457,,Peja Stojakovic,3782,FALSE
 REB,458,,Joe Meriweather,3764,FALSE
-REB,459,,Andrew Wiggins,3749,FALSE
+REB,459,,Andrew Wiggins,3752,FALSE
 REB,460,,Jerome Williams,3743,FALSE
-REB,461,,Chris Gatling,3741,FALSE
-REB,462,,Wendell Carter Jr.,3736,FALSE
+REB,461,,Wendell Carter Jr.,3742,FALSE
+REB,462,,Chris Gatling,3741,FALSE
 REB,463,,Ben Poquette,3731,FALSE
-REB,464,,Kyle Kuzma,3725,FALSE
+REB,464,,Kyle Kuzma,3726,FALSE
 REB,465,,Latrell Sprewell,3724,FALSE
 REB,466,,Sam Mitchell,3711,FALSE
-REB,467,,Gordon Hayward,3698,FALSE
-REB,468,,Manu Ginobili,3697,FALSE
-REB,469,,Jaylen Brown,3697,FALSE
+REB,467,,Jaylen Brown,3700,FALSE
+REB,468,,Gordon Hayward,3698,FALSE
+REB,469,,Manu Ginobili,3697,FALSE
 REB,470,,Orlando Woolridge,3696,FALSE
 REB,471,,Marcus Morris Sr.,3690,FALSE
 REB,472,,Bob Kauffman,3682,FALSE
@@ -1002,7 +1002,7 @@ REB,500,,Chris Morris,3544,FALSE
 AST,1,,John Stockton,15806,FALSE
 AST,2,,Chris Paul,12552,FALSE
 AST,3,,Jason Kidd,12091,FALSE
-AST,4,,LeBron James,12009,FALSE
+AST,4,,LeBron James,12021,FALSE
 AST,5,,Russell Westbrook,10351,FALSE
 AST,6,,Steve Nash,10335,FALSE
 AST,7,,Mark Jackson,10334,FALSE
@@ -1010,7 +1010,7 @@ AST,8,,Magic Johnson,10141,FALSE
 AST,9,,Oscar Robertson,9887,FALSE
 AST,10,,Isiah Thomas,9061,FALSE
 AST,11,,Gary Payton,8966,FALSE
-AST,12,,James Harden,8868,FALSE
+AST,12,,James Harden,8873,FALSE
 AST,13,,Andre Miller,8524,FALSE
 AST,14,,Rod Strickland,7987,FALSE
 AST,15,,Rajon Rondo,7584,FALSE
@@ -1023,9 +1023,9 @@ AST,21,,Tony Parker,7036,FALSE
 AST,22,,Bob Cousy,6955,FALSE
 AST,23,,Guy Rodgers,6917,FALSE
 AST,24,,Deron Williams,6819,FALSE
-AST,25,,Mike Conley,6778,FALSE
-AST,26,,Jrue Holiday,6755,FALSE
-AST,27,,Stephen Curry,6735,FALSE
+AST,25,,Mike Conley,6782,FALSE
+AST,26,,Jrue Holiday,6759,FALSE
+AST,27,,Stephen Curry,6740,FALSE
 AST,28,,Muggsy Bogues,6726,FALSE
 AST,29,,Kevin Johnson,6711,FALSE
 AST,30,,Derek Harper,6577,FALSE
@@ -1059,10 +1059,10 @@ AST,57,,Kevin Garnett,5445,FALSE
 AST,58,,Jason Terry,5415,FALSE
 AST,59,,Dave Bing,5397,FALSE
 AST,60,,Damon Stoudamire,5371,FALSE
-AST,61,,Draymond Green,5324,FALSE
+AST,61,,Draymond Green,5330,FALSE
 AST,62,,Kevin Porter,5314,FALSE
-AST,63,,Jeff Hornacek,5281,FALSE
-AST,64,,Kevin Durant,5278,FALSE
+AST,63,,Kevin Durant,5285,FALSE
+AST,64,,Jeff Hornacek,5281,FALSE
 AST,65,,Karl Malone,5248,FALSE
 AST,66,,Rickey Green,5221,FALSE
 AST,67,,Norm Van Lier,5217,FALSE
@@ -1096,7 +1096,7 @@ AST,94,,Jameer Nelson,4508,FALSE
 AST,95,,Randy Smith,4487,FALSE
 AST,96,,Giannis Antetokounmpo,4484,FALSE
 AST,97,,Brevin Knight,4481,FALSE
-AST,98,,Dennis Schröder,4434,FALSE
+AST,98,,Dennis Schröder,4438,FALSE
 AST,99,,Terrell Brandon,4407,FALSE
 AST,100,,Goran Dragic,4405,FALSE
 AST,101,,Calvin Murphy,4402,FALSE
@@ -1154,11 +1154,11 @@ AST,152,,Derrick Rose,3770,FALSE
 AST,153,,D.J. Augustin,3761,FALSE
 AST,154,,Andy Phillip,3759,FALSE
 AST,155,,Sam Lacey,3754,FALSE
-AST,156,,Al Horford,3741,FALSE
+AST,156,,Al Horford,3743,FALSE
 AST,157,,Paul Pressey,3715,FALSE
 AST,158,,Luke Ridnour,3713,FALSE
 AST,159,,Larry Drew,3702,FALSE
-AST,160,,De'Aaron Fox,3692,FALSE
+AST,160,,De'Aaron Fox,3702,FALSE
 AST,161,,D'Angelo Russell,3690,FALSE
 AST,162,,Boris Diaw,3684,FALSE
 AST,163,,Michael Cooper,3666,FALSE
@@ -1180,7 +1180,7 @@ AST,178,,Jalen Rose,3527,FALSE
 AST,179,,Chris Webber,3526,FALSE
 AST,180,,Ricky Sobers,3525,FALSE
 AST,181,,Anfernee Hardaway,3525,FALSE
-AST,182,,Paul George,3499,FALSE
+AST,182,,Paul George,3501,FALSE
 AST,183,,Archie Clark,3498,FALSE
 AST,184,,Jack Sikma,3488,FALSE
 AST,185,,Steve Francis,3473,FALSE
@@ -1198,21 +1198,21 @@ AST,196,,Jamaal Tinsley,3330,FALSE
 AST,197,,World Free,3319,FALSE
 AST,198,,Ty Lawson,3316,FALSE
 AST,199,,Bimbo Coles,3313,FALSE
-AST,200,,CJ McCollum,3294,FALSE
+AST,200,,CJ McCollum,3298,FALSE
 AST,201,,John Johnson,3285,FALSE
 AST,202,,Darrell Walker,3276,FALSE
 AST,203,,J.J. Barea,3270,FALSE
 AST,204,,Michael Finley,3245,FALSE
-AST,205,,Jerry Stackhouse,3240,FALSE
-AST,206,,Domantas Sabonis,3240,FALSE
-AST,207,,Khris Middleton,3238,FALSE
+AST,205,,Khris Middleton,3241,FALSE
+AST,206,,Jerry Stackhouse,3240,FALSE
+AST,207,,Domantas Sabonis,3240,FALSE
 AST,208,,Julius Erving,3224,FALSE
 AST,209,,Charles Oakley,3217,FALSE
 AST,210,,Larry Costello,3215,FALSE
 AST,211,,Vinnie Johnson,3212,FALSE
 AST,212,,Rafer Alston,3202,FALSE
-AST,213,,Lucius Allen,3174,FALSE
-AST,214,,Tyus Jones,3174,FALSE
+AST,213,,Tyus Jones,3177,FALSE
+AST,214,,Lucius Allen,3174,FALSE
 AST,215,,Antoine Walker,3170,FALSE
 AST,216,,Fred Brown,3160,FALSE
 AST,217,,Slater Martin,3160,FALSE
@@ -1231,16 +1231,16 @@ AST,229,,John Starks,3085,FALSE
 AST,230,,Phil Ford,3083,FALSE
 AST,231,,Darnell Valentine,3080,FALSE
 AST,232,,Dolph Schayes,3072,FALSE
-AST,233,,Marcus Smart,3063,FALSE
+AST,233,,Marcus Smart,3070,FALSE
 AST,234,,Dick Van Arsdale,3060,FALSE
 AST,235,,Hakeem Olajuwon,3058,FALSE
 AST,236,,Blake Griffin,3055,FALSE
 AST,237,,Ish Smith,3044,FALSE
 AST,238,,Jamal Murray,3044,FALSE
 AST,239,,Elfrid Payton,3033,FALSE
-AST,240,,Shaquille O'Neal,3026,FALSE
-AST,241,,Jeff Mullins,3023,FALSE
-AST,242,,Nikola Vučević,3022,FALSE
+AST,240,,Nikola Vučević,3027,FALSE
+AST,241,,Shaquille O'Neal,3026,FALSE
+AST,242,,Jeff Mullins,3023,FALSE
 AST,243,,Gary Grant,3013,FALSE
 AST,244,,Bob Lanier,3007,FALSE
 AST,245,,Lionel Hollins,3006,FALSE
@@ -1251,7 +1251,7 @@ AST,249,,Doug Christie,2992,FALSE
 AST,250,,Rolando Blackman,2981,FALSE
 AST,251,,Anthony Mason,2963,FALSE
 AST,252,,Tom Gola,2962,FALSE
-AST,253,,Jalen Brunson,2960,FALSE
+AST,253,,Jalen Brunson,2962,FALSE
 AST,254,,Tyrese Haliburton,2947,FALSE
 AST,255,,Kendall Gill,2945,FALSE
 AST,256,,Howard Komives,2941,FALSE
@@ -1271,10 +1271,10 @@ AST,269,,Mark Aguirre,2871,FALSE
 AST,270,,Bernard King,2863,FALSE
 AST,271,,Hersey Hawkins,2860,FALSE
 AST,272,,Beno Udrih,2858,FALSE
-AST,273,,Tyreke Evans,2852,FALSE
-AST,274,,Jim Jackson,2851,FALSE
-AST,275,,Bob Dandridge,2846,FALSE
-AST,276,,Darius Garland,2846,FALSE
+AST,273,,Darius Garland,2853,FALSE
+AST,274,,Tyreke Evans,2852,FALSE
+AST,275,,Jim Jackson,2851,FALSE
+AST,276,,Bob Dandridge,2846,FALSE
 AST,277,,Dana Barros,2837,FALSE
 AST,278,,Hedo Turkoglu,2832,FALSE
 AST,279,,Adrian Dantley,2830,FALSE
@@ -1343,13 +1343,13 @@ AST,341,,Vinny Del Negro,2484,FALSE
 AST,342,,Alvin Attles,2483,FALSE
 AST,343,,Shaun Livingston,2483,FALSE
 AST,344,,Kelvin Ransey,2480,FALSE
-AST,345,,B.J. Armstrong,2479,FALSE
-AST,346,,Frank Johnson,2476,FALSE
-AST,347,,Derrick White,2475,FALSE
+AST,345,,Derrick White,2480,FALSE
+AST,346,,B.J. Armstrong,2479,FALSE
+AST,347,,Frank Johnson,2476,FALSE
 AST,348,,Bob Sura,2474,FALSE
 AST,349,,Brad Miller,2470,FALSE
-AST,350,,Eric Murdock,2467,FALSE
-AST,351,,Kawhi Leonard,2465,FALSE
+AST,350,,Kawhi Leonard,2470,FALSE
+AST,351,,Eric Murdock,2467,FALSE
 AST,352,,Evan Turner,2462,FALSE
 AST,353,,Craig Ehlo,2456,FALSE
 AST,354,,Tobias Harris,2449,FALSE
@@ -1364,8 +1364,8 @@ AST,362,,Winston Garland,2421,FALSE
 AST,363,,Jamal Mashburn,2414,FALSE
 AST,364,,Richard Jefferson,2412,FALSE
 AST,365,,Mario Chalmers,2412,FALSE
-AST,366,,Tayshaun Prince,2407,FALSE
-AST,367,,Brandon Ingram,2406,FALSE
+AST,366,,Brandon Ingram,2412,FALSE
+AST,367,,Tayshaun Prince,2407,FALSE
 AST,368,,Elvin Hayes,2398,FALSE
 AST,369,,Chucky Atkins,2396,FALSE
 AST,370,,Larry Nance,2393,FALSE
@@ -1381,7 +1381,7 @@ AST,379,,Paul Seymour,2341,FALSE
 AST,380,,Terry Rozier,2337,FALSE
 AST,381,,Jayson Tatum,2336,FALSE
 AST,382,,Rodney Stuckey,2333,FALSE
-AST,383,,Jordan Clarkson,2305,FALSE
+AST,383,,Jordan Clarkson,2309,FALSE
 AST,384,,Jim Paxson,2300,FALSE
 AST,385,,Larry Johnson,2298,FALSE
 AST,386,,Larry Hughes,2290,FALSE
@@ -1391,9 +1391,9 @@ AST,389,,Rudy Gay,2280,FALSE
 AST,390,,Jon McGlocklin,2280,FALSE
 AST,391,,Anthony Johnson,2274,FALSE
 AST,392,,David West,2273,FALSE
-AST,393,,Bam Adebayo,2265,FALSE
-AST,394,,Karl-Anthony Towns,2262,FALSE
-AST,395,,Caris LeVert,2261,FALSE
+AST,393,,Bam Adebayo,2273,FALSE
+AST,394,,Karl-Anthony Towns,2267,FALSE
+AST,395,,Caris LeVert,2264,FALSE
 AST,396,,Otis Birdsong,2260,FALSE
 AST,397,,Henry Bibby,2259,FALSE
 AST,398,,Derrick McKey,2254,FALSE
@@ -1407,9 +1407,9 @@ AST,405,,Jim Barnett,2232,FALSE
 AST,406,,Dee Brown,2227,FALSE
 AST,407,,Herm Gilliam,2225,FALSE
 AST,408,,Christian Laettner,2224,FALSE
-AST,409,,Patrick Ewing,2215,FALSE
-AST,410,,George Gervin,2214,FALSE
-AST,411,,LaMelo Ball,2210,FALSE
+AST,409,,LaMelo Ball,2218,FALSE
+AST,410,,Patrick Ewing,2215,FALSE
+AST,411,,George Gervin,2214,FALSE
 AST,412,,Sam Jones,2209,FALSE
 AST,413,,Shawn Marion,2198,FALSE
 AST,414,,Kyle Macy,2198,FALSE
@@ -1428,7 +1428,7 @@ AST,426,,Andrei Kirilenko,2169,FALSE
 AST,427,,Jack George,2169,FALSE
 AST,428,,Malcolm Brogdon,2156,FALSE
 AST,429,,Jeff Malone,2154,FALSE
-AST,430,,Cade Cunningham,2143,FALSE
+AST,430,,Cade Cunningham,2150,FALSE
 AST,431,,Mychal Thompson,2141,FALSE
 AST,432,,Tom Gugliotta,2140,FALSE
 AST,433,,Thaddeus Young,2135,FALSE
@@ -1441,11 +1441,11 @@ AST,439,,Kyle Korver,2114,FALSE
 AST,440,,Randy Foye,2112,FALSE
 AST,441,,Shareef Abdur-Rahim,2109,FALSE
 AST,442,,Willie Anderson,2105,FALSE
-AST,443,,Johnny Egan,2102,FALSE
-AST,444,,Bill Sharman,2101,FALSE
-AST,445,,Allan Bristow,2098,FALSE
-AST,446,,Glen Rice,2097,FALSE
-AST,447,,Kyle Anderson,2095,FALSE
+AST,443,,Kyle Anderson,2104,FALSE
+AST,444,,Johnny Egan,2102,FALSE
+AST,445,,Bill Sharman,2101,FALSE
+AST,446,,Allan Bristow,2098,FALSE
+AST,447,,Glen Rice,2097,FALSE
 AST,448,,Rich Kelley,2092,FALSE
 AST,449,,Earl Boykins,2092,FALSE
 AST,450,,Kelly Tripucka,2090,FALSE
@@ -1474,9 +1474,9 @@ AST,472,,Brad Daugherty,2028,FALSE
 AST,473,,Kelly Olynyk,2024,FALSE
 AST,474,,Cuttino Mobley,2015,FALSE
 AST,475,,Patty Mills,2010,FALSE
-AST,476,,Caron Butler,2007,FALSE
-AST,477,,Tom Boerwinkle,2007,FALSE
-AST,478,,Josh Hart,2006,FALSE
+AST,476,,Josh Hart,2008,FALSE
+AST,477,,Caron Butler,2007,FALSE
+AST,478,,Tom Boerwinkle,2007,FALSE
 AST,479,,Johnny Kerr,2004,FALSE
 AST,480,,Rasheed Wallace,1994,FALSE
 AST,481,,Keith Erickson,1991,FALSE
@@ -1504,7 +1504,7 @@ STL,2,,Chris Paul,2728,FALSE
 STL,3,,Jason Kidd,2684,FALSE
 STL,4,,Michael Jordan,2514,FALSE
 STL,5,,Gary Payton,2445,FALSE
-STL,6,,LeBron James,2412,FALSE
+STL,6,,LeBron James,2416,FALSE
 STL,7,,Maurice Cheeks,2310,FALSE
 STL,8,,Scottie Pippen,2307,FALSE
 STL,9,,Clyde Drexler,2207,FALSE
@@ -1528,7 +1528,7 @@ STL,26,,Ron Harper,1716,FALSE
 STL,27,,Lafayette Lever,1666,FALSE
 STL,28,,Charles Barkley,1648,FALSE
 STL,29,,Gus Williams,1638,FALSE
-STL,30,,Mike Conley,1637,FALSE
+STL,30,,Mike Conley,1638,FALSE
 STL,31,,Trevor Ariza,1628,FALSE
 STL,32,,Hersey Hawkins,1622,FALSE
 STL,33,,Dwyane Wade,1620,FALSE
@@ -1537,8 +1537,8 @@ STL,35,,Rod Strickland,1616,FALSE
 STL,36,,Thaddeus Young,1612,FALSE
 STL,37,,Mark Jackson,1608,FALSE
 STL,38,,Jason Terry,1603,FALSE
-STL,39,,Paul George,1601,FALSE
-STL,40,,Stephen Curry,1599,FALSE
+STL,39,,Paul George,1602,FALSE
+STL,40,,Stephen Curry,1601,FALSE
 STL,41,,Terry Porter,1583,FALSE
 STL,42,,Doc Rivers,1563,FALSE
 STL,43,,Larry Bird,1556,FALSE
@@ -1549,7 +1549,7 @@ STL,47,,Jeff Hornacek,1536,FALSE
 STL,48,,Vince Carter,1530,FALSE
 STL,49,,Chris Mullin,1530,FALSE
 STL,50,,Baron Davis,1530,FALSE
-STL,51,,Jrue Holiday,1526,FALSE
+STL,51,,Jrue Holiday,1527,FALSE
 STL,52,,Kendall Gill,1519,FALSE
 STL,53,,Rajon Rondo,1518,FALSE
 STL,54,,Julius Erving,1508,FALSE
@@ -1567,7 +1567,7 @@ STL,65,,Clifford Robinson,1402,FALSE
 STL,66,,Manu Ginobili,1392,FALSE
 STL,67,,David Robinson,1388,FALSE
 STL,68,,Dominique Wilkins,1378,FALSE
-STL,69,,Kawhi Leonard,1375,FALSE
+STL,69,,Kawhi Leonard,1376,FALSE
 STL,70,,Muggsy Bogues,1369,FALSE
 STL,71,,Ben Wallace,1369,FALSE
 STL,72,,Derek Fisher,1352,FALSE
@@ -1586,8 +1586,8 @@ STL,84,,Kenny Anderson,1258,FALSE
 STL,85,,Terry Cummings,1255,FALSE
 STL,86,,DeMar DeRozan,1250,FALSE
 STL,87,,Grant Hill,1248,FALSE
-STL,88,,Draymond Green,1244,FALSE
-STL,89,,Kevin Durant,1235,FALSE
+STL,88,,Draymond Green,1245,FALSE
+STL,89,,Kevin Durant,1236,FALSE
 STL,90,,Rudy Gay,1231,FALSE
 STL,91,,Brevin Knight,1229,FALSE
 STL,92,,Tyrone Corbin,1228,FALSE
@@ -1607,7 +1607,7 @@ STL,105,,Norm Nixon,1187,FALSE
 STL,106,,Shawn Kemp,1185,FALSE
 STL,107,,Jamal Crawford,1179,FALSE
 STL,108,,Mike Bibby,1172,FALSE
-STL,109,,Andre Drummond,1170,FALSE
+STL,109,,Andre Drummond,1171,FALSE
 STL,110,,Calvin Murphy,1165,FALSE
 STL,111,,Caron Butler,1163,FALSE
 STL,112,,Jack Sikma,1162,FALSE
@@ -1648,8 +1648,8 @@ STL,146,,Kevin Johnson,1082,FALSE
 STL,147,,Dwight Howard,1081,FALSE
 STL,148,,Michael Adams,1081,FALSE
 STL,149,,Buck Williams,1080,FALSE
-STL,150,,Tom Gugliotta,1079,FALSE
-STL,151,,Marcus Smart,1078,FALSE
+STL,150,,Marcus Smart,1080,FALSE
+STL,151,,Tom Gugliotta,1079,FALSE
 STL,152,,Nicolas Batum,1075,FALSE
 STL,153,,Derrick McKey,1072,FALSE
 STL,154,,Joe Johnson,1071,FALSE
@@ -1798,7 +1798,7 @@ STL,296,,Juwan Howard,818,FALSE
 STL,297,,Toni Kukoc,817,FALSE
 STL,298,,Pooh Richardson,817,FALSE
 STL,299,,George Lynch,817,FALSE
-STL,300,,Andrew Wiggins,816,FALSE
+STL,300,,Andrew Wiggins,817,FALSE
 STL,301,,Luke Ridnour,814,FALSE
 STL,302,,Rafer Alston,813,FALSE
 STL,303,,M.L. Carr,812,FALSE
@@ -1830,9 +1830,9 @@ STL,328,,Jameer Nelson,772,FALSE
 STL,329,,Bonzi Wells,769,FALSE
 STL,330,,Ricky Pierce,768,FALSE
 STL,331,,Zaza Pachulia,768,FALSE
-STL,332,,Norm Van Lier,767,FALSE
-STL,333,,Eddie Jordan,766,FALSE
-STL,334,,CJ McCollum,766,FALSE
+STL,332,,CJ McCollum,768,FALSE
+STL,333,,Norm Van Lier,767,FALSE
+STL,334,,Eddie Jordan,766,FALSE
 STL,335,,Carlos Boozer,765,FALSE
 STL,336,,David West,764,FALSE
 STL,337,,Dejounte Murray,764,FALSE
@@ -1845,20 +1845,20 @@ STL,343,,Kenny Smith,759,FALSE
 STL,344,,LaMarcus Aldridge,758,FALSE
 STL,345,,Klay Thompson,758,FALSE
 STL,346,,Fred VanVleet,757,FALSE
-STL,347,,John Salmons,756,FALSE
-STL,348,,Brad Davis,756,FALSE
-STL,349,,John Bagley,755,FALSE
-STL,350,,Mikal Bridges,754,FALSE
-STL,351,,Bob McAdoo,751,FALSE
-STL,352,,Ruben Patterson,751,FALSE
-STL,353,,Hedo Turkoglu,750,FALSE
-STL,354,,Kelly Oubre Jr.,750,FALSE
-STL,355,,Peja Stojakovic,747,FALSE
-STL,356,,Brian Shaw,747,FALSE
-STL,357,,Dennis Schröder,747,FALSE
+STL,347,,Mikal Bridges,757,FALSE
+STL,348,,John Salmons,756,FALSE
+STL,349,,Brad Davis,756,FALSE
+STL,350,,John Bagley,755,FALSE
+STL,351,,Kelly Oubre Jr.,754,FALSE
+STL,352,,Bob McAdoo,751,FALSE
+STL,353,,Ruben Patterson,751,FALSE
+STL,354,,Hedo Turkoglu,750,FALSE
+STL,355,,Dennis Schröder,749,FALSE
+STL,356,,Peja Stojakovic,747,FALSE
+STL,357,,Brian Shaw,747,FALSE
 STL,358,,Hot Rod Williams,746,FALSE
-STL,359,,OG Anunoby,743,FALSE
-STL,360,,Kyle Anderson,742,FALSE
+STL,359,,Kyle Anderson,744,FALSE
+STL,360,,OG Anunoby,743,FALSE
 STL,361,,LaSalle Thompson,741,FALSE
 STL,362,,Dana Barros,740,FALSE
 STL,363,,Shaquille O'Neal,739,FALSE
@@ -1905,16 +1905,16 @@ STL,403,,Gary Harris,694,FALSE
 STL,404,,Leandro Barbosa,693,FALSE
 STL,405,,Dale Davis,691,FALSE
 STL,406,,Derek Anderson,691,FALSE
-STL,407,,Bam Adebayo,689,FALSE
+STL,407,,Bam Adebayo,690,FALSE
 STL,408,,Mark Aguirre,687,FALSE
 STL,409,,Joe Barry Carroll,687,FALSE
 STL,410,,Jojo White,686,FALSE
 STL,411,,Junior Bridgeman,685,FALSE
 STL,412,,Lamond Murray,684,FALSE
-STL,413,,Chuck Person,683,FALSE
-STL,414,,Johnny Davis,683,FALSE
-STL,415,,Jarrett Jack,683,FALSE
-STL,416,,Jaylen Brown,683,FALSE
+STL,413,,Jaylen Brown,684,FALSE
+STL,414,,Chuck Person,683,FALSE
+STL,415,,Johnny Davis,683,FALSE
+STL,416,,Jarrett Jack,683,FALSE
 STL,417,,Phil Chenier,682,FALSE
 STL,418,,Walt Frazier,681,FALSE
 STL,419,,Greg Monroe,680,FALSE
@@ -1961,11 +1961,11 @@ STL,459,,Rudy Gobert,634,FALSE
 STL,460,,Rick Mahorn,633,FALSE
 STL,461,,Jamal Mashburn,632,FALSE
 STL,462,,Kyle Macy,631,FALSE
-STL,463,,Tyson Chandler,630,FALSE
-STL,464,,Mike Bantom,630,FALSE
-STL,465,,Joe Ingles,630,FALSE
-STL,466,,Alex Caruso,629,FALSE
-STL,467,,Josh Hart,629,FALSE
+STL,463,,Josh Hart,631,FALSE
+STL,464,,Tyson Chandler,630,FALSE
+STL,465,,Mike Bantom,630,FALSE
+STL,466,,Joe Ingles,630,FALSE
+STL,467,,Alex Caruso,629,FALSE
 STL,468,,Al Jefferson,628,FALSE
 STL,469,,Wes Unseld,628,FALSE
 STL,470,,Devin Booker,628,FALSE
@@ -2038,7 +2038,7 @@ BLK,36,,Benoit Benjamin,1581,FALSE
 BLK,37,,DeAndre Jordan,1577,FALSE
 BLK,38,,Samuel Dalembert,1546,FALSE
 BLK,39,,Wayne Cooper,1535,FALSE
-BLK,40,,Myles Turner,1522,FALSE
+BLK,40,,Myles Turner,1527,FALSE
 BLK,41,,Caldwell Jones,1517,FALSE
 BLK,42,,Alton Lister,1473,FALSE
 BLK,43,,Andrei Kirilenko,1461,FALSE
@@ -2047,9 +2047,9 @@ BLK,45,,Hot Rod Williams,1456,FALSE
 BLK,46,,Mark West,1403,FALSE
 BLK,47,,Erick Dampier,1398,FALSE
 BLK,48,,Clifford Robinson,1390,FALSE
-BLK,49,,Al Horford,1350,FALSE
-BLK,50,,Terry Tyler,1342,FALSE
-BLK,51,,Kevin Durant,1342,FALSE
+BLK,49,,Al Horford,1351,FALSE
+BLK,50,,Kevin Durant,1344,FALSE
+BLK,51,,Terry Tyler,1342,FALSE
 BLK,52,,Tyson Chandler,1335,FALSE
 BLK,53,,Zydrunas Ilgauskas,1327,FALSE
 BLK,54,,Julius Erving,1293,FALSE
@@ -2112,7 +2112,7 @@ BLK,110,,LaSalle Thompson,972,FALSE
 BLK,111,,Bill Laimbeer,965,FALSE
 BLK,112,,Taj Gibson,965,FALSE
 BLK,113,,Scottie Pippen,947,FALSE
-BLK,114,,Kristaps Porziņģis,946,FALSE
+BLK,114,,Kristaps Porziņģis,947,FALSE
 BLK,115,,Derrick Favors,939,FALSE
 BLK,116,,Rasho Nesterovic,934,FALSE
 BLK,117,,Sam Perkins,933,FALSE
@@ -2124,8 +2124,8 @@ BLK,122,,Yao Ming,920,FALSE
 BLK,123,,Raef LaFrentz,919,FALSE
 BLK,124,,Sam Bowie,909,FALSE
 BLK,125,,Shane Battier,906,FALSE
-BLK,126,,Kendrick Perkins,903,FALSE
-BLK,127,,Jonas Valančiūnas,902,FALSE
+BLK,126,,Jonas Valančiūnas,904,FALSE
+BLK,127,,Kendrick Perkins,903,FALSE
 BLK,128,,Michael Jordan,893,FALSE
 BLK,129,,Lamar Odom,892,FALSE
 BLK,130,,Antonio Davis,889,FALSE
@@ -2133,7 +2133,7 @@ BLK,131,,Vince Carter,888,FALSE
 BLK,132,,Charles Barkley,888,FALSE
 BLK,133,,Dwyane Wade,885,FALSE
 BLK,134,,Marcin Gortat,885,FALSE
-BLK,135,,Nikola Vučević,884,FALSE
+BLK,135,,Nikola Vučević,885,FALSE
 BLK,136,,Roy Hinson,882,FALSE
 BLK,137,,Joakim Noah,874,FALSE
 BLK,138,,Rony Seikaly,872,FALSE
@@ -2222,7 +2222,7 @@ BLK,220,,Mickey Johnson,632,FALSE
 BLK,221,,DeSagana Diop,630,FALSE
 BLK,222,,Spencer Haywood,629,FALSE
 BLK,223,,Tom Chambers,627,FALSE
-BLK,224,,Victor Wembanyama,625,FALSE
+BLK,224,,Victor Wembanyama,627,FALSE
 BLK,225,,James Worthy,624,FALSE
 BLK,226,,Kevin Kunnert,616,FALSE
 BLK,227,,Ivica Zubac,615,FALSE
@@ -2267,14 +2267,14 @@ BLK,265,,Chris Morris,540,FALSE
 BLK,266,,Channing Frye,540,FALSE
 BLK,267,,Aaron Williams,539,FALSE
 BLK,268,,Maurice Lucas,538,FALSE
-BLK,269,,Bam Adebayo,535,FALSE
+BLK,269,,Bam Adebayo,536,FALSE
 BLK,270,,Felton Spencer,534,FALSE
 BLK,271,,Brian Skinner,532,FALSE
-BLK,272,,Dennis Rodman,531,FALSE
-BLK,273,,Joel Anthony,531,FALSE
-BLK,274,,Evan Mobley,531,FALSE
+BLK,272,,Evan Mobley,532,FALSE
+BLK,273,,Dennis Rodman,531,FALSE
+BLK,274,,Joel Anthony,531,FALSE
 BLK,275,,Steve Johnson,530,FALSE
-BLK,276,,John Collins,528,FALSE
+BLK,276,,John Collins,529,FALSE
 BLK,277,,Will Perdue,527,FALSE
 BLK,278,,Tristan Thompson,526,FALSE
 BLK,279,,Marques Johnson,525,FALSE
@@ -2308,7 +2308,7 @@ BLK,306,,LaPhonso Ellis,477,FALSE
 BLK,307,,John Gianelli,476,FALSE
 BLK,308,,Drew Gooden,474,FALSE
 BLK,309,,Walker Kessler,474,FALSE
-BLK,310,,Robert Williams III,473,FALSE
+BLK,310,,Robert Williams III,474,FALSE
 BLK,311,,Andrea Bargnani,470,FALSE
 BLK,312,,Antoine Walker,469,FALSE
 BLK,313,,Nick Collison,469,FALSE
@@ -2329,7 +2329,7 @@ BLK,327,,Rodney Rogers,451,FALSE
 BLK,328,,Jason Kidd,450,FALSE
 BLK,329,,Richaun Holmes,449,FALSE
 BLK,330,,Dan Gadzuric,448,FALSE
-BLK,331,,Deandre Ayton,447,FALSE
+BLK,331,,Deandre Ayton,448,FALSE
 BLK,332,,Naz Reid,445,FALSE
 BLK,333,,Luol Deng,444,FALSE
 BLK,334,,Matt Barnes,444,FALSE
@@ -2346,9 +2346,9 @@ BLK,344,,Sidney Wicks,432,FALSE
 BLK,345,,Ken Norman,431,FALSE
 BLK,346,,Larry Sanders,429,FALSE
 BLK,347,,Ekpe Udoh,429,FALSE
-BLK,348,,Harvey Grant,428,FALSE
-BLK,349,,Paul Pressey,428,FALSE
-BLK,350,,Isaiah Stewart,427,FALSE
+BLK,348,,Isaiah Stewart,429,FALSE
+BLK,349,,Harvey Grant,428,FALSE
+BLK,350,,Paul Pressey,428,FALSE
 BLK,351,,Etan Thomas,427,FALSE
 BLK,352,,Brandan Wright,425,FALSE
 BLK,353,,Steven Hunter,422,FALSE
@@ -2385,7 +2385,7 @@ BLK,383,,Brad Daugherty,397,FALSE
 BLK,384,,Dwight Jones,397,FALSE
 BLK,385,,Al-Farouq Aminu,397,FALSE
 BLK,386,,Dan Issel,396,FALSE
-BLK,387,,Goga Bitadze,394,FALSE
+BLK,387,,Goga Bitadze,396,FALSE
 BLK,388,,Doug Christie,392,FALSE
 BLK,389,,Kenneth Faried,392,FALSE
 BLK,390,,Chet Holmgren,392,FALSE
@@ -2409,11 +2409,11 @@ BLK,407,,Steve Stipanovich,380,FALSE
 BLK,408,,Scottie Barnes,380,FALSE
 BLK,409,,Tyrone Hill,379,FALSE
 BLK,410,,Mikal Bridges,379,FALSE
-BLK,411,,Zaza Pachulia,378,FALSE
-BLK,412,,Kevin Love,377,FALSE
-BLK,413,,Kwame Brown,376,FALSE
-BLK,414,,Chris Gatling,375,FALSE
-BLK,415,,Jaden McDaniels,375,FALSE
+BLK,411,,Jaden McDaniels,379,FALSE
+BLK,412,,Zaza Pachulia,378,FALSE
+BLK,413,,Kevin Love,377,FALSE
+BLK,414,,Kwame Brown,376,FALSE
+BLK,415,,Chris Gatling,375,FALSE
 BLK,416,,Magic Johnson,374,FALSE
 BLK,417,,Greg Monroe,373,FALSE
 BLK,418,,Kelly Olynyk,373,FALSE
@@ -2425,9 +2425,9 @@ BLK,423,,Wes Unseld,367,FALSE
 BLK,424,,Grant Long,366,FALSE
 BLK,425,,Thabo Sefolosha,366,FALSE
 BLK,426,,Nick Anderson,364,FALSE
-BLK,427,,Enes Freedom,363,FALSE
-BLK,428,,Jim Petersen,363,FALSE
-BLK,429,,Derrick Jones Jr.,363,FALSE
+BLK,427,,Derrick Jones Jr.,364,FALSE
+BLK,428,,Enes Freedom,363,FALSE
+BLK,429,,Jim Petersen,363,FALSE
 BLK,430,,Luke Kornet,362,FALSE
 BLK,431,,Lionel Simmons,361,FALSE
 BLK,432,,Bob Gross,361,FALSE
@@ -2448,8 +2448,8 @@ BLK,446,,Jahidi White,355,FALSE
 BLK,447,,Kyle Lowry,353,FALSE
 BLK,448,,Scot Pollard,352,FALSE
 BLK,449,,Doc Rivers,351,FALSE
-BLK,450,,Lorenzo Williams,350,FALSE
-BLK,451,,Kelly Oubre Jr.,350,FALSE
+BLK,450,,Kelly Oubre Jr.,351,FALSE
+BLK,451,,Lorenzo Williams,350,FALSE
 BLK,452,,Charlie Villanueva,349,FALSE
 BLK,453,,Mel Turpin,348,FALSE
 BLK,454,,Richard Jefferson,347,FALSE
@@ -2472,14 +2472,14 @@ BLK,470,,Willie Cauley-Stein,335,FALSE
 BLK,471,,Brandon Ingram,334,FALSE
 BLK,472,,Kevon Looney,332,FALSE
 BLK,473,,Cody Zeller,330,FALSE
-BLK,474,,David Lee,329,FALSE
-BLK,475,,Roy Tarpley,329,FALSE
-BLK,476,,Jan Van Breda Kolff,329,FALSE
-BLK,477,,Dwight Powell,329,FALSE
-BLK,478,,Kenny Gattison,327,FALSE
-BLK,479,,Wendell Carter Jr.,327,FALSE
-BLK,480,,Eric Gordon,326,FALSE
-BLK,481,,Miles Bridges,326,FALSE
+BLK,474,,Dwight Powell,330,FALSE
+BLK,475,,David Lee,329,FALSE
+BLK,476,,Roy Tarpley,329,FALSE
+BLK,477,,Jan Van Breda Kolff,329,FALSE
+BLK,478,,Wendell Carter Jr.,328,FALSE
+BLK,479,,Miles Bridges,328,FALSE
+BLK,480,,Kenny Gattison,327,FALSE
+BLK,481,,Eric Gordon,326,FALSE
 BLK,482,,Leon Douglas,325,FALSE
 BLK,483,,Mike Dunleavy,324,FALSE
 BLK,484,,Lloyd Neal,324,FALSE
