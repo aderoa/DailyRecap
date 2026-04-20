@@ -25,7 +25,7 @@ PROCESSED_FILE = "processed_games.txt"
 STATS = ["PTS", "REB", "AST", "STL", "BLK"]
 STAT_LABELS = {"PTS": "Scoring", "REB": "Rebounds", "AST": "Assists",
                "STL": "Steals", "BLK": "Blocks"}
-MAX_RANK = 250
+MAX_RANK = 200
 
 ESPN_SCOREBOARD = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard"
 ESPN_SUMMARY = "https://site.web.api.espn.com/apis/site/v2/sports/basketball/nba/summary"
