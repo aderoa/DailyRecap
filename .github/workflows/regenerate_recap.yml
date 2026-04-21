@@ -1,0 +1,32 @@
+name: Regenerate Recap (force)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install requests
+
+      - name: Generate recap (unconditional)
+        run: python generate_recap.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add --force index.html
+          git commit -m "Force regenerate recap $(TZ=America/New_York date +%Y-%m-%d\ %H:%M)" || echo "Nothing to commit"
+          git push || echo "Nothing to push"
