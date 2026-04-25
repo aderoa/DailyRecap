@@ -1,12 +1,21 @@
 PLAYER,RAT,PASSED,CATEGORY,RANK,STAT_TOTAL,PASSED_TOTAL,STAT_CODE,LOGO_URL
-James Harden,,Dwyane Wade,Scoring,12,3963,3954,PTS,https://cdn.nba.com/logos/nba/1610612739/primary/L/logo.svg
-Rudy Gobert,,"Anthony Davis, Dirk Nowitzki",Blocks,53,130,129,BLK,https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg
-Rudy Gobert,,Vlade Divac,Rebounds,67,918,913,REB,https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg
-Jamal Murray,,Robert Horry,Scoring,70,1952,1939,PTS,https://cdn.nba.com/logos/nba/1610612743/primary/L/logo.svg
-Nikola Jokic,,"Sam Perkins, Mario Chalmers, Shaquille O'Neal, Vlade Divac",Steals,90,119,118,STL,https://cdn.nba.com/logos/nba/1610612743/primary/L/logo.svg
-Jalen Brunson,,"Brian Shaw, Jason Terry",Assists,95,379,375,AST,https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg
-CJ McCollum,,"Dominique Wilkins, Carlos Boozer, Marcus Smart, Deron Williams, Lamar Odom",Scoring,149,1425,1423,PTS,https://cdn.nba.com/logos/nba/1610612737/primary/L/logo.svg
-Karl-Anthony Towns,,"Detlef Schrempf, Tobias Harris, Kevon Looney, Arnie Risen, Happy Hairston, Carmelo Anthony, Mark Eaton, Clyde Lovellette, Zydrunas Ilgauskas, Clifford Robinson, Cedric Maxwell",Rebounds,162,569,565,REB,https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg
-OG Anunoby,,"Nazr Mohammed, Mike Green, Boris Diaw, Dan Majerle, Clemon Johnson, Hassan Whiteside, Jason Kidd, George Gervin, Nate Thurmond, Kurt Thomas, Alvin Scott, Stephen Curry, Ian Mahinmi, Jeff Green, Andrew Lang, Tony Battie",Blocks,166,53,52,BLK,https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg
-Anthony Edwards,,"Fred Brown, JJ Redick, Jim McMillian, Rashard Lewis, Paul Arizin, Mark Jackson, Bill Bridges",Scoring,188,1199,1197,PTS,https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg
-Anthony Edwards,,"Richard Jefferson, Reggie Jackson, Bob Pettit",Assists,197,242,241,AST,https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg
+Jayson Tatum,,Chris Paul,Scoring,31,3005,2981,PTS,https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg
+Jaylen Brown,,Bill Russell,Scoring,41,2695,2673,PTS,https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg
+Paul George,,"Kyle Lowry, Gus Williams, Kevin Durant",Steals,41,175,174,STL,https://cdn.nba.com/logos/nba/1610612755/primary/L/logo.svg
+Jrue Holiday,,Andre Iguodala,Assists,44,622,618,AST,https://cdn.nba.com/logos/nba/1610612757/primary/L/logo.svg
+Jayson Tatum,,"Karl Malone, Jimmy Butler",Assists,46,615,610,AST,https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg
+Marcus Smart,,"David Robinson, Klay Thompson",Steals,53,155,151,STL,https://cdn.nba.com/logos/nba/1610612747/primary/L/logo.svg
+Marcus Smart,,Elgin Baylor,Assists,57,549,541,AST,https://cdn.nba.com/logos/nba/1610612747/primary/L/logo.svg
+Jayson Tatum,,Reggie Miller,Steals,60,147,146,STL,https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg
+Paul George,,Doc Rivers,Assists,65,482,479,AST,https://cdn.nba.com/logos/nba/1610612755/primary/L/logo.svg
+Jrue Holiday,,"Jamaal Wilkes, Tony Allen, Terry Porter, Jaylen Brown",Steals,67,140,137,STL,https://cdn.nba.com/logos/nba/1610612757/primary/L/logo.svg
+Jaylen Brown,,"Tony Allen, Terry Porter",Steals,68,138,137,STL,https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg
+Robert Williams,,"Jack Sikma, Jerome Kersey, Antonio McDyess",Blocks,110,82,80,BLK,https://cdn.nba.com/logos/nba/1610612757/primary/L/logo.svg
+Jrue Holiday,,"Tayshaun Prince, Vince Carter, George Gervin, George Hill, Michael Cooper, Don Nelson",Scoring,111,1606,1602,PTS,https://cdn.nba.com/logos/nba/1610612757/primary/L/logo.svg
+Jaylen Brown,,"Slater Martin, Paul Westphal",Assists,111,357,354,AST,https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg
+Derrick White,,"Charles Smith, Manute Bol, Raef LaFrentz",Blocks,114,80,77,BLK,https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg
+Marcus Smart,,"Detlef Schrempf, CJ McCollum, Dominique Wilkins, Carlos Boozer",Scoring,148,1438,1432,PTS,https://cdn.nba.com/logos/nba/1610612747/primary/L/logo.svg
+Jaylen Brown,,"Derrick Coleman, Ralph Sampson, Bill Cartwright, Mike Gminski",Blocks,148,60,59,BLK,https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg
+Marcus Smart,,"Wes Unseld, Shane Battier, Jae Crowder, Billy Paultz",Blocks,158,56,55,BLK,https://cdn.nba.com/logos/nba/1610612747/primary/L/logo.svg
+Jrue Holiday,,"Trevor Ariza, Jeff Hornacek, Blake Griffin, Isiah Thomas, Marcin Gortat",Rebounds,185,530,528,REB,https://cdn.nba.com/logos/nba/1610612757/primary/L/logo.svg
+Derrick White,,"Clifford Robinson, Lou Williams",Assists,185,252,250,AST,https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg
