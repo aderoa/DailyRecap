@@ -170,6 +170,11 @@ def parse_sections(text):
     secs = []
     cur_name = None
     cur_rows = []
+    # Allowed section names — any other ALL-CAPS string in col A is just a
+    # stray header inside a sub-table (e.g. "PLAYER") and must NOT be treated
+    # as a new section, otherwise it cuts off the previous section's rows.
+    KNOWN_SECTIONS = set(SM.keys())
+
     for row in rows:
         if not row or all(not c.strip() for c in row[:3]):
             if cur_name and cur_rows:
@@ -181,13 +186,24 @@ def parse_sections(text):
         if not name:
             continue
         val = row[1].strip() if len(row) > 1 else ""
-        if name.isupper() and len(name) > 3 and (not val or val in ("RAT", "")):
+        # Only treat the row as a section header if it matches a known
+        # section name. This prevents incidental uppercase strings inside
+        # cell HTML (like "PLAYER") from prematurely closing a section.
+        if name in KNOWN_SECTIONS and (not val or val in ("RAT", "")):
             if cur_name and cur_rows:
                 secs.append((cur_name, cur_rows))
             cur_name = name
             cur_rows = []
             continue
-        if any("#N/A" in str(c) for c in row[:11]):
+        # Drop sub-table contamination rows: when both the RAT column (col 1)
+        # AND the stats column (col 2) are empty or #N/A, the row carries no
+        # daily-recap data and is just leakage from another sub-table that
+        # shares column A with the recap section. Valid players keep showing
+        # even if individual stat columns are #N/A — those just render blank.
+        stat_col = row[2].strip() if len(row) > 2 else ""
+        rat_blank = (not val) or val == "#N/A"
+        stat_blank = (not stat_col) or stat_col == "#N/A"
+        if rat_blank and stat_blank:
             continue
         if name and cur_name:
             cur_rows.append(row)
