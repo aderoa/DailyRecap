@@ -195,15 +195,18 @@ def parse_sections(text):
             cur_name = name
             cur_rows = []
             continue
-        # Drop sub-table contamination rows: when both the RAT column (col 1)
-        # AND the stats column (col 2) are empty or #N/A, the row carries no
-        # daily-recap data and is just leakage from another sub-table that
-        # shares column A with the recap section. Valid players keep showing
-        # even if individual stat columns are #N/A — those just render blank.
-        stat_col = row[2].strip() if len(row) > 2 else ""
+        # Drop sub-table contamination rows. The recap CSV has multiple
+        # tables that share column A. Contamination rows leak in with the
+        # player name in col 0 but no real game data — the RAT column (col 1)
+        # is empty AND the numeric stat columns (cols 3-9) are also all
+        # empty/#N/A. Legit player rows always have RAT populated and at
+        # least some of cols 3-9 with numbers.
         rat_blank = (not val) or val == "#N/A"
-        stat_blank = (not stat_col) or stat_col == "#N/A"
-        if rat_blank and stat_blank:
+        stat_cols_blank = all(
+            (not row[i].strip()) or row[i].strip() == "#N/A"
+            for i in range(3, min(10, len(row)))
+        )
+        if rat_blank and stat_cols_blank:
             continue
         if name and cur_name:
             cur_rows.append(row)
