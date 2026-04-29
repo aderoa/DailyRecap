@@ -1,13 +1,16 @@
 PLAYER,RAT,PASSED,CATEGORY,RANK,STAT_TOTAL,PASSED_TOTAL,STAT_CODE,LOGO_URL
-Mike Conley,,Danny Ainge,Assists,39,658,656,AST,https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg
-Rudy Gobert,,"Shawn Marion, Sam Perkins",Rebounds,63,940,939,REB,https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg
-Nikola Jokic,,"Tyson Chandler, Zydrunas Ilgauskas, Klay Thompson",Blocks,101,86,85,BLK,https://cdn.nba.com/logos/nba/1610612743/primary/L/logo.svg
-Jamal Murray,,"Doug Christie, Deron Williams, Eric Snow, Joe Dumars, Chris Webber",Steals,132,94,93,STL,https://cdn.nba.com/logos/nba/1610612743/primary/L/logo.svg
-Shai Gilgeous-Alexander,,"Alex English, Chris Webber, Hedo Turkoglu, Guy Rodgers, Vlade Divac",Assists,152,294,293,AST,https://cdn.nba.com/logos/nba/1610612760/primary/L/logo.svg
-Devin Booker,,"Chris Bosh, Vinnie Johnson",Scoring,156,1400,1388,PTS,https://cdn.nba.com/logos/nba/1610612756/primary/L/logo.svg
-Tobias Harris,,"Gary Payton, Michael Cooper, Amar'e Stoudemire",Rebounds,159,578,575,REB,https://cdn.nba.com/logos/nba/1610612765/primary/L/logo.svg
-Devin Booker,,"David West, Mario Elie, Rasheed Wallace, Charlie Ward, Lamar Odom, Earl Monroe, Bill Bradley, Mark Aguirre",Assists,168,266,265,AST,https://cdn.nba.com/logos/nba/1610612756/primary/L/logo.svg
-Shai Gilgeous-Alexander,,"A.C. Green, Anfernee Hardaway, Lou Hudson, Alonzo Mourning",Scoring,173,1321,1315,PTS,https://cdn.nba.com/logos/nba/1610612760/primary/L/logo.svg
-Alex Caruso,,"Damian Lillard, Dave Cowens, Gerald Henderson",Steals,173,79,78,STL,https://cdn.nba.com/logos/nba/1610612760/primary/L/logo.svg
-Shai Gilgeous-Alexander,,"Jon Koncak, Vince Carter, Dan Schayes",Blocks,195,48,47,BLK,https://cdn.nba.com/logos/nba/1610612760/primary/L/logo.svg
-Tobias Harris,,"Maurice Lucas, Jae Crowder, Kyle Korver, Zach Randolph",Scoring,200,1163,1159,PTS,https://cdn.nba.com/logos/nba/1610612765/primary/L/logo.svg
+Jayson Tatum,,"Manu Ginobili, Russell Westbrook",Scoring,27,3059,3054,PTS,https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg
+Paul George,,"Charles Oakley, Kevin Garnett",Steals,37,180,178,STL,https://cdn.nba.com/logos/nba/1610612755/primary/L/logo.svg
+Jrue Holiday,,Deron Williams,Assists,41,633,630,AST,https://cdn.nba.com/logos/nba/1610612757/primary/L/logo.svg
+Jayson Tatum,,"Dirk Nowitzki, Derek Harper, Chauncey Billups, Allen Iverson",Steals,56,150,149,STL,https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg
+Paul George,,Manu Ginobili,Rebounds,71,875,874,REB,https://cdn.nba.com/logos/nba/1610612755/primary/L/logo.svg
+Jalen Brunson,,"Kyle Lowry, Cliff Hagan, Rick Barry, Terry Porter, Joe Johnson, Jamaal Wilkes",Scoring,86,1842,1836,PTS,https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg
+Jalen Brunson,,"Khris Middleton, Tim Hardaway, Boris Diaw",Assists,92,390,383,AST,https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg
+Jaylen Brown,,"Horace Grant, Dirk Nowitzki, Sam Jones",Assists,105,363,360,AST,https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg
+Joel Embiid,,"Michael Finley, Shawn Kemp, Shawn Marion, Richard Jefferson, Mike Conley, Chris Webber",Scoring,126,1528,1525,PTS,https://cdn.nba.com/logos/nba/1610612755/primary/L/logo.svg
+CJ McCollum,,"Ricky Pierce, Marcus Smart, Bill Sharman",Scoring,144,1448,1447,PTS,https://cdn.nba.com/logos/nba/1610612737/primary/L/logo.svg
+Karl-Anthony Towns,,"Harry Gallatin, Jonas Valanciunas, John Salley, Alvan Adams, Vern Mikkelsen, Kyle Lowry, Rick Mahorn",Rebounds,149,593,592,REB,https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg
+OG Anunoby,,"Jae Crowder, Billy Paultz",Blocks,161,55,54,BLK,https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg
+Jrue Holiday,,"Danny Green, Rik Smits, Josh Smith, Mark Aguirre, Garfield Heard, Tom Hawkins, Byron Scott",Rebounds,176,542,541,REB,https://cdn.nba.com/logos/nba/1610612757/primary/L/logo.svg
+Derrick White,,"Dolph Schayes, Paul Seymour",Assists,180,258,257,AST,https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg
+OG Anunoby,,"Caron Butler, Chris Bosh, Sedale Threatt, Latrell Sprewell, Dominique Wilkins, Lamar Odom, Boris Diaw, DeMar DeRozan, Nene, Bob McAdoo, Nick Anderson",Steals,189,74,73,STL,https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg
