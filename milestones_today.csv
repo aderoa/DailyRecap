@@ -1,24 +1,11 @@
 PLAYER,RAT,PASSED,CATEGORY,RANK,STAT_TOTAL,PASSED_TOTAL,STAT_CODE,LOGO_URL
-Nikola Jokic,,"Kareem Abdul-Jabbar, Tim Duncan",Assists,32,769,767,AST,https://cdn.nba.com/logos/nba/1610612743/primary/L/logo.svg
-Jaylen Brown,,"Ray Allen, Jimmy Butler",Scoring,39,2755,2749,PTS,https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg
-Jayson Tatum,,Deron Williams,Assists,42,633,630,AST,https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg
-Jayson Tatum,,Dolph Schayes,Rebounds,49,1053,1051,REB,https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg
-Rudy Gobert,,Clifford Robinson,Blocks,52,134,132,BLK,https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg
-Rudy Gobert,,"Jack Sikma, Buck Williams",Rebounds,61,953,945,REB,https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg
-Jamal Murray,,Nate McMillan,Assists,62,508,505,AST,https://cdn.nba.com/logos/nba/1610612743/primary/L/logo.svg
-Paul George,,Paul Millsap,Rebounds,70,879,878,REB,https://cdn.nba.com/logos/nba/1610612755/primary/L/logo.svg
-Mike Conley,,"Metta World Peace, Mark Jackson, Nate McMillan",Steals,74,132,131,STL,https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg
-Jaylen Brown,,Willis Reed,Rebounds,80,802,801,REB,https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg
-Jalen Brunson,,"K.C. Jones, Anfernee Hardaway, John Starks, Hal Greer, Rod Strickland, Byron Scott",Assists,86,398,396,AST,https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg
-Nikola Jokic,,Tayshaun Prince,Blocks,100,87,86,BLK,https://cdn.nba.com/logos/nba/1610612743/primary/L/logo.svg
-Jaylen Brown,,John Wall,Assists,104,365,364,AST,https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg
-Joel Embiid,,"Dick Barnett, Rik Smits, Dave DeBusschere",Scoring,123,1547,1539,PTS,https://cdn.nba.com/logos/nba/1610612755/primary/L/logo.svg
-Joel Embiid,,"Joakim Noah, David West",Rebounds,126,665,659,REB,https://cdn.nba.com/logos/nba/1610612755/primary/L/logo.svg
-Mike Conley,,Richard Jefferson,Scoring,130,1514,1511,PTS,https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg
-Paul George,,"Bruce Bowen, Magic Johnson",Blocks,139,65,64,BLK,https://cdn.nba.com/logos/nba/1610612755/primary/L/logo.svg
-CJ McCollum,,"Marcus Smart, Clifford Robinson, Bobby Jones, Gail Goodrich, Walter Davis",Scoring,140,1459,1458,PTS,https://cdn.nba.com/logos/nba/1610612737/primary/L/logo.svg
-Karl-Anthony Towns,,"P.J. Tucker, Jae Crowder",Rebounds,147,604,602,REB,https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg
-Jonas Valanciunas,,"Karl-Anthony Towns, Harry Gallatin",Rebounds,149,594,593,REB,https://cdn.nba.com/logos/nba/1610612743/primary/L/logo.svg
-OG Anunoby,,"Wes Unseld, Shane Battier",Blocks,159,56,55,BLK,https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg
-OG Anunoby,,"Craig Ehlo, Shane Battier, Steven Smith, Anthony Davis, Peja Stojakovic, David West, Kirk Hinrich, Chris Mullin, Fred Brown, Lou Williams, Josh Smith, Cedric Maxwell",Steals,177,78,77,STL,https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg
-Mikal Bridges,,"Jon Koncak, Vince Carter, Dan Schayes",Blocks,196,48,47,BLK,https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg
+James Harden,,Manu Ginobili,Steals,10,294,292,STL,https://cdn.nba.com/logos/nba/1610612739/primary/L/logo.svg
+Marcus Smart,,Al Horford,Steals,52,160,159,STL,https://cdn.nba.com/logos/nba/1610612747/primary/L/logo.svg
+Donovan Mitchell,,"Chet Walker, Carmelo Anthony, Maurice Cheeks, Oscar Robertson, Dwight Howard, Horace Grant, Danny Ainge",Scoring,75,1923,1916,PTS,https://cdn.nba.com/logos/nba/1610612739/primary/L/logo.svg
+James Harden,,George Johnson,Blocks,80,102,101,BLK,https://cdn.nba.com/logos/nba/1610612739/primary/L/logo.svg
+Donovan Mitchell,,"Mario Chalmers, Marc Gasol",Assists,127,323,321,AST,https://cdn.nba.com/logos/nba/1610612739/primary/L/logo.svg
+Marcus Smart,,"Jack Sikma, Amar'e Stoudemire, CJ McCollum",Scoring,138,1465,1461,PTS,https://cdn.nba.com/logos/nba/1610612747/primary/L/logo.svg
+Marcus Smart,,"Erick Dampier, Derrick Coleman",Blocks,148,61,60,BLK,https://cdn.nba.com/logos/nba/1610612747/primary/L/logo.svg
+Tobias Harris,,"Jonas Valanciunas, Jae Crowder, Harry Gallatin, John Salley, Alvan Adams",Rebounds,149,596,594,REB,https://cdn.nba.com/logos/nba/1610612765/primary/L/logo.svg
+Deandre Ayton,,"Mark Aguirre, Garfield Heard, Tom Hawkins, Byron Scott, Larry Nance, Steven Adams, Trevor Ariza, Jeff Hornacek, Blake Griffin, Isiah Thomas, Marcin Gortat",Rebounds,180,538,537,REB,https://cdn.nba.com/logos/nba/1610612747/primary/L/logo.svg
+Tobias Harris,,"Anthony Edwards, Fred Brown, JJ Redick, Jim McMillian, Rashard Lewis, Paul Arizin",Scoring,188,1208,1204,PTS,https://cdn.nba.com/logos/nba/1610612765/primary/L/logo.svg
