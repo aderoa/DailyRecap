@@ -418,7 +418,9 @@ def main():
 
     if not all_new:
         print("\n  No new games to process.")
-        save_milestones([], OUTPUT_FILE)
+        # Don't overwrite milestones_today.csv when there's nothing to do —
+        # a manual re-run after the nightly run would otherwise erase the
+        # detected milestones. Leave the existing file intact.
         return
 
     print(f"\n  {len(all_new)} new games to process")
