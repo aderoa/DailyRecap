@@ -1,0 +1,129 @@
+name: Recover Processed Games
+
+# One-shot recovery for the milestones pipeline.
+# When milestones_today.csv gets wiped before the recap reads it (e.g., a
+# duplicate run no-op'd because games were already in processed_games.txt),
+# this workflow removes specific dates' game IDs from processed_games.txt
+# so the next "Generate NBA Daily Recap" run will re-process those games
+# and re-detect milestones.
+#
+# Manually trigger from Actions tab. Defaults to "yesterday + today (ET)".
+
+on:
+  workflow_dispatch:
+    inputs:
+      dates:
+        description: 'Dates to remove (YYYY-MM-DD, comma-separated). Leave blank for yesterday + today (ET).'
+        required: false
+        default: ''
+      dry_run:
+        description: 'Dry run only (no commit)'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false', 'true']
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install requests
+        run: pip install requests
+
+      - name: Recover processed_games.txt
+        env:
+          INPUT_DATES: ${{ inputs.dates }}
+          INPUT_DRY: ${{ inputs.dry_run }}
+        run: |
+          python <<'PY'
+          import os
+          import sys
+          from datetime import datetime, timezone, timedelta
+          import requests
+
+          PROCESSED_FILE = "processed_games.txt"
+          ESPN = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard"
+
+          dry = os.environ.get("INPUT_DRY", "false").lower() == "true"
+          raw_dates = (os.environ.get("INPUT_DATES") or "").strip()
+
+          if raw_dates:
+              dates = [d.strip() for d in raw_dates.split(",") if d.strip()]
+          else:
+              et = timezone(timedelta(hours=-5))
+              now = datetime.now(et)
+              dates = [
+                  (now - timedelta(days=1)).strftime("%Y-%m-%d"),
+                  now.strftime("%Y-%m-%d"),
+              ]
+
+          print(f"Target dates: {', '.join(dates)}")
+          print(f"Dry run: {dry}")
+          print()
+
+          ids_to_remove = set()
+          for d in dates:
+              date_str = d.replace("-", "")
+              r = requests.get(f"{ESPN}?dates={date_str}", timeout=30)
+              r.raise_for_status()
+              data = r.json()
+              ids = [ev.get("id", "") for ev in data.get("events", []) if ev.get("id")]
+              print(f"  {d}: {len(ids)} games on ESPN")
+              ids_to_remove.update(ids)
+
+          print()
+
+          if not os.path.exists(PROCESSED_FILE):
+              print(f"ERROR: {PROCESSED_FILE} not found in repo root.")
+              sys.exit(1)
+
+          with open(PROCESSED_FILE) as f:
+              processed = {line.strip() for line in f if line.strip()}
+
+          overlap = processed & ids_to_remove
+          print(f"Current {PROCESSED_FILE}: {len(processed)} entries")
+          print(f"Will remove: {len(overlap)} entries")
+          for gid in sorted(overlap):
+              print(f"  - {gid}")
+
+          if not overlap:
+              print()
+              print("Nothing to remove — those games aren't in the processed file.")
+              sys.exit(0)
+
+          if dry:
+              print()
+              print("DRY RUN — no changes written.")
+              sys.exit(0)
+
+          new_processed = processed - ids_to_remove
+          with open(PROCESSED_FILE, "w") as f:
+              for gid in sorted(new_processed):
+                  f.write(gid + "\n")
+
+          print()
+          print(f"Wrote {PROCESSED_FILE}: {len(new_processed)} entries ({len(overlap)} removed)")
+          PY
+
+      - name: Commit changes
+        if: ${{ inputs.dry_run != 'true' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet processed_games.txt; then
+            echo "No changes to commit (file unchanged)."
+          else
+            git add processed_games.txt
+            git commit -m "recovery: remove processed game IDs for milestones recovery"
+            git push
+          fi
