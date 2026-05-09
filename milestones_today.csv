@@ -1,15 +1,14 @@
 PLAYER,RAT,PASSED,CATEGORY,RANK,STAT_TOTAL,PASSED_TOTAL,STAT_CODE,LOGO_URL
-Marcus Smart,,"Ray Allen, Dan Majerle",Steals,50,165,164,STL,https://cdn.nba.com/logos/nba/1610612747/primary/L/logo.svg
-James Harden,,Julius Erving,Rebounds,54,999,994,REB,https://cdn.nba.com/logos/nba/1610612739/primary/L/logo.svg
-Chet Holmgren,,"Jack Sikma, Jerome Kersey, Antonio McDyess",Blocks,112,81,80,BLK,https://cdn.nba.com/logos/nba/1610612760/primary/L/logo.svg
-Donovan Mitchell,,Mark Price,Assists,125,329,327,AST,https://cdn.nba.com/logos/nba/1610612739/primary/L/logo.svg
-Donovan Mitchell,,Doug Christie,Steals,133,94,93,STL,https://cdn.nba.com/logos/nba/1610612739/primary/L/logo.svg
-Marcus Smart,,Sidney Moncrief,Scoring,135,1491,1487,PTS,https://cdn.nba.com/logos/nba/1610612747/primary/L/logo.svg
-Tobias Harris,,"Tyson Chandler, Bobby Jones, LaMarcus Aldridge",Rebounds,140,620,619,REB,https://cdn.nba.com/logos/nba/1610612765/primary/L/logo.svg
-Dennis Schroeder,,"Hedo Turkoglu, Guy Rodgers, Vlade Divac, Bobby Jones",Assists,155,289,287,AST,https://cdn.nba.com/logos/nba/1610612739/primary/L/logo.svg
-Shai Gilgeous-Alexander,,"Willis Reed, Bill Laimbeer, Rudy LaRusso",Scoring,163,1361,1358,PTS,https://cdn.nba.com/logos/nba/1610612760/primary/L/logo.svg
-Deandre Ayton,,"Happy Hairston, Carmelo Anthony, Mark Eaton, Clyde Lovellette, Zydrunas Ilgauskas, Clifford Robinson, Cedric Maxwell",Rebounds,167,560,559,REB,https://cdn.nba.com/logos/nba/1610612747/primary/L/logo.svg
-Alex Caruso,,"Garfield Heard, Larry Hughes, Tyrone Corbin, Tom Henderson, Calvin Murphy, Dale Davis, Antoine Walker",Steals,167,81,80,STL,https://cdn.nba.com/logos/nba/1610612760/primary/L/logo.svg
-Evan Mobley,,"George Gervin, Nate Thurmond, Kurt Thomas, Alvin Scott, Stephen Curry, Ian Mahinmi, Jeff Green, Andrew Lang, Tony Battie, Cedric Maxwell, Jaren Jackson Jr, John Stockton, Jrue Holiday, Shai Gilgeous-Alexander, Paul Pressey, Harvey Catchings, Bam Adebayo, Nene",Blocks,174,52,51,BLK,https://cdn.nba.com/logos/nba/1610612739/primary/L/logo.svg
-Tobias Harris,,"Bam Adebayo, Wes Unseld",Scoring,178,1279,1278,PTS,https://cdn.nba.com/logos/nba/1610612765/primary/L/logo.svg
-Tobias Harris,,"Kyle Lowry, Arvydas Sabonis, Anfernee Hardaway, Jonas Valanciunas, Karl-Anthony Towns, Deandre Ayton, Jaden McDaniels, Jon Koncak, Vince Carter, Dan Schayes, Shawn Bradley, Tony Allen, Tracy McGrady",Blocks,194,49,48,BLK,https://cdn.nba.com/logos/nba/1610612765/primary/L/logo.svg
+Paul George,,Kevin Garnett,Scoring,44,2602,2601,PTS,https://cdn.nba.com/logos/nba/1610612755/primary/L/logo.svg
+Rudy Gobert,,"Elden Campbell, Shawn Kemp, Karl Malone",Blocks,48,138,137,BLK,https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg
+Joel Embiid,,"Clyde Drexler, Charles Barkley, Josh Smith, Roy Hibbert, Mychal Thompson, Jayson Tatum, Joakim Noah",Blocks,68,109,108,BLK,https://cdn.nba.com/logos/nba/1610612755/primary/L/logo.svg
+Jalen Brunson,,"Robert Horry, Draymond Green, Gus Williams, Walt Frazier",Scoring,72,1953,1939,PTS,https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg
+Jalen Brunson,,Damian Lillard,Assists,85,416,414,AST,https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg
+Joel Embiid,,Jrue Holiday,Scoring,110,1647,1634,PTS,https://cdn.nba.com/logos/nba/1610612755/primary/L/logo.svg
+Joel Embiid,,"Bailey Howell, Zelmo Beaty, Chris Webber",Rebounds,111,699,697,REB,https://cdn.nba.com/logos/nba/1610612755/primary/L/logo.svg
+Karl-Anthony Towns,,"Jermaine O'Neal, Mychal Thompson, Klay Thompson, Derrick McKey, Jack Coleman",Rebounds,134,632,631,REB,https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg
+Anthony Edwards,,"Wes Unseld, Andrew Toney, Brook Lopez, Bob Lanier, Blake Griffin",Scoring,180,1266,1260,PTS,https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg
+Mikal Bridges,,"David West, Kirk Hinrich, Chris Mullin, Fred Brown, Lou Williams, Josh Smith, Cedric Maxwell, Caron Butler, Chris Bosh, Sedale Threatt, Latrell Sprewell, Dominique Wilkins",Steals,183,75,74,STL,https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg
+Anthony Edwards,,"Clifford Robinson, Lou Williams, Tracy McGrady, Andy Phillip, Dick Barnett, Sam Perkins, Rick Fox, Jamaal Wilkes",Assists,186,251,250,AST,https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg
+Karl-Anthony Towns,,"Kyle Lowry, Arvydas Sabonis, Anfernee Hardaway, Jonas Valanciunas",Blocks,195,49,48,BLK,https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg
+Jaden McDaniels,,"Arvydas Sabonis, Anfernee Hardaway, Jonas Valanciunas, Karl-Anthony Towns, Deandre Ayton",Blocks,196,49,48,BLK,https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg
